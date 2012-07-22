@@ -24,13 +24,8 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 	
 	private $kind = '';
 	private $dbTabname = '';
-	private $varsMapping = array();
-	private $dbVarNames = array();
+	private $mappingModel = null;
 	private $modelArray = array();
-	
-	private function setDbTabName($dbTabName) {
-		$this->dbTabname = $dbTabName;
-	}
 	
 	protected function getKind() {
 		return $this->kind;
@@ -38,55 +33,14 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 	protected function setKind($kind) {
 		$this->kind = $kind;
 	}
-	protected function getDbTabName() {
-		return $this->dbTabname;
-	}
-	protected function addVarMapping($name, $kind, $dbName) {
-		$tmpArray = array();
-		if((!array_key_exists($name, $this->varsMapping))
-				&&(!array_key_exists($dbName, $this->dbVarNames))) {
-			$tmpArray["kind"] = $kind;
-			$tmpArray["dbName"] = $dbName;
-			$this->varsMapping[$name] = $tmpArray;
-			$this->dbVarNames["$dbName"] = $name;
-		}
-	}
-	protected function loadStructureFromXml() {
-		$tmpArray = array();
-		$settingsFac = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance();
-		$settings = $settingsFac->getSettings('xml');
-		$fileName = $settings->getSettingFromFullName('model.fileName');
-		$xmlDoc = new DOMDocument();
-		$xPath;
-		$strXPathQuery = '';
-		$nodes;
-		$i = -1;
-		$nFound = -1;
-	
-		$xmlDoc->load($fileName);
-		$xPath = new DOMXPath($xmlDoc);
-		$strXPathQuery = '//model/class[@id="' . $this->getKind() . '"]/dbtab';
-		$nodes = $xPath->query($strXPathQuery);
-		$nFound = $nodes->length;
-		if($nFound == 1) {
-			$tmpNode = $nodes->item(0);
-			$this->setDbTabName($tmpNode->getAttribute('name'));
-		}
-		$strXPathQuery = '//model/class[@id="' . $this->getKind() . '"]/var';
-		$nodes = $xPath->query($strXPathQuery);
-		$nFound = $nodes->length;
-		for ($i = 0; $i < $nFound; ++$i) {
-			$tmpNode = $nodes->item($i);
-			$this->addVarMapping($tmpNode->getAttribute('name')
-					,$tmpNode->getAttribute('kind')
-					,$tmpNode->getAttribute('dbName'));
-		}
-		$this->changed = FALSE;
+	protected function init() {
+		$mappingModelFactory = Php_AndreaBoccaccio_Model_MappingModelFactory::getInstance();
+		$this->mappingModel = $mappingModelFactory->getMappingModel($this->getKind());
 	}
 	
 	abstract protected function getModel();
 	
-	public function getModels($page = 0, $filter=null, $orderby=null) {
+	public function getModels($page = 0, &$filter=null, $orderby=null) {
 		$ret = array();
 		$tmpArray = array();
 		$tmpModel;
@@ -105,23 +59,23 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 		$totalPages = -1;
 		$offset = -1;
 		
-		$strSQL .= $this->getDbTabName();
+		$strSQL .= $this->mappingModel->getDbTabName();
 		$rowsPerPage = strval(intval($rowsPerPage));
 		$strSQLCount .= $rowsPerPage . ") AS totalPages FROM ";
-		$strSQLCount .= $this->getDbTabName();
+		$strSQLCount .= $this->mappingModel->getDbTabName();
 		if($filter != null) {
 			if(is_array($filter)) {
 				if(count($filter)> 0) {
 					foreach ($filter as $name => $value) {
-						if(array_key_exists($name, $this->varsMapping)) {
+						if(array_key_exists($name, $this->mappingModel->getDefaults())) {
 							if($where == 0) {
 								$strSQLOptional .= " WHERE (";
 							} else if ($where >0) {
 								$strSQLOptional .= " AND ";
 							}
 							$strSQLOptional .= "(";
-							$strSQLOptional .= $this->varsMapping[$name]["dbName"];
-							switch ($this->varsMapping[$name]["kind"]) {
+							$strSQLOptional .= $this->mappingModel->getVarName($name,null);
+							switch ($this->mappingModel->getVarKind($name)) {
 								case "int":
 									$strSQLOptional .= " = ";
 									$strSQLOptional .= intval($value);
@@ -183,7 +137,7 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 						$tmpRow = $res["result"][$i];
 						$tmpModel = $this->getModel();
 						foreach ($res["fields"] as $dbname) {
-							$tmpArray[$this->dbVarNames[$dbname]] = $tmpRow[$dbname];
+							$tmpArray[$this->mappingModel->getVarName(null,$dbname)] = $tmpRow[$dbname];
 						}
 						$tmpModel->init($tmpArray);
 						$this->modelArray[$i] = $tmpModel;
@@ -204,7 +158,7 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 		$setting = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance()->getSettings('xml');
 		$db = Php_AndreaBoccaccio_Db_DbFactory::getInstance()->getDb($setting->getSettingFromFullName('classes.db'));
 		$strSQL = "DELETE FROM ";
-		$strSQL .= $this->getDbTabName();
+		$strSQL .= $this->mappingModel->getDbTabName();
 		$res = array();
 		
 		$strSQL .= " WHERE(id=" .$id .");";

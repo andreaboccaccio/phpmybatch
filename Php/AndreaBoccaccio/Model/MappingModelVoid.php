@@ -20,8 +20,34 @@
  * along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-interface Php_AndreaBoccaccio_Model_ManagerInterface {
+class Php_AndreaBoccaccio_Model_MappingModelVoid extends Php_AndreaBoccaccio_Model_MappingModelAbstract {
 	
-	public function getModels($page = 0, &$filter=null, $orderby=null);
-	public function eraseModel($id);
+	private static $instance = null;
+	
+	private function __clone() {
+	
+	}
+	
+	private function __construct() {
+		$this->setKind('void');
+	}
+	
+	public static function getInstance() {
+		if(self::$instance == null) {
+			self::$instance = new Php_AndreaBoccaccio_Model_MappingModelVoid();
+		}
+		return self::$instance;
+	}
+	
+	public function getDbTabName() {
+		return "";
+	}
+	
+	public function getVarName($appName=null, $dbName=null) {
+		return "";
+	}
+	
+	public function getVarKind($appName) {
+		return "";
+	}
 }

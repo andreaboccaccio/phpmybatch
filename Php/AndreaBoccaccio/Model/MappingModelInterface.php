@@ -20,8 +20,12 @@
  * along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-interface Php_AndreaBoccaccio_Model_ManagerInterface {
+interface Php_AndreaBoccaccio_Model_MappingModelInterface {
 	
-	public function getModels($page = 0, &$filter=null, $orderby=null);
-	public function eraseModel($id);
+	public function getKind();
+	public function getDbTabName();
+	public function getVarName($appName=null, $dbName=null);
+	public function getVarKind($appName);
+	public function getDefaults();
+	public function getDbNames();
 }

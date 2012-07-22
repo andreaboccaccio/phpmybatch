@@ -23,104 +23,60 @@
 abstract class Php_AndreaBoccaccio_Model_ModelAbstract implements Php_AndreaBoccaccio_Model_ModelInterface {
 	
 	private $kind = '';
-	private $dbTabname = '';
 	private $vars = array();
-	private $dbVarNames = array();
+	private $mappingModel = null;
 	private $changed = FALSE;
-	
-	private function setDbTabName($dbTabName) {
-		$this->dbTabname = $dbTabName;
-	}
 	
 	protected function getKind() {
 		return $this->kind;
 	}
+	
 	protected function setKind($kind) {
 		$this->kind = $kind;
 	}
-	protected function getDbTabName() {
-		return $this->dbTabname;
-	}
-	protected function addVar($name, $kind, $value, $dbName) {
-		$tmpArray = array();
-		if((!array_key_exists($name, $this->vars))
-				&&(!array_key_exists($dbName, $this->dbVarNames))) {
-			$tmpArray["kind"] = $kind;
-			$tmpArray["value"] = $value;
-			$tmpArray["dbName"] = $dbName;
-			$this->vars[$name] = $tmpArray;
-			$this->dbVarNames["$dbName"] = $name;
-		}
-	}
-	protected function loadStructureFromXml() {
-		$tmpArray = array();
-		$settingsFac = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance();
-		$settings = $settingsFac->getSettings('xml');
-		$fileName = $settings->getSettingFromFullName('model.fileName');
-		$xmlDoc = new DOMDocument();
-		$xPath;
-		$strXPathQuery = '';
-		$nodes;
-		$i = -1;
-		$nFound = -1;
-		
-		$xmlDoc->load($fileName);
-		$xPath = new DOMXPath($xmlDoc);
-		$strXPathQuery = '//model/class[@id="' . $this->getKind() . '"]/dbtab';
-		$nodes = $xPath->query($strXPathQuery);
-		$nFound = $nodes->length;
-		if($nFound == 1) {
-			$tmpNode = $nodes->item(0);
-			$this->setDbTabName($tmpNode->getAttribute('name'));
-		}
-		$strXPathQuery = '//model/class[@id="' . $this->getKind() . '"]/var';
-		$nodes = $xPath->query($strXPathQuery);
-		$nFound = $nodes->length;
-		for ($i = 0; $i < $nFound; ++$i) {
-			$tmpNode = $nodes->item($i);
-			$this->addVar($tmpNode->getAttribute('name')
-					,$tmpNode->getAttribute('kind')
-					,$tmpNode->getAttribute('value')
-					,$tmpNode->getAttribute('dbName'));
-		}
-		$this->changed = FALSE;
+	
+	protected function initMapping() {
+		$tmpFactory = Php_AndreaBoccaccio_Model_MappingModelFactory::getInstance();
+		$this->mappingModel = $tmpFactory->getMappingModel($this->getKind());
+		$this->vars = $this->mappingModel->getDefaults();
 	}
 	
 	public function getVar($name) {
 		$ret = null;
 	
 		if(array_key_exists($name, $this->vars)) {
-			$ret = $this->vars[$name]["value"];
+			$ret = $this->vars[$name];
 		}
 		else {
 			$ret = null;
 		}
 		return $ret;
 	}
-	public function setVar($name,$value) {
+	
+	public function setVar($name, $value) {
 		if(array_key_exists($name, $this->vars)) {
-			switch ($this->vars[$name]["kind"]) {
+			switch ($this->mappingModel->getVarKind($name)) {
 				case "int":
-					if($this->vars[$name]["value"] != intval($value)) {
-						$this->vars[$name]["value"] = intval($value);
+					if($this->vars[$name] != intval($value)) {
+						$this->vars[$name] = intval($value);
 						$this->changed = TRUE;
 					}
 					break;
 				case "float":
-					if($this->vars[$name]["value"] != floatval($value)) {
-						$this->vars[$name]["value"] = floatval($value);
+					if($this->vars[$name] != floatval($value)) {
+						$this->vars[$name] = floatval($value);
 						$this->changed = TRUE;
 					}
 					break;
 				default:
-					if($this->vars[$name]["value"] != $value) {
-						$this->vars[$name]["value"] = $value;
+					if($this->vars[$name] != $value) {
+						$this->vars[$name] = $value;
 						$this->changed = TRUE;
 					}
 			}
 		}
 	}
-	public function init($initArray) {
+	public function init(&$initArray) {
 		foreach ($initArray as $name => $value) {
 			$this->setVar($name, $value);
 		}
@@ -139,7 +95,7 @@ abstract class Php_AndreaBoccaccio_Model_ModelAbstract implements Php_AndreaBocc
 			$setting = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance()->getSettings('xml');
 			$db = Php_AndreaBoccaccio_Db_DbFactory::getInstance()->getDb($setting->getSettingFromFullName('classes.db'));
 			$strSQL = "SELECT ";
-			foreach ($this->dbVarNames as $dbname => $value) {
+			foreach ($this->mappingModel->getDbNames() as $num => $dbname) {
 				if($i>0) {
 					$strSQL .= ",";
 				}
@@ -147,7 +103,7 @@ abstract class Php_AndreaBoccaccio_Model_ModelAbstract implements Php_AndreaBocc
 				++$i;
 			}
 			$strSQL .= " FROM ";
-			$strSQL .= $this->getDbTabName();
+			$strSQL .= $this->mappingModel->getDbTabName();
 			$strSQL .= " WHERE (id=";
 			$strSQL .= $id;
 			$strSQL .= ");";
@@ -157,7 +113,7 @@ abstract class Php_AndreaBoccaccio_Model_ModelAbstract implements Php_AndreaBocc
 				if($ret == 1) {
 					$tmpRow = $res["result"][0];
 					foreach ($res["fields"] as $dbname) {
-						$tmpArray[$this->dbVarNames[$dbname]] = $tmpRow[$dbname];
+						$tmpArray[$this->mappingModel->getVarName(null,$dbname)] = $tmpRow[$dbname];
 					}
 					$this->init($tmpArray);
 				}
@@ -174,13 +130,14 @@ abstract class Php_AndreaBoccaccio_Model_ModelAbstract implements Php_AndreaBocc
 		$max = -1;
 		$i = -1;
 		$prec = 0;
+		$appName = "";
 	
 		if($this->changed) {
 			$setting = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance()->getSettings('xml');
 			$db = Php_AndreaBoccaccio_Db_DbFactory::getInstance()->getDb($setting->getSettingFromFullName('classes.db'));
 			if($this->getVar("id") > 0) {
 				$strSQL = "SELECT * FROM ";
-				$strSQL .= $this->getDbTabName();
+				$strSQL .= $this->mappingModel->getDbTabName();
 				$strSQL .= " WHERE ((id=";
 				$strSQL .= $this->getVar("id");
 				$strSQL .= ");";
@@ -199,12 +156,13 @@ abstract class Php_AndreaBoccaccio_Model_ModelAbstract implements Php_AndreaBocc
 				$newObj = 1;
 			}
 			$i = 0;
-			foreach ($this->dbVarNames as $dbname => $name) {
+			foreach ($this->mappingModel->getDbNames() as $num => $dbname) {
 				if(strcmp($dbname, "id") != 0) {
+					$appName = $this->mappingModel->getVarName(null,$dbname);
 					$tmpArray[$i] = array();
 					$tmpArray[$i]["dbname"] = $dbname;
-					$tmpArray[$i]["kind"] = $this->vars[$name]["kind"];
-					$tmpArray[$i]["value"] = $this->getVar($name);
+					$tmpArray[$i]["kind"] = $this->mappingModel->getVarKind($appName);
+					$tmpArray[$i]["value"] = $this->getVar($appName);
 					++$i;
 				}
 			}
@@ -212,7 +170,7 @@ abstract class Php_AndreaBoccaccio_Model_ModelAbstract implements Php_AndreaBocc
 			if($newObj) {
 				$prec = 0;
 				$strSQL = "INSERT INTO ";
-				$strSQL .= $this->getDbTabName();
+				$strSQL .= $this->mappingModel->getDbTabName();
 				$strSQL .= " (";
 				for($i = 0; $i < $max;++$i) {
 					if($i > 0) {
@@ -252,7 +210,7 @@ abstract class Php_AndreaBoccaccio_Model_ModelAbstract implements Php_AndreaBocc
 			else {
 				$prec = 0;
 				$strSQL = "UPDATE ";
-				$strSQL .= $this->getDbTabName();
+				$strSQL .= $this->mappingModel->getDbTabName();
 				$strSQL .= " ";
 				$strSQL .= "SET ";
 				for($i = 0; $i < $max;++$i) {

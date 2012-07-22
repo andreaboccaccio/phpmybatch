@@ -28,6 +28,10 @@ div#footer {
 	width:200px;
 	margin:2px;
 }
+.error {
+	float:left;
+	margin:2px;
+}
 .input {
 	margin:2px;
 }

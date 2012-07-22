@@ -24,6 +24,6 @@ class Php_AndreaBoccaccio_Model_Cause extends Php_AndreaBoccaccio_Model_ModelAbs
 	
 	public function __construct() {
 		$this->setKind("cause");
-		$this->loadStructureFromXml();
+		$this->initMapping();
 	}
 }

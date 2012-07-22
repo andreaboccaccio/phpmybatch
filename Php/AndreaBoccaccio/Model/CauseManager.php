@@ -24,7 +24,7 @@ class Php_AndreaBoccaccio_Model_CauseManager extends Php_AndreaBoccaccio_Model_M
 	
 	public function __construct() {
 		$this->setKind("cause");
-		$this->loadStructureFromXml();
+		$this->init();
 	}
 	
 	protected function getModel() {

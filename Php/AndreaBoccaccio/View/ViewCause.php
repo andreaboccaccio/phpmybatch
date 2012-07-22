@@ -149,7 +149,7 @@ class Php_AndreaBoccaccio_View_ViewCause extends Php_AndreaBoccaccio_View_ViewCo
 		}
 		$ret .= "<input type=\"hidden\" name=\"causeId\" value=\"" . $cause->getVar("id") . "\" />";
 		if(($koBitArray & 0x1) == 0x1) {
-			$ret .= "<div class=\"label\">Errore nella scelta Carico/Scarico</div>";
+			$ret .= "<div class=\"error\">Errore nella scelta Carico/Scarico</div>";
 			$ret .= "<br />";
 		}
 		$ret .= "<div class=\"label\">Carico/Scarico:</div>";
@@ -167,7 +167,7 @@ class Php_AndreaBoccaccio_View_ViewCause extends Php_AndreaBoccaccio_View_ViewCo
 		$ret .= "</div>";
 		$ret .= "<br />";
 		if(($koBitArray & 0x2) == 0x2) {
-			$ret .= "<div class=\"label\">Nome errato</div>";
+			$ret .= "<div class=\"error\">Nome errato</div>";
 			$ret .= "<br />";
 		}
 		$ret .= "<div class=\"label\">Nome:</div>";
@@ -183,7 +183,7 @@ class Php_AndreaBoccaccio_View_ViewCause extends Php_AndreaBoccaccio_View_ViewCo
 		$ret .= "</div>";
 		$ret .= "<br />";
 		if(($koBitArray & 0x4) == 0x4) {
-			$ret .= "<div class=\"label\">Descrizione errata</div>";
+			$ret .= "<div class=\"error\">Descrizione errata</div>";
 			$ret .= "<br />";
 		}
 		$ret .= "<div class=\"label\">Descrizione:</div>";

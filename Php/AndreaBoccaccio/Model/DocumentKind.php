@@ -67,7 +67,7 @@ class Php_AndreaBoccaccio_Model_DocumentKind {
 			$this->changed = TRUE;
 		}
 	}
-	public function init($id,$code,$name,$description) {
+	public function init($id, $code, $name, $description) {
 		if($this->id != $id) {
 			$this->id = $id;
 			$this->changed = TRUE;

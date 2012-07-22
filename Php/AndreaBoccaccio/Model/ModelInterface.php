@@ -23,8 +23,8 @@
 interface Php_AndreaBoccaccio_Model_ModelInterface {
 	
 	public function getVar($name);
-	public function setVar($name,$value);
-	public function init($initArray);
+	public function setVar($name, $value);
+	public function init(&$initArray);
 	public function loadFromDbById($id);
 	public function saveToDb();
 }
