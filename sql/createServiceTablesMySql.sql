@@ -1,16 +1,16 @@
 --
--- phpmywhs - An open source warehouse management software.
+-- phpmybatch - phpmybatch - An open source batches of goods management system software.
 -- Copyright (C)2012 Andrea Boccaccio
 -- contact email: andrea@andreaboccaccio.com
 -- 
--- This file is part of phpmywhs.
+-- This file is part of phpmybatch.
 -- 
--- phpmywhs is free software: you can redistribute it and/or modify
+-- phpmybatch is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU Affero General Public License as published by
 -- the Free Software Foundation, either version 3 of the License, or
 -- (at your option) any later version.
 -- 
--- phpmywhs is distributed in the hope that it will be useful,
+-- phpmybatch is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 -- GNU Affero General Public License for more details.
@@ -19,6 +19,105 @@
 -- along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
 -- 
 --
+CREATE TABLE IF NOT EXISTS DBVERSION (id BIGINT AUTO_INCREMENT PRIMARY KEY
+,version VARCHAR(4) NOT NULL
+,description VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS DBVERSION_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
+,utctt_start DATETIME NOT NULL
+,utctt_end DATETIME NOT NULL
+,opcode VARCHAR(3) NOT NULL DEFAULT 'UNK'
+,idorig BIGINT NOT NULL
+,version VARCHAR(4) NOT NULL
+,description VARCHAR(255)
+);
+
+CREATE TRIGGER TRG_DBVERSION_INSERT_AFT AFTER INSERT
+ON DBVERSION
+FOR EACH ROW
+INSERT INTO DBVERSION_LOG (
+	utctt_start
+	,utctt_end
+	,opcode
+	,idorig
+	,version
+	,description
+) VALUES (
+	UTC_TIMESTAMP()
+	,UTC_TIMESTAMP()
+	,'INS'
+	,NEW.id
+	,NEW.version
+	,NEW.description
+);
+
+delimiter |
+
+CREATE TRIGGER TRG_DBVERSION_UPDATE_BFR BEFORE UPDATE
+ON DBVERSION
+FOR EACH ROW
+BEGIN
+UPDATE DBVERSION_LOG SET utctt_end = UTC_TIMESTAMP()
+WHERE
+(
+	(OLD.id = idorig)
+	AND
+	(utctt_end = utctt_start)
+);
+INSERT INTO DBVERSION_LOG (
+	utctt_start
+	,utctt_end
+	,opcode
+	,idorig
+	,version
+	,description
+) VALUES (
+	UTC_TIMESTAMP()
+	,UTC_TIMESTAMP()
+	,'UPD'
+	,NEW.id
+	,NEW.version
+	,NEW.description
+);
+END;
+
+|
+
+CREATE TRIGGER TRG_DBVERSION_DELETE_BFR BEFORE DELETE
+ON DBVERSION
+FOR EACH ROW
+BEGIN
+UPDATE DBVERSION_LOG SET utctt_end = UTC_TIMESTAMP()
+WHERE
+(
+	(OLD.id = idorig)
+	AND
+	(utctt_end = utctt_start)
+);
+INSERT INTO DBVERSION_LOG (
+	utctt_start
+	,utctt_end
+	,opcode
+	,idorig
+	,version
+	,description
+) VALUES (
+	UTC_TIMESTAMP()
+	,UTC_TIMESTAMP()
+	,'DEL'
+	,OLD.id
+	,OLD.version
+	,OLD.description
+);
+END;
+
+|
+
+delimiter ;
+
+INSERT INTO DBVERSION (version) VALUES ('001');
+
 CREATE TABLE IF NOT EXISTS USER (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,name VARCHAR(20) NOT NULL
 ,pwd VARCHAR(512) NOT NULL

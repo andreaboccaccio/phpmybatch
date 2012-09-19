@@ -26,7 +26,7 @@ abstract class Php_AndreaBoccaccio_View_ViewConsistentAbstract extends Php_Andre
 		$ret = '';
 		
 		$ret = "<div id=\"banner\">\n";
-		$ret .= "phpmywhs: un'applicazione libera in divenire riguardo il magazzino\n";
+		$ret .= "phpmybatch: un'applicazione libera in divenire riguardo la rintracciabilita' dei lotti\n";
 		$ret .= "</div>\n";
 		
 		return $ret;
@@ -48,7 +48,7 @@ abstract class Php_AndreaBoccaccio_View_ViewConsistentAbstract extends Php_Andre
 		$ret = '';
 		
 		$ret = "<div id=\"footer\">";
-		$ret .= "<a href=\"https://github.com/andreaboccaccio/phpmywhs\">";
+		$ret .= "<a href=\"https://github.com/andreaboccaccio/phpmybatch\">";
 		$ret .= "qui";
 		$ret .= "</a>";
 		$ret .= " si trova il codice sorgente di questo applicativo.";

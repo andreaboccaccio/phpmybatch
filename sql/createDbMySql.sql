@@ -19,7 +19,7 @@
 -- along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
 -- 
 --
-CREATE DATABASE IF NOT EXISTS phpmywhstest;
+CREATE DATABASE IF NOT EXISTS phpmybatchtest;
 
 --CREATE USER 'phpmywhstest'@'localhost' IDENTIFIED BY 'phpmywhstest';
 

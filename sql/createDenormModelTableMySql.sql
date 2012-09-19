@@ -1,16 +1,16 @@
 --
--- phpmywhs - An open source warehouse management software.
+-- phpmybatch - phpmybatch - An open source batches of goods management system software.
 -- Copyright (C)2012 Andrea Boccaccio
 -- contact email: andrea@andreaboccaccio.com
 -- 
--- This file is part of phpmywhs.
+-- This file is part of phpmybatch.
 -- 
--- phpmywhs is free software: you can redistribute it and/or modify
+-- phpmybatch is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU Affero General Public License as published by
 -- the Free Software Foundation, either version 3 of the License, or
 -- (at your option) any later version.
 -- 
--- phpmywhs is distributed in the hope that it will be useful,
+-- phpmybatch is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 -- GNU Affero General Public License for more details.
@@ -26,10 +26,7 @@ CREATE TABLE IF NOT EXISTS DOCUMENT_DENORM (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,contractor_kind VARCHAR(50)
 ,contractor_code VARCHAR(25)
 ,contractor VARCHAR(50)
-,warehouse VARCHAR(50)
 ,date VARCHAR(10)
-,vt_start DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'
-,vt_end DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'
 ,description VARCHAR(255)
 );
 
@@ -44,10 +41,7 @@ CREATE TABLE IF NOT EXISTS DOCUMENT_DENORM_LOG (id BIGINT AUTO_INCREMENT PRIMARY
 ,contractor_kind VARCHAR(50)
 ,contractor_code VARCHAR(25)
 ,contractor VARCHAR(50)
-,warehouse VARCHAR(50)
 ,date VARCHAR(10)
-,vt_start DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'
-,vt_end DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'
 ,description VARCHAR(255)
 );
 
@@ -65,10 +59,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,contractor_kind
 	,contractor_code
 	,contractor
-	,warehouse
 	,date
-	,vt_start
-	,vt_end
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -81,10 +72,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,NEW.contractor_kind
 	,NEW.contractor_code
 	,NEW.contractor
-	,NEW.warehouse
 	,NEW.date
-	,NEW.vt_start
-	,NEW.vt_end
 	,NEW.description
 );
 
@@ -112,10 +100,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,contractor_kind
 	,contractor_code
 	,contractor
-	,warehouse
 	,date
-	,vt_start
-	,vt_end
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -128,10 +113,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,NEW.contractor_kind
 	,NEW.contractor_code
 	,NEW.contractor
-	,NEW.warehouse
 	,NEW.date
-	,NEW.vt_start
-	,NEW.vt_end
 	,NEW.description
 );
 END;
@@ -160,7 +142,6 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,contractor_kind
 	,contractor_code
 	,contractor
-	,warehouse
 	,date
 	,vt_start
 	,vt_end
@@ -176,10 +157,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,OLD.contractor_kind
 	,OLD.contractor_code
 	,OLD.contractor
-	,OLD.warehouse
 	,OLD.date
-	,OLD.vt_start
-	,OLD.vt_end
 	,OLD.description
 );
 END;
@@ -193,10 +171,12 @@ CREATE TABLE IF NOT EXISTS ITEM_DENORM (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,kind VARCHAR(50) NOT NULL
 ,code VARCHAR(50)
 ,name VARCHAR(50)
+,producer VARCHAR(50)
+,yearProd VARCHAR(4)
+,batch VARCHAR(50)
 ,qty INT
-,value INT
-,cost DECIMAL(12,2)
-,price DECIMAL(12,2)
+,vt_start VARCHAR(10)
+,vt_end VARCHAR(10)
 ,description VARCHAR(255)
 );
 
@@ -209,10 +189,12 @@ CREATE TABLE IF NOT EXISTS ITEM_DENORM_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,kind VARCHAR(50) NOT NULL
 ,code VARCHAR(50)
 ,name VARCHAR(50)
+,producer VARCHAR(50) NOT NULL
+,yearProd VARCHAR(4)
+,batch VARCHAR(50) NOT NULL
 ,qty INT
-,value INT
-,cost DECIMAL(12,2)
-,price DECIMAL(12,2)
+,vt_start VARCHAR(10)
+,vt_end VARCHAR(10)
 ,description VARCHAR(255)
 );
 
@@ -228,10 +210,12 @@ INSERT INTO ITEM_DENORM_LOG (
 	,kind
 	,code
 	,name
+	,producer
+	,yearProd
+	,batch
 	,qty
-	,value
-	,cost
-	,price
+	,vt_start
+	,vt_end
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -242,10 +226,12 @@ INSERT INTO ITEM_DENORM_LOG (
 	,NEW.kind
 	,NEW.code
 	,NEW.name
+	,NEW.producer
+	,NEW.yearProd
+	,NEW.batch
 	,NEW.qty
-	,NEW.value
-	,NEW.cost
-	,NEW.price
+	,NEW.vt_start
+	,NEW.vt_end
 	,NEW.description
 );
 
@@ -271,10 +257,12 @@ INSERT INTO ITEM_DENORM_LOG (
 	,kind
 	,code
 	,name
+	,producer
+	,yearProd
+	,batch
 	,qty
-	,value
-	,cost
-	,price
+	,vt_start
+	,vt_end
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -285,10 +273,12 @@ INSERT INTO ITEM_DENORM_LOG (
 	,NEW.kind
 	,NEW.code
 	,NEW.name
+	,NEW.producer
+	,NEW.yearProd
+	,NEW.batch
 	,NEW.qty
-	,NEW.value
-	,NEW.cost
-	,NEW.price
+	,NEW.vt_start
+	,NEW.vt_end
 	,NEW.description
 );
 END;
@@ -315,10 +305,12 @@ INSERT INTO ITEM_DENORM_LOG (
 	,kind
 	,code
 	,name
+	,producer
+	,yearProd
+	,batch
 	,qty
-	,value
-	,cost
-	,price
+	,vt_start
+	,vt_end
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -329,10 +321,12 @@ INSERT INTO ITEM_DENORM_LOG (
 	,OLD.kind
 	,OLD.code
 	,OLD.name
+	,OLD.producer
+	,OLD.yearprod
+	,OLD.batch
 	,OLD.qty
-	,OLD.value
-	,OLD.cost
-	,OLD.price
+	,OLD.vt_start
+	,OLD.vt_end
 	,OLD.description
 );
 END;
@@ -451,9 +445,13 @@ CREATE TABLE IF NOT EXISTS ITEM_OUT (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,kind VARCHAR(50)
 ,code VARCHAR(50)
 ,name VARCHAR(50)
+,producer VARCHAR(50)
+,yearProd VARCHAR(4)
+,batch VARCHAR(50)
+,ownBatch VARCHAR(50)
 ,qty INT
-,cost DECIMAL(12,2)
-,price DECIMAL(12,2)
+,ownDocumentYear varchar(4)
+,ownDocumentNumber INT
 ,description VARCHAR(255)
 );
 
@@ -466,9 +464,13 @@ CREATE TABLE IF NOT EXISTS ITEM_OUT_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,kind VARCHAR(50)
 ,code VARCHAR(50)
 ,name VARCHAR(50)
+,producer VARCHAR(50) NOT NULL
+,yearProd VARCHAR(4)
+,batch VARCHAR(50) NOT NULL
+,ownBatch VARCHAR(50)
 ,qty INT
-,cost DECIMAL(12,2)
-,price DECIMAL(12,2)
+,ownDocumentYear varchar(4)
+,ownDocumentNumber INT
 ,description VARCHAR(255)
 );
 
@@ -484,9 +486,13 @@ INSERT INTO ITEM_OUT_LOG (
 	,kind
 	,code
 	,name
+	,producer
+	,yearProd
+	,batch
+	,ownBatch
 	,qty
-	,cost
-	,price
+	,ownDocumentYear
+	,ownDocumentNumber
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -497,9 +503,13 @@ INSERT INTO ITEM_OUT_LOG (
 	,NEW.kind
 	,NEW.code
 	,NEW.name
+	,NEW.producer
+	,NEW.yearProd
+	,NEW.batch
+	,NEW.ownBatch
 	,NEW.qty
-	,NEW.cost
-	,NEW.price
+	,NEW.ownDocumentYear
+	,NEW.ownDocumentNumber
 	,NEW.description
 );
 
@@ -525,9 +535,13 @@ INSERT INTO ITEM_OUT_LOG (
 	,kind
 	,code
 	,name
+	,producer
+	,yearProd
+	,batch
+	,ownBatch
 	,qty
-	,cost
-	,price
+	,ownDocumentYear
+	,ownDocumentNumber
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -538,9 +552,13 @@ INSERT INTO ITEM_OUT_LOG (
 	,NEW.kind
 	,NEW.code
 	,NEW.name
+	,NEW.producer
+	,NEW.yearProd
+	,NEW.batch
+	,NEW.ownBatch
 	,NEW.qty
-	,NEW.cost
-	,NEW.price
+	,NEW.ownDocumentYear
+	,NEW.ownDocumentNumber
 	,NEW.description
 );
 END;
@@ -567,9 +585,13 @@ INSERT INTO ITEM_OUT_LOG (
 	,kind
 	,code
 	,name
+	,producer
+	,yearProd
+	,batch
+	,ownBatch
 	,qty
-	,cost
-	,price
+	,ownDocumentYear
+	,ownDocumentNumber
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -580,9 +602,13 @@ INSERT INTO ITEM_OUT_LOG (
 	,OLD.kind
 	,OLD.code
 	,OLD.name
+	,OLD.producer
+	,OLD.yearProd
+	,OLD.batch
+	,OLD.ownBatch
 	,OLD.qty
-	,OLD.cost
-	,OLD.price
+	,OLD.ownDocumentYear
+	,OLD.ownDocumentNumber
 	,OLD.description
 );
 END;
