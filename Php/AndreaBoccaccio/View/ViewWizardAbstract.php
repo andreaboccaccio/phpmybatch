@@ -26,6 +26,8 @@ abstract class Php_AndreaBoccaccio_View_ViewWizardAbstract extends Php_AndreaBoc
 	
 	private $wizard;
 	
+	private $customGet = '';
+	
 	protected function setQueryId($queryId) {
 		$this->queryId = $queryId;
 	}
@@ -42,6 +44,16 @@ abstract class Php_AndreaBoccaccio_View_ViewWizardAbstract extends Php_AndreaBoc
 	
 	protected function getWizard() {
 		$ret = $this->wizard;
+		
+		return $ret;
+	}
+	
+	protected function setCustomGet($customGet) {
+		$this->customGet = $customGet;
+	}
+	
+	protected function getCustomGet() {
+		$ret = $this->customGet;
 		
 		return $ret;
 	}
@@ -178,6 +190,7 @@ abstract class Php_AndreaBoccaccio_View_ViewWizardAbstract extends Php_AndreaBoc
 			for($i = 0; $i < $nRows; ++$i){
 				$linkHref = $_SERVER["PHP_SELF"];
 				$linkHref .= "?op=" . $tmpWizard->getInsView();
+				$linkHref .= $this->getCustomGet();
 				foreach ($fieldsToInsert as $fieldSql => $fieldToInsert) {
 					$linkHref .= "&" . $fieldToInsert . "=" . $rows[$i][$fieldSql];
 				}
