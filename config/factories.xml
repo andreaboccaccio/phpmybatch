@@ -24,7 +24,7 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 	<factory id="db">
 		<class default="yes" id="Php_AndreaBoccaccio_Db_DbNull" />
 		<class default="no" id="Php_AndreaBoccaccio_Db_DbVoid" />
-		<class default="no" id="Php_AndreaBoccaccio_Db_DbVerySimpleMySql" />
+		<class default="no" id="Php_AndreaBoccaccio_Db_DbVerySimpleMySqlI" />
 	</factory>
 	<factory id="login">
 		<class default="yes" id="Php_AndreaBoccaccio_Login_LoginNull" />
@@ -36,19 +36,28 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewVoid" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewMain" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewLogin" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewDocumentDenormList" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewDocumentDenormInsert" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewDocumentDenorm" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemDenormListSubDocument" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemDenormInsert" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemDenorm" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewDocumentList" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewDocumentInsert" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewDocument" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemListSubDocument" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemInsert" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewItem" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemOutList" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemOut" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemOutInsert" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewCauseList" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewCauseInsert" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewCause" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewPDFSqlQueries" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemOutWizardInsView" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemInWizardInsView" />
 	</factory>
 	<factory id="mappingModel">
 		<class default="yes" id="Php_AndreaBoccaccio_Model_MappingModelNull" />
 		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelVoid" />
 		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelCause" />
+		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelDocument" />
+		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelItem" />
+		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelItemOut" />
 	</factory>
 </factories>

@@ -20,25 +20,16 @@
  * along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBoccaccio_Model_ManagerInterface {
+class Php_AndreaBoccaccio_Model_DocumentManager extends Php_AndreaBoccaccio_Model_ManagerAbstract {
 	
-	private $kind = '';
-	private $dbTabname = '';
-	protected $mappingModel = null;
-	private $modelArray = array();
-	
-	protected function getKind() {
-		return $this->kind;
-	}
-	protected function setKind($kind) {
-		$this->kind = $kind;
-	}
-	protected function init() {
-		$mappingModelFactory = Php_AndreaBoccaccio_Model_MappingModelFactory::getInstance();
-		$this->mappingModel = $mappingModelFactory->getMappingModel($this->getKind());
+	public function __construct() {
+		$this->setKind("document");
+		$this->init();
 	}
 	
-	abstract protected function getModel();
+	protected function getModel() {
+		return new Php_AndreaBoccaccio_Model_Document();
+	}
 	
 	public function getModels($page = 0, &$filter=null, $orderby=null) {
 		$ret = array();
@@ -47,22 +38,26 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 		$tmpRow;
 		$i = -1;
 		$where = 0;
+		$joined = FALSE;
 		$setting = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance()->getSettings('xml');
 		$db = Php_AndreaBoccaccio_Db_DbFactory::getInstance()->getDb($setting->getSettingFromFullName('classes.db'));
 		$rowsPerPage = $setting->getSettingFromFullName('memory.rowsPerPage');
 		$strSQLCount = "SELECT COUNT(*) AS totalRows, CEIL(COUNT(*)/";
-		$strSQL = "SELECT * FROM ";
+		$strSQL = "SELECT T01.* FROM ";
+		$strSQLInnerJoin = " INNER JOIN (SELECT document FROM ITEM_DENORM";
 		$strSQLOptional = '';
 		$strSQLOrderBy = '';
 		$strSQLLimit = ' LIMIT ';
 		$totalRows = -1;
 		$totalPages = -1;
 		$offset = -1;
-		
+	
 		$strSQL .= $this->mappingModel->getDbTabName();
+		$strSQL .= " AS T01";
 		$rowsPerPage = strval(intval($rowsPerPage));
 		$strSQLCount .= $rowsPerPage . ") AS totalPages FROM ";
 		$strSQLCount .= $this->mappingModel->getDbTabName();
+		$strSQLCount .= " AS T01";
 		if($filter != null) {
 			if(is_array($filter)) {
 				if(count($filter)> 0) {
@@ -92,13 +87,34 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 							$strSQLOptional .= ")";
 							++$where;
 						}
+						else if(strncmp($name,"item",strlen("item"))== 0) {
+							if(!$joined) {
+								$joined = TRUE;
+								$strSQLInnerJoin .= "  WHERE (";
+							} else
+							{
+								$strSQLInnerJoin .= " AND ";
+							}
+							$strSQLInnerJoin .= "(";
+							$strSQLInnerJoin .= substr($name,4);
+							$strSQLInnerJoin .= " COLLATE latin1_general_ci LIKE '%";
+							$strSQLInnerJoin .= $db->sanitize($value);
+							$strSQLInnerJoin .= "%'";
+							$strSQLInnerJoin .= ")";
+						}
 					}
 					if($where > 0) {
 						$strSQLOptional .= ")";
-					}	
+					}
+					if($joined) {
+						$strSQLInnerJoin .= ") GROUP BY document) AS IT";
+						$strSQLInnerJoin .= " ON (T01.id = IT.document) ";
+						$strSQL .= $strSQLInnerJoin;
+						$strSQLCount .= $strSQLInnerJoin;
+					}
 				}
 			}
-		}	
+		}
 		if($orderby != null) {
 			$strSQLOrderBy .= " ORDER BY ";
 			$strSQLOrderBy .= $orderby;
@@ -124,18 +140,13 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 		$ret["totalRows"] = $totalRows;
 		$ret["totalPages"] = $totalPages;
 		if(intval($totalRows) > 0) {
-			if($page !== null) {
-				$page = abs(intval($page))%$totalPages;
-				$offset = $page*intval($rowsPerPage);
-				$ret["actualPage"] = $page;
-				$ret["actualOffset"] = $offset;
-				$strSQLLimit .= $offset . "," . $rowsPerPage;
-				$strSQL .= $strSQLOptional . $strSQLOrderBy . $strSQLLimit . ";";
-			} else {
-				$ret["actualPage"] = 0;
-				$ret["actualOffset"] = 0;
-				$strSQL .= $strSQLOptional . $strSQLOrderBy . ";";
-			}
+			$page = abs(intval($page))%$totalPages;
+			$offset = $page*intval($rowsPerPage);
+			$ret["actualPage"] = $page;
+			$ret["actualOffset"] = $offset;
+			$strSQLLimit .= $offset . "," . $rowsPerPage;
+			$strSQL .= $strSQLOptional . $strSQLOrderBy . $strSQLLimit . ";";
+			
 			$res = $db->execQuery($strSQL);
 			if($res["success"] == TRUE) {
 				if($res["numrows"] > 0) {
@@ -157,17 +168,7 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 			$ret["actualOffset"] = 0;
 			$ret["result"] = array();
 		}
-		
+	
 		return $ret;
-	}
-	public function eraseModel($id) {
-		$setting = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance()->getSettings('xml');
-		$db = Php_AndreaBoccaccio_Db_DbFactory::getInstance()->getDb($setting->getSettingFromFullName('classes.db'));
-		$strSQL = "DELETE FROM ";
-		$strSQL .= $this->mappingModel->getDbTabName();
-		$res = array();
-		
-		$strSQL .= " WHERE(id=" .$id .");";
-		$res = $db->execQuery($strSQL);
 	}
 }

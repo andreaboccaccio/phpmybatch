@@ -50,4 +50,9 @@ config/factories.xml
 config/model.xml
 </fileName>
 </model>
+<sqlQueries>
+<fileName>
+config/sqlQueries.xml
+</fileName>
+</sqlQueries>
 </config>

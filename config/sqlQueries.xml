@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+phpmywhs - An open source warehouse management software.
+Copyright (C)2012 Andrea Boccaccio
+contact email: andrea@andreaboccaccio.com
+
+This file is part of phpmywhs.
+ 
+phpmywhs is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+phpmywhs is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<!DOCTYPE sqlQueries>
+<sqlQueries>
+	<sqlQuery id="itemsKindCodeName" displayName="Articoli Caricati per Categoria, Codice e Nome">
+		<strSQL>
+			SELECT kind AS Categoria
+				,code AS Codice
+				,name AS Nome
+				,SUM(qty) AS QTA_Caricata
+				FROM ITEM_DENORM
+				GROUP BY kind
+					,code
+					,name
+				ORDER BY kind
+					,code
+					,name
+		</strSQL>
+		<printInfo pageOrientation="P" unit="mm" pageSize="A4">
+			<rowInfo headerHSize="7" bodyHSize="6" />
+			<columnInfo sqlId="Categoria" wSize="40">
+				<header display="Categoria" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="Codice" wSize="50">
+				<header display="Codice" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="Nome" wSize="40">
+				<header display="Nome" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="QTA_Caricata" wSize="35">
+				<header display="QTA_Caricata" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+		</printInfo>
+	</sqlQuery>
+	<sqlQuery id="stocks" displayName="Giacenze per Categoria, Codice e Nome">
+		<strSQL>
+			SELECT ITEM_IN.Categoria AS Categoria
+				,ITEM_IN.Codice AS Codice
+				,ITEM_IN.Nome AS Nome
+				,QTA_Caricata
+				,IFNULL(QTA_Scaricata,0) AS QTA_Scaricata
+				,(QTA_Caricata - IFNULL(QTA_Scaricata,0)) AS Giacenza
+			FROM
+			(
+				SELECT kind AS Categoria
+					,code AS Codice
+					,name AS Nome
+					,SUM(qty) AS QTA_Caricata
+				FROM ITEM_DENORM
+				GROUP BY kind
+					,code
+					,name
+			) AS ITEM_IN
+			LEFT JOIN
+			(
+				SELECT kind AS Categoria
+					,code AS Codice
+					,name AS Nome
+					,SUM(qty) AS QTA_Scaricata
+				FROM ITEM_OUT
+				GROUP BY kind
+					,code
+					,name
+			) AS ITEM_OUT
+			ON
+			(
+				(ITEM_IN.Categoria = ITEM_OUT.Categoria)
+				AND (ITEM_IN.Codice = ITEM_OUT.Codice)
+				AND (ITEM_IN.Nome = ITEM_OUT.Nome)
+			)
+			ORDER BY ITEM_IN.Categoria
+				,ITEM_IN.Codice
+				,ITEM_IN.Nome
+		</strSQL>
+		<printInfo pageOrientation="L" unit="mm" pageSize="A4">
+			<rowInfo headerHSize="7" bodyHSize="6" />
+			<columnInfo sqlId="Categoria" wSize="40">
+				<header display="Categoria" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="Codice" wSize="50">
+				<header display="Codice" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="Nome" wSize="40">
+				<header display="Nome" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="QTA_Caricata" wSize="35">
+				<header display="QTA_Caricata" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="QTA_Scaricata" wSize="35">
+				<header display="QTA_Scaricata" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="Giacenza" wSize="30">
+				<header display="Giacenza" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+		</printInfo>
+	</sqlQuery>
+	<sqlQuery id="suppliers" displayName="Fornitori">
+		<strSQL>
+			SELECT contractor_code AS PIVA
+				,contractor AS fornitore
+				FROM DOCUMENT_DENORM
+				GROUP BY contractor_code
+					,contractor
+		</strSQL>
+		<printInfo  pageOrientation="P" unit="mm" pageSize="A4">
+			<rowInfo headerHSize="7" bodyHSize="6" />
+			<columnInfo sqlId="PIVA" wSize="40">
+				<header display="PIVA" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="fornitore" wSize="40">
+				<header display="fornitore" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+		</printInfo>
+	</sqlQuery>
+	<wizard id="newItemOut" displayName="Articoli con giacenze attive">
+		<strSQL>
+			SELECT ITEM_IN.Categoria AS Categoria
+				,ITEM_IN.Codice AS Codice
+				,ITEM_IN.Nome AS Nome
+				,QTA_Caricata
+				,IFNULL(QTA_Scaricata,0) AS QTA_Scaricata
+				,(QTA_Caricata - IFNULL(QTA_Scaricata,0)) AS Giacenza
+			FROM
+			(
+				SELECT kind AS Categoria
+					,code AS Codice
+					,name AS Nome
+					,SUM(qty) AS QTA_Caricata
+				FROM ITEM_DENORM
+				GROUP BY kind
+					,code
+					,name
+			) AS ITEM_IN
+			LEFT JOIN
+			(
+				SELECT kind AS Categoria
+					,code AS Codice
+					,name AS Nome
+					,SUM(qty) AS QTA_Scaricata
+				FROM ITEM_OUT
+				GROUP BY kind
+					,code
+					,name
+			) AS ITEM_OUT
+			ON
+			(
+				(ITEM_IN.Categoria = ITEM_OUT.Categoria)
+				AND (ITEM_IN.Codice = ITEM_OUT.Codice)
+				AND (ITEM_IN.Nome = ITEM_OUT.Nome)
+			)
+			WHERE ((QTA_Caricata - IFNULL(QTA_Scaricata,0)) > 0)
+		</strSQL>
+		<fieldsMapping>
+			<insView id="itemOutNew"/>
+			<fieldMapping sql="Categoria" viewInsert="kind"/>
+			<fieldMapping sql="Codice" viewInsert="code"/>
+			<fieldMapping sql="Nome" viewInsert="name"/>
+		</fieldsMapping>
+		<fieldsView>
+			<fieldView sql="Categoria" viewField="Categoria"/>
+			<fieldView sql="Codice" viewField="Codice"/>
+			<fieldView sql="Nome" viewField="Nome"/>
+			<fieldView sql="QTA_Caricata" viewField="QTA_Caricata"/>
+			<fieldView sql="Giacenza" viewField="Giacenza"/>
+		</fieldsView>
+		<fieldsFilter>
+			<fieldFilter sql="Categoria" filterField="Categoria"/>
+			<fieldFilter sql="Codice" filterField="Codice"/>
+			<fieldFilter sql="Nome" filterField="Nome"/>
+			<fieldFilter sql="QTA_Caricata" filterField="QTA_Caricata"/>
+			<fieldFilter sql="Giacenza" filterField="Giacenza"/>
+		</fieldsFilter>
+	</wizard>
+	<wizard id="newItemIn" displayName="Articoli immessi nel sistema">
+		<strSQL>
+			SELECT kind AS Categoria
+				,code AS Codice
+				,name AS Nome
+			FROM
+			(
+				SELECT kind
+					,code
+					,name	
+				FROM ITEM_DENORM
+				UNION
+				SELECT
+					kind
+					,code
+					,name
+				FROM ITEM_OUT
+			)AS UNITED_TABLES
+			GROUP BY kind
+				,code
+				,name
+			ORDER BY kind 
+				,code
+				,name
+		</strSQL>
+		<fieldsMapping>
+			<insView id="itemNew"/>
+			<fieldMapping sql="Categoria" viewInsert="kind"/>
+			<fieldMapping sql="Codice" viewInsert="code"/>
+			<fieldMapping sql="Nome" viewInsert="name"/>
+		</fieldsMapping>
+		<fieldsView>
+			<fieldView sql="Categoria" viewField="Categoria"/>
+			<fieldView sql="Codice" viewField="Codice"/>
+			<fieldView sql="Nome" viewField="Nome"/>
+		</fieldsView>
+		<fieldsFilter>
+			<fieldFilter sql="Categoria" filterField="Categoria"/>
+			<fieldFilter sql="Codice" filterField="Codice"/>
+			<fieldFilter sql="Nome" filterField="Nome"/>
+		</fieldsFilter>
+	</wizard>
+</sqlQueries>

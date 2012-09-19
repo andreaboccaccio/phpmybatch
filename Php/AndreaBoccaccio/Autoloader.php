@@ -43,7 +43,12 @@ Class Php_AndreaBoccaccio_Autoloader {
 	}
 	
 	public function loader($className) {
-		$fileToRequire = str_replace('_','/',$className) . '.php';
+		if(strncmp($className,'FPDF',strlen('FPDF')) == 0) {
+			$fileToRequire = 'Php/lib/fpdf/' . strtolower($className) . '.php';
+		}
+		else {
+			$fileToRequire = str_replace('_','/',$className) . '.php';
+		}
 		require_once $fileToRequire;
 	}
 }

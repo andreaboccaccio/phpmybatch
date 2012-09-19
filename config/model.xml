@@ -28,4 +28,44 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<var name="name" kind="string" value="" dbName="name" />
 		<var name="description" kind="string" value="" dbName="description" />
 	</class>
+	<class id="document">
+		<dbtab name="DOCUMENT_DENORM" />
+		<var name="id" kind="int" value="-1" dbName="id" />
+		<var name="year" kind="string" value="" dbName="year" />
+		<var name="kind" kind="string" value="" dbName="kind" />
+		<var name="code" kind="string" value="" dbName="code" />
+		<var name="contractor_kind" kind="string" value="" dbName="contractor_kind" />
+		<var name="contractor_code" kind="string" value="" dbName="contractor_code" />
+		<var name="contractor" kind="string" value="" dbName="contractor" />
+		<var name="warehouse" kind="string" value="" dbName="warehouse" />
+		<var name="date" kind="string" value="" dbName="date" />
+		<var name="vt_start" kind="string" value="" dbName="vt_start" />
+		<var name="vt_end" kind="string" value="" dbName="vt_end" />
+		<var name="description" kind="string" value="" dbName="description" />
+	</class>
+	<class id="item">
+		<dbtab name="ITEM_DENORM" />
+		<var name="id" kind="int" value="-1" dbName="id" />
+		<var name="document" kind="int" value="-1" dbName="document" />
+		<var name="kind" kind="string" value="" dbName="kind" />
+		<var name="code" kind="string" value="" dbName="code" />
+		<var name="name" kind="string" value="" dbName="name" />
+		<var name="qty" kind="int" value="-1" dbName="qty" />
+		<var name="value" kind="int" value="-1" dbName="value" />
+		<var name="cost" kind="float" value="-1.0" dbName="cost" />
+		<var name="price" kind="float" value="-1.0" dbName="price" />
+		<var name="description" kind="string" value="" dbName="description" />
+	</class>
+	<class id="itemout">
+		<dbtab name="ITEM_OUT" />
+		<var name="id" kind="int" value="-1" dbName="id" />
+		<var name="cause" kind="int" value="-1" dbName="cause" />
+		<var name="kind" kind="string" value="" dbName="kind" />
+		<var name="code" kind="string" value="" dbName="code" />
+		<var name="name" kind="string" value="" dbName="name" />
+		<var name="qty" kind="int" value="-1" dbName="qty" />
+		<var name="cost" kind="float" value="-1.0" dbName="cost" />
+		<var name="price" kind="float" value="-1.0" dbName="price" />
+		<var name="description" kind="string" value="" dbName="description" />
+	</class>
 </model>
