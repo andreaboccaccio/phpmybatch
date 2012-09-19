@@ -143,13 +143,6 @@ class Php_AndreaBoccaccio_View_ViewDocumentList extends Php_AndreaBoccaccio_View
 				}
 			}
 		}
-		if(isset($myGP["wWarehouse"])) {
-			if(strlen(trim($myGP["wWarehouse"]))>0) {
-				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wWarehouse"])) {
-					$filter["warehouse"] = trim($myGP["wWarehouse"]);
-				}
-			}
-		}
 		if(isset($myGP["wDescription"])) {
 			if(strlen(trim($myGP["wDescription"]))>0) {
 				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wDescription"])) {
@@ -175,6 +168,41 @@ class Php_AndreaBoccaccio_View_ViewDocumentList extends Php_AndreaBoccaccio_View
 			if(strlen(trim($myGP["wItemName"]))>0) {
 				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wItemName"])) {
 					$filter["itemName"] = trim($myGP["wItemName"]);
+				}
+			}
+		}
+		if(isset($myGP["wItemProducer"])) {
+			if(strlen(trim($myGP["wItemProducer"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wItemName"])) {
+					$filter["itemProducer"] = trim($myGP["wItemProducer"]);
+				}
+			}
+		}
+		if(isset($myGP["wItemYearProd"])) {
+			if(strlen(trim($myGP["wItemYearProd"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wItemName"])) {
+					$filter["itemYearProd"] = trim($myGP["wItemYearProd"]);
+				}
+			}
+		}
+		if(isset($myGP["wItemBatch"])) {
+			if(strlen(trim($myGP["wItemBatch"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wItemName"])) {
+					$filter["itemBatch"] = trim($myGP["wItemBatch"]);
+				}
+			}
+		}
+		if(isset($myGP["wItemVt_start"])) {
+			if(strlen(trim($myGP["wItemVt_start"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wItemName"])) {
+					$filter["itemVt_start"] = trim($myGP["wItemVt_start"]);
+				}
+			}
+		}
+		if(isset($myGP["wItemVt_end"])) {
+			if(strlen(trim($myGP["wItemVt_end"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wItemName"])) {
+					$filter["itemVt_end"] = trim($myGP["wItemVt_end"]);
 				}
 			}
 		}
@@ -218,7 +246,7 @@ class Php_AndreaBoccaccio_View_ViewDocumentList extends Php_AndreaBoccaccio_View
 		$ret .= "<th class=\"tab\">";
 		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
 		$ret .= "?op=docList&page=0" . $getWherePrefix . $myGetWhere;
-		$ret .= "&orderby=" . $this->getNewOrder("contractor") . "\"\">contraente</a>";
+		$ret .= "&orderby=" . $this->getNewOrder("contractor") . "\"\">fornitore</a>";
 		$ret .= "</th>";
 		$ret .= "<th class=\"tab\">";
 		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
@@ -291,6 +319,11 @@ class Php_AndreaBoccaccio_View_ViewDocumentList extends Php_AndreaBoccaccio_View
 		$ret .= "<form method=\"post\" action=\"";
 		$ret .= $_SERVER["PHP_SELF"];
 		$ret .= "?op=docList&page=0\"> ";
+		$ret .= "<div class=\"label\">Lotto:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wItemBatch\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
 		$ret .= "<div class=\"label\">Categoria Articolo:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"wItemKind\" />";
@@ -304,6 +337,16 @@ class Php_AndreaBoccaccio_View_ViewDocumentList extends Php_AndreaBoccaccio_View
 		$ret .= "<div class=\"label\">Nome Articolo:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"wItemName\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Produttore:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wItemProducer\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Anno di produzione:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wItemYearProd\" />";
 		$ret .= "</div>";
 		$ret .= "<br />";
 		$ret .= "<div class=\"label\">Anno:</div>";

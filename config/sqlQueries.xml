@@ -191,63 +191,42 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			</columnInfo>
 		</printInfo>
 	</sqlQuery>
-	<wizard id="newItemOut" displayName="Articoli con giacenze attive">
+	<wizard id="newItemOut" displayName="Lotti in commercializzazione">
 		<strSQL>
-			SELECT ITEM_IN.Categoria AS Categoria
-				,ITEM_IN.Codice AS Codice
-				,ITEM_IN.Nome AS Nome
-				,QTA_Caricata
-				,IFNULL(QTA_Scaricata,0) AS QTA_Scaricata
-				,(QTA_Caricata - IFNULL(QTA_Scaricata,0)) AS Giacenza
-			FROM
-			(
-				SELECT kind AS Categoria
-					,code AS Codice
-					,name AS Nome
-					,SUM(qty) AS QTA_Caricata
-				FROM ITEM_DENORM
-				GROUP BY kind
-					,code
-					,name
-			) AS ITEM_IN
-			LEFT JOIN
-			(
-				SELECT kind AS Categoria
-					,code AS Codice
-					,name AS Nome
-					,SUM(qty) AS QTA_Scaricata
-				FROM ITEM_OUT
-				GROUP BY kind
-					,code
-					,name
-			) AS ITEM_OUT
-			ON
-			(
-				(ITEM_IN.Categoria = ITEM_OUT.Categoria)
-				AND (ITEM_IN.Codice = ITEM_OUT.Codice)
-				AND (ITEM_IN.Nome = ITEM_OUT.Nome)
-			)
-			WHERE ((QTA_Caricata - IFNULL(QTA_Scaricata,0)) > 0)
+			SELECT
+				batch AS Lotto 
+				,kind AS Categoria
+				,code AS Codice
+				,name AS Nome
+				,producer AS Produttore
+				,yearProd AS AnnoProdotto
+				,vt_end AS FineComm
+			FROM ITEM_DENORM
 		</strSQL>
 		<fieldsMapping>
 			<insView id="itemOutNew"/>
+			<fieldMapping sql="Lotto" viewInsert="batch"/>
 			<fieldMapping sql="Categoria" viewInsert="kind"/>
 			<fieldMapping sql="Codice" viewInsert="code"/>
 			<fieldMapping sql="Nome" viewInsert="name"/>
+			<fieldMapping sql="Produttore" viewInsert="producer"/>
+			<fieldMapping sql="AnnoProdotto" viewInsert="yearProd"/>
 		</fieldsMapping>
 		<fieldsView>
+			<fieldView sql="Lotto" viewField="Lotto"/>
 			<fieldView sql="Categoria" viewField="Categoria"/>
 			<fieldView sql="Codice" viewField="Codice"/>
 			<fieldView sql="Nome" viewField="Nome"/>
-			<fieldView sql="QTA_Caricata" viewField="QTA_Caricata"/>
-			<fieldView sql="Giacenza" viewField="Giacenza"/>
+			<fieldView sql="Produttore" viewField="Produttore"/>
+			<fieldView sql="AnnoProdotto" viewField="AnnoProdotto"/>
 		</fieldsView>
 		<fieldsFilter>
+			<fieldFilter sql="Lotto" filterField="batch"/>
 			<fieldFilter sql="Categoria" filterField="Categoria"/>
 			<fieldFilter sql="Codice" filterField="Codice"/>
 			<fieldFilter sql="Nome" filterField="Nome"/>
-			<fieldFilter sql="QTA_Caricata" filterField="QTA_Caricata"/>
-			<fieldFilter sql="Giacenza" filterField="Giacenza"/>
+			<fieldFilter sql="Produttore" filterField="producer"/>
+			<fieldFilter sql="AnnoProdotto" filterField="yearProd"/>
 		</fieldsFilter>
 	</wizard>
 	<wizard id="newItemIn" displayName="Articoli immessi nel sistema">

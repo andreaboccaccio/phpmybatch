@@ -37,10 +37,7 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<var name="contractor_kind" kind="string" value="" dbName="contractor_kind" />
 		<var name="contractor_code" kind="string" value="" dbName="contractor_code" />
 		<var name="contractor" kind="string" value="" dbName="contractor" />
-		<var name="warehouse" kind="string" value="" dbName="warehouse" />
 		<var name="date" kind="string" value="" dbName="date" />
-		<var name="vt_start" kind="string" value="" dbName="vt_start" />
-		<var name="vt_end" kind="string" value="" dbName="vt_end" />
 		<var name="description" kind="string" value="" dbName="description" />
 	</class>
 	<class id="item">
@@ -50,10 +47,12 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<var name="kind" kind="string" value="" dbName="kind" />
 		<var name="code" kind="string" value="" dbName="code" />
 		<var name="name" kind="string" value="" dbName="name" />
+		<var name="producer" kind="string" value="" dbName="producer" />
+		<var name="yearProd" kind="string" value="" dbName="yearProd" />
+		<var name="batch" kind="string" value="" dbName="batch" />
 		<var name="qty" kind="int" value="-1" dbName="qty" />
-		<var name="value" kind="int" value="-1" dbName="value" />
-		<var name="cost" kind="float" value="-1.0" dbName="cost" />
-		<var name="price" kind="float" value="-1.0" dbName="price" />
+		<var name="vt_start" kind="string" value="" dbName="vt_start" />
+		<var name="vt_end" kind="string" value="" dbName="vt_end" />
 		<var name="description" kind="string" value="" dbName="description" />
 	</class>
 	<class id="itemout">
@@ -63,9 +62,13 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<var name="kind" kind="string" value="" dbName="kind" />
 		<var name="code" kind="string" value="" dbName="code" />
 		<var name="name" kind="string" value="" dbName="name" />
+		<var name="producer" kind="string" value="" dbName="producer" />
+		<var name="yearProd" kind="string" value="" dbName="yearProd" />
+		<var name="batch" kind="string" value="" dbName="batch" />
+		<var name="ownBatch" kind="string" value="" dbName="ownBatch" />
 		<var name="qty" kind="int" value="-1" dbName="qty" />
-		<var name="cost" kind="float" value="-1.0" dbName="cost" />
-		<var name="price" kind="float" value="-1.0" dbName="price" />
+		<var name="ownDocumentYear" kind="string" value="" dbName="ownDocumentYear" />
+		<var name="ownDocumentCode" kind="string" value="" dbName="ownDocumentCode" />
 		<var name="description" kind="string" value="" dbName="description" />
 	</class>
 </model>

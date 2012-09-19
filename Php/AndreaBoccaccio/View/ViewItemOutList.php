@@ -140,17 +140,45 @@ class Php_AndreaBoccaccio_View_ViewItemOutList extends Php_AndreaBoccaccio_View_
 				}
 			}
 		}
-		if(isset($myGP["wCost"])) {
-			if(strlen(trim($myGP["wCost"]))>0) {
-				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $_POST["wCost"])) {
-					$filter["cost"] = trim($myGP["wCost"]);
+		if(isset($myGP["wProducer"])) {
+			if(strlen(trim($myGP["wProducer"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $_POST["wDescription"])) {
+					$filter["producer"] = trim($myGP["wProducer"]);
 				}
 			}
 		}
-		if(isset($myGP["wPrice"])) {
-			if(strlen(trim($myGP["wPrice"]))>0) {
-				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $_POST["wPrice"])) {
-					$filter["price"] = trim($myGP["wPrice"]);
+		if(isset($myGP["wYearProd"])) {
+			if(strlen(trim($myGP["wYearProd"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $_POST["wDescription"])) {
+					$filter["yearProd"] = trim($myGP["wYearProd"]);
+				}
+			}
+		}
+		if(isset($myGP["wBatch"])) {
+			if(strlen(trim($myGP["wBatch"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $_POST["wDescription"])) {
+					$filter["batch"] = trim($myGP["wBatch"]);
+				}
+			}
+		}
+		if(isset($myGP["wOwnBatch"])) {
+			if(strlen(trim($myGP["wOwnBatch"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $_POST["wDescription"])) {
+					$filter["ownBatch"] = trim($myGP["wOwnBatch"]);
+				}
+			}
+		}
+		if(isset($myGP["wOwnDocumentYear"])) {
+			if(strlen(trim($myGP["wOwnDocumentYear"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $_POST["wDescription"])) {
+					$filter["ownDocumentYear"] = trim($myGP["wOwnDocumentYear"]);
+				}
+			}
+		}
+		if(isset($myGP["wOwnDocumentNumber"])) {
+			if(strlen(trim($myGP["wOwnDocumentYear"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $_POST["wDescription"])) {
+					$filter["wOwnDocumentNumber"] = trim($myGP["wOwnDocumentNumber"]);
 				}
 			}
 		}
@@ -189,6 +217,11 @@ class Php_AndreaBoccaccio_View_ViewItemOutList extends Php_AndreaBoccaccio_View_
 		$ret .= "<th class=\"tab\">";
 		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
 		$ret .= "?op=itemOutList&page=0" . $getWherePrefix . $myGetWhere;
+		$ret .= "&orderby=" . $this->getNewOrder("batch") . "\"\">Lotto</a>";
+		$ret .= "</th>";
+		$ret .= "<th class=\"tab\">";
+		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
+		$ret .= "?op=itemOutList&page=0" . $getWherePrefix . $myGetWhere;
 		$ret .= "&orderby=" . $this->getNewOrder("kind") . "\"\">Categoria</a>";
 		$ret .= "</th>";
 		$ret .= "<th class=\"tab\">";
@@ -209,12 +242,12 @@ class Php_AndreaBoccaccio_View_ViewItemOutList extends Php_AndreaBoccaccio_View_
 		$ret .= "<th class=\"tab\">";
 		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
 		$ret .= "?op=itemOutList&page=0" . $getWherePrefix . $myGetWhere;
-		$ret .= "&orderby=" . $this->getNewOrder("cost") . "\"\">Costo u.</a>";
+		$ret .= "&orderby=" . $this->getNewOrder("producer") . "\"\">Produttore</a>";
 		$ret .= "</th>";
 		$ret .= "<th class=\"tab\">";
 		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
 		$ret .= "?op=itemOutList&page=0" . $getWherePrefix . $myGetWhere;
-		$ret .= "&orderby=" . $this->getNewOrder("price") . "\"\">Prezzo u.</a>";
+		$ret .= "&orderby=" . $this->getNewOrder("yearProd") . "\"\">Anno di Produzione</a>";
 		$ret .= "</th>";
 		$ret .= "<th class=\"tab\">cancellazione</th>";
 		$ret .= "</tr>";
@@ -225,6 +258,11 @@ class Php_AndreaBoccaccio_View_ViewItemOutList extends Php_AndreaBoccaccio_View_
 			$ret .= "?op=itemOut&id=" . $itemDenorms[$i]->getVar('id');
 			$cause->loadFromDbById(intval($itemDenorms[$i]->getVar('cause')));
 			$ret .= "\">" . $cause->getVar('name') ."</a>";
+			$ret .= "</td>";
+			$ret .= "<td class=\"tab\">";
+			$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
+			$ret .= "?op=itemOut&id=" . $itemDenorms[$i]->getVar('id');
+			$ret .= "\">" . $itemDenorms[$i]->getVar('batch') ."</a>";
 			$ret .= "</td>";
 			$ret .= "<td class=\"tab\">";
 			$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
@@ -249,12 +287,12 @@ class Php_AndreaBoccaccio_View_ViewItemOutList extends Php_AndreaBoccaccio_View_
 			$ret .= "<td class=\"tab\">";
 			$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
 			$ret .= "?op=itemOut&id=" . $itemDenorms[$i]->getVar('id');
-			$ret .= "\">" . number_format($itemDenorms[$i]->getVar('cost'),2,',','') ."</a>";
+			$ret .= "\">" . $itemDenorms[$i]->getVar('producer') ."</a>";
 			$ret .= "</td>";
 			$ret .= "<td class=\"tab\">";
 			$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
 			$ret .= "?op=itemOut&id=" . $itemDenorms[$i]->getVar('id');
-			$ret .= "\">" . number_format($itemDenorms[$i]->getVar('price'),2,',','') ."</a>";
+			$ret .= "\">" . $itemDenorms[$i]->getVar('yearProd') ."</a>";
 			$ret .= "</td>";
 			$ret .= "<td class=\"tab\">";
 			$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
@@ -309,6 +347,16 @@ class Php_AndreaBoccaccio_View_ViewItemOutList extends Php_AndreaBoccaccio_View_
 		$ret .= "</select>";
 		$ret .= "</div>";
 		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Lotto:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wBatch\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Proprio lotto:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wOwnBatch\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
 		$ret .= "<div class=\"label\">Categoria:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"wKind\" />";
@@ -322,6 +370,26 @@ class Php_AndreaBoccaccio_View_ViewItemOutList extends Php_AndreaBoccaccio_View_
 		$ret .= "<div class=\"label\">Nome:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"wName\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Produttore:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wProducer\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Anno di produzione:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wYearProd\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Anno proprio documento:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wOwnDocumentYear\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Codice/numero proprio documento:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wOwnDocumentCode\" />";
 		$ret .= "</div>";
 		$ret .= "<br />";
 		$ret .= "<div class=\"label\">Descrizione:</div>";

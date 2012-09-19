@@ -451,7 +451,7 @@ CREATE TABLE IF NOT EXISTS ITEM_OUT (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,ownBatch VARCHAR(50)
 ,qty INT
 ,ownDocumentYear varchar(4)
-,ownDocumentNumber INT
+,ownDocumentCode VARCHAR(20)
 ,description VARCHAR(255)
 );
 
@@ -470,7 +470,7 @@ CREATE TABLE IF NOT EXISTS ITEM_OUT_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,ownBatch VARCHAR(50)
 ,qty INT
 ,ownDocumentYear varchar(4)
-,ownDocumentNumber INT
+,ownDocumentCode VARCHAR(20)
 ,description VARCHAR(255)
 );
 
@@ -492,7 +492,7 @@ INSERT INTO ITEM_OUT_LOG (
 	,ownBatch
 	,qty
 	,ownDocumentYear
-	,ownDocumentNumber
+	,ownDocumentCode
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -509,7 +509,7 @@ INSERT INTO ITEM_OUT_LOG (
 	,NEW.ownBatch
 	,NEW.qty
 	,NEW.ownDocumentYear
-	,NEW.ownDocumentNumber
+	,NEW.ownDocumentCode
 	,NEW.description
 );
 
@@ -541,7 +541,7 @@ INSERT INTO ITEM_OUT_LOG (
 	,ownBatch
 	,qty
 	,ownDocumentYear
-	,ownDocumentNumber
+	,ownDocumentCode
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -558,7 +558,7 @@ INSERT INTO ITEM_OUT_LOG (
 	,NEW.ownBatch
 	,NEW.qty
 	,NEW.ownDocumentYear
-	,NEW.ownDocumentNumber
+	,NEW.ownDocumentCode
 	,NEW.description
 );
 END;
@@ -591,7 +591,7 @@ INSERT INTO ITEM_OUT_LOG (
 	,ownBatch
 	,qty
 	,ownDocumentYear
-	,ownDocumentNumber
+	,ownDocumentCode
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -608,7 +608,7 @@ INSERT INTO ITEM_OUT_LOG (
 	,OLD.ownBatch
 	,OLD.qty
 	,OLD.ownDocumentYear
-	,OLD.ownDocumentNumber
+	,OLD.ownDocumentCode
 	,OLD.description
 );
 END;

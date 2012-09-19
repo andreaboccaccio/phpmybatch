@@ -105,6 +105,9 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 					else {
 						$koBitArray = $koBitArray | 0x1;
 					}
+					if(isset($_POST["batch"])) {
+						$initArray["batch"] = $db->sanitize($_POST["batch"]);
+					}
 					if(isset($_POST["kind"])) {
 						if(preg_match("/^[a-zA-Z -]{2,50}$/", $_POST["kind"])) {
 							$koBitArray = $koBitArray & 0x7ffffffd;
@@ -153,29 +156,17 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 					else {
 						$koBitArray = $koBitArray | 0x10;
 					}
-					if(isset($_POST["cost"])) {
-						if(preg_match("/^\d+,\d{2}$/", $_POST["cost"])) {
-							$koBitArray = $koBitArray & 0x7fffffdf;
-							$initArray["cost"] = $db->sanitize(str_replace(",", ".", $_POST["cost"]));
-						}
-						else {
-							$koBitArray = $koBitArray | 0x20;
-						}
+					if(isset($_POST["producer"])) {
+						$initArray["producer"] = $db->sanitize($_POST["producer"]);
 					}
-					else {
-						$koBitArray = $koBitArray | 0x20;
+					if(isset($_POST["yearProd"])) {
+						$initArray["yearProd"] = $db->sanitize($_POST["yearProd"]);
 					}
-					if(isset($_POST["price"])) {
-						if(preg_match("/^\d+,\d{2}$/", $_POST["price"])) {
-							$koBitArray = $koBitArray & 0x7fffffbf;
-							$initArray["price"] = $db->sanitize(str_replace(",", ".", $_POST["price"]));
-						}
-						else {
-							$koBitArray = $koBitArray | 0x40;
-						}
+					if(isset($_POST["vt_start"])) {
+						$initArray["vt_start"] = $db->sanitize($_POST["vt_start"]);
 					}
-					else {
-						$koBitArray = $koBitArray | 0x40;
+					if(isset($_POST["vt_end"])) {
+						$initArray["vt_end"] = $db->sanitize($_POST["vt_end"]);
 					}
 					if(isset($_POST["description"])) {
 						if(preg_match("/^[a-zA-Z0-9 \-_:]{0,255}$/", $_POST["description"])) {
@@ -217,6 +208,10 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 		}
 		$ret .= "<input type=\"hidden\" name=\"itemDenormId\" value=\"" . $itemDenorm->getVar('id') . "\" />";
 		$ret .= "<input type=\"hidden\" name=\"docDenormId\" value=\"" . $itemDenorm->getVar('document') . "\" />";
+		$ret .= "<div class=\"label\">Lotto:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"batch\" value=\"" . $itemDenorm->getVar('batch') . "\" />";
+		$ret .= "</div><br />";
 		if(($koBitArray & 0x2) == 0x2) {
 			$ret .= "<div class=\"error\">Categoria errata</div>";
 			$ret .= "<br />";
@@ -253,17 +248,21 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 			$ret .= "<div class=\"error\">Costo errato</div>";
 			$ret .= "<br />";
 		}
-		$ret .= "<div class=\"label\">Costo:</div>";
+		$ret .= "<div class=\"label\">Produttore:</div>";
 		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"cost\" value=\"" . number_format($itemDenorm->getVar('cost'),2,',','') . "\" />";
+		$ret .= "<input type=\"text\" name=\"producer\" value=\"" . $itemDenorm->getVar('producer') . "\" />";
 		$ret .= "</div><br />";
-		if(($koBitArray & 0x40) == 0x40) {
-			$ret .= "<div class=\"error\">Prezzo errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Prezzo:</div>";
+		$ret .= "<div class=\"label\">Anno di produzione:</div>";
 		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"price\" value=\"" . number_format($itemDenorm->getVar('price'),2,',','') . "\" />";
+		$ret .= "<input type=\"text\" name=\"yearProd\" value=\"" . $itemDenorm->getVar('yearProd') . "\" />";
+		$ret .= "</div><br />";
+		$ret .= "<div class=\"label\">Inizio commercializzazione:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"vt_start\" value=\"" . $itemDenorm->getVar('vt_start') . "\" />";
+		$ret .= "</div><br />";
+		$ret .= "<div class=\"label\">Fine commercializzazione:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"vt_end\" value=\"" . $itemDenorm->getVar('vt_end') . "\" />";
 		$ret .= "</div><br />";
 		if(($koBitArray & 0x80) == 0x80) {
 			$ret .= "<div class=\"error\">Descrizione errata</div>";

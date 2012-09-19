@@ -103,6 +103,24 @@ class Php_AndreaBoccaccio_View_ViewItemOutInsert extends Php_AndreaBoccaccio_Vie
 					else {
 						$koBitArray = $koBitArray | 0x1;
 					}
+					if(isset($_POST["producer"])) {
+						$initArray["producer"] = $db->sanitize($_POST["producer"]);
+					}
+					if(isset($_POST["yearProd"])) {
+						$initArray["yearProd"] = $db->sanitize($_POST["yearProd"]);
+					}
+					if(isset($_POST["batch"])) {
+						$initArray["batch"] = $db->sanitize($_POST["batch"]);
+					}
+					if(isset($_POST["ownBatch"])) {
+						$initArray["ownBatch"] = $db->sanitize($_POST["ownBatch"]);
+					}
+					if(isset($_POST["ownDocumentYear"])) {
+						$initArray["ownDocumentYear"] = $db->sanitize($_POST["ownDocumentYear"]);
+					}
+					if(isset($_POST["ownDocumentCode"])) {
+						$initArray["ownDocumentCode"] = $db->sanitize($_POST["ownDocumentCode"]);
+					}
 					if(isset($_POST["kind"])) {
 						if(preg_match("/^[a-zA-Z -]{2,50}$/", $_POST["kind"])) {
 							$koBitArray = $koBitArray & 0x7ffffffd;
@@ -150,30 +168,6 @@ class Php_AndreaBoccaccio_View_ViewItemOutInsert extends Php_AndreaBoccaccio_Vie
 					}
 					else {
 						$koBitArray = $koBitArray | 0x10;
-					}
-					if(isset($_POST["cost"])) {
-						if(preg_match("/^(\d+,\d{2}|.{0})$/", $_POST["cost"])) {
-							$koBitArray = $koBitArray & 0x7fffffdf;
-							$initArray["cost"] = $db->sanitize(str_replace(",", ".", $_POST["cost"]));
-						}
-						else {
-							$koBitArray = $koBitArray | 0x20;
-						}
-					}
-					else {
-						$koBitArray = $koBitArray | 0x20;
-					}
-					if(isset($_POST["price"])) {
-						if(preg_match("/^(\d+,\d{2}|.{0})$/", $_POST["price"])) {
-							$koBitArray = $koBitArray & 0x7fffffbf;
-							$initArray["price"] = $db->sanitize(str_replace(",", ".", $_POST["price"]));
-						}
-						else {
-							$koBitArray = $koBitArray | 0x40;
-						}
-					}
-					else {
-						$koBitArray = $koBitArray | 0x40;
 					}
 					if(isset($_POST["description"])) {
 						if(preg_match("/^[a-zA-Z0-9 \-_:]{0,255}$/", $_POST["description"])) {
@@ -227,6 +221,18 @@ class Php_AndreaBoccaccio_View_ViewItemOutInsert extends Php_AndreaBoccaccio_Vie
 			$ret .= "\">". $gotCause->getVar('name') ."</option>";
 		}
 		$ret .= "</select>";
+		$ret .= "</div><br />";
+		$ret .= "<div class=\"label\">Lotto:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"batch\"";
+		if(isset($_GET["batch"])) {
+			if(!is_null($_GET["batch"])) {
+				if(strlen($_GET["batch"])>0) {
+					$ret .= " value=\"" . $_GET["batch"] . "\"";
+				}
+			}
+		}
+		$ret .= " />";
 		$ret .= "</div><br />";
 		if(($koBitArray & 0x2) == 0x2) {
 			$ret .= "<div class=\"error\">Categoria errata</div>";
@@ -286,6 +292,30 @@ class Php_AndreaBoccaccio_View_ViewItemOutInsert extends Php_AndreaBoccaccio_Vie
 		}
 		$ret .= " />";
 		$ret .= "</div><br />";
+		$ret .= "<div class=\"label\">Produttore:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"producer\"";
+		if(isset($_GET["producer"])) {
+			if(!is_null($_GET["producer"])) {
+				if(strlen($_GET["producer"])>0) {
+					$ret .= " value=\"" . $_GET["producer"] . "\"";
+				}
+			}
+		}
+		$ret .= " />";
+		$ret .= "</div><br />";
+		$ret .= "<div class=\"label\">Anno di produzione:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"yearProd\"";
+		if(isset($_GET["yearProd"])) {
+			if(!is_null($_GET["yearProd"])) {
+				if(strlen($_GET["yearProd"])>0) {
+					$ret .= " value=\"" . $_GET["yearProd"] . "\"";
+				}
+			}
+		}
+		$ret .= " />";
+		$ret .= "</div><br />";
 		if(($koBitArray & 0x10) == 0x10) {
 			$ret .= "<div class=\"error\">Quantita' errata</div>";
 			$ret .= "<br />";
@@ -304,37 +334,25 @@ class Php_AndreaBoccaccio_View_ViewItemOutInsert extends Php_AndreaBoccaccio_Vie
 		}
 		$ret .= " />";
 		$ret .= "</div><br />";
-		if(($koBitArray & 0x20) == 0x20) {
-			$ret .= "<div class=\"error\">Costo errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Costo:</div>";
+		$ret .= "<div class=\"label\">Anno proprio documento:</div>";
 		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"cost\"";
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["cost"] . "\"";
-		} else if(isset($_GET["cost"])) {
-			if(!is_null($_GET["cost"])) {
-				if(strlen($_GET["cost"])>0) {
-					$ret .= " value=\"" . $_GET["cost"] . "\"";
+		$ret .= "<input type=\"text\" name=\"ownDocumentYear\"";
+		if(isset($_GET["ownDocumentYear"])) {
+			if(!is_null($_GET["ownDocumentYear"])) {
+				if(strlen($_GET["ownDocumentYear"])>0) {
+					$ret .= " value=\"" . $_GET["ownDocumentYear"] . "\"";
 				}
 			}
 		}
 		$ret .= " />";
 		$ret .= "</div><br />";
-		if(($koBitArray & 0x40) == 0x40) {
-			$ret .= "<div class=\"error\">Prezzo errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Prezzo:</div>";
+		$ret .= "<div class=\"label\">Codice/numero proprio documento:</div>";
 		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"price\"";
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["price"] . "\"";
-		} else if(isset($_GET["price"])) {
-			if(!is_null($_GET["price"])) {
-				if(strlen($_GET["price"])>0) {
-					$ret .= " value=\"" . $_GET["price"] . "\"";
+		$ret .= "<input type=\"text\" name=\"ownDocumentCode\"";
+		if(isset($_GET["ownDocumentCode"])) {
+			if(!is_null($_GET["ownDocumentCode"])) {
+				if(strlen($_GET["ownDocumentCode"])>0) {
+					$ret .= " value=\"" . $_GET["ownDocumentCode"] . "\"";
 				}
 			}
 		}

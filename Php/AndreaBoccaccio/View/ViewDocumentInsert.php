@@ -105,18 +105,6 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 					else {
 						$koBitArray = $koBitArray | 0x4;
 					}
-					if(isset($_POST["contractor_kind"])) {
-						if(preg_match("/^[a-zA-Z0-9 ]{2,50}$/", $_POST["contractor_kind"])) {
-							$koBitArray = $koBitArray & 0x7ffffff7;
-							$initArray["contractor_kind"] = $db->sanitize($_POST["contractor_kind"]);
-						}
-						else {
-							$koBitArray = $koBitArray | 0x8;
-						}
-					}
-					else {
-						$koBitArray = $koBitArray | 0x8;
-					}
 					if(isset($_POST["contractor_code"])) {
 						if(preg_match("/^\w{1,25}$/", $_POST["contractor_code"])) {
 							$koBitArray = $koBitArray & 0x7fffffef;
@@ -141,18 +129,6 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 					else {
 						$koBitArray = $koBitArray | 0x20;
 					}
-					if(isset($_POST["warehouse"])) {
-						if(preg_match("/^\w{1,50}$/", $_POST["warehouse"])) {
-							$koBitArray = $koBitArray & 0x7fffffbf;
-							$initArray["warehouse"] = $db->sanitize($_POST["warehouse"]);
-						}
-						else {
-							$koBitArray = $koBitArray | 0x40;
-						}
-					}
-					else {
-						$koBitArray = $koBitArray | 0x40;
-					}
 					if(isset($_POST["date"])) {
 						if(preg_match("/^\d{2}.\d{2}.\d{4}$/", $_POST["date"])) {
 							$koBitArray = $koBitArray & 0x7fffff7f;
@@ -164,30 +140,6 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 					}
 					else {
 						$koBitArray = $koBitArray | 0x80;
-					}
-					if(isset($_POST["vt_start"])) {
-						if(preg_match("/^([a-zA-Z0-9 \-_:]{8,20}|.{0})$/", $_POST["vt_start"])) {
-							$koBitArray = $koBitArray & 0x7ffffeff;
-							$initArray["vt_start"] = $db->sanitize($_POST["vt_start"]);
-						}
-						else {
-							$koBitArray = $koBitArray | 0x100;
-						}
-					}
-					else {
-						$koBitArray = $koBitArray | 0x100;
-					}
-					if(isset($_POST["vt_end"])) {
-						if(preg_match("/^([a-zA-Z0-9 \-_:]{8,20}|.{0})$/", $_POST["vt_end"])) {
-							$koBitArray = $koBitArray & 0x7ffffdff;
-							$initArray["vt_end"] = $db->sanitize($_POST["vt_end"]);
-						}
-						else {
-							$koBitArray = $koBitArray | 0x200;
-						}
-					}
-					else {
-						$koBitArray = $koBitArray | 0x200;
 					}
 					if(isset($_POST["description"])) {
 						if(preg_match("/^[a-zA-Z0-9 \-_:]{0,255}$/", $_POST["description"])) {
@@ -288,30 +240,11 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 		$ret .= " />";
 		$ret .= "</div>";
 		$ret .= "<br />";
-		if(($koBitArray & 0x8) == 0x8) {
-			$ret .= "<div class=\"error\">Tipo Contraente errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Tipo Contraente:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"contractor_kind\"";
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["contractor_kind"] . "\"";
-		} else if(isset($_GET["contractor_kind"])) {
-			if(!is_null($_GET["contractor_kind"])) {
-				if(strlen($_GET["contractor_kind"])>0) {
-					$ret .= " value=\"" . $_GET["contractor_kind"] . "\"";
-				}
-			}
-		}
-		$ret .= " />";
-		$ret .= "</div>";
-		$ret .= "<br />";
 		if(($koBitArray & 0x10) == 0x10) {
-			$ret .= "<div class=\"error\">P.IVA/CF Contraente errata</div>";
+			$ret .= "<div class=\"error\">P.IVA/CF Fornitore errata</div>";
 			$ret .= "<br />";
 		}
-		$ret .= "<div class=\"label\">P.IVA/CF Contraente:</div>";
+		$ret .= "<div class=\"label\">P.IVA/CF Fornitore:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"contractor_code\"";
 		if($koBitArray != 0x0) {
@@ -327,10 +260,10 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 		$ret .= "</div>";
 		$ret .= "<br />";
 		if(($koBitArray & 0x20) == 0x20) {
-			$ret .= "<div class=\"error\">Contraente errato</div>";
+			$ret .= "<div class=\"error\">Fornitore errato</div>";
 			$ret .= "<br />";
 		}
-		$ret .= "<div class=\"label\">Contraente:</div>";
+		$ret .= "<div class=\"label\">Fornitore:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"contractor\"";
 		if($koBitArray != 0x0) {
@@ -341,51 +274,6 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 					$ret .= " value=\"" . $_GET["contractor"] . "\"";
 				}
 			}
-		}
-		$ret .= " />";
-		$ret .= "</div>";
-		$ret .= "<br />";
-		if(($koBitArray & 0x40) == 0x40) {
-			$ret .= "<div class=\"error\">Magazzino errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Magazzino:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"warehouse\"";
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["warehouse"] . "\"";
-		} else if(isset($_GET["warehouse"])) {
-			if(!is_null($_GET["warehouse"])) {
-				if(strlen($_GET["warehouse"])>0) {
-					$ret .= " value=\"" . $_GET["warehouse"] . "\"";
-				}
-			}
-		}
-		$ret .= " />";
-		$ret .= "</div>";
-		$ret .= "<br />";
-		if(($koBitArray & 0x100) == 0x100) {
-			$ret .= "<div class=\"error\">Inizio Validita' errata</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Inizio Validita':</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"vt_start\"";
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["vt_start"] . "\"";
-		}
-		$ret .= " />";
-		$ret .= "</div>";
-		$ret .= "<br />";
-		if(($koBitArray & 0x200) == 0x200) {
-			$ret .= "<div class=\"error\">Fine Validita' errata</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Fine Validita':</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"vt_end\"";
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["vt_end"] . "\"";
 		}
 		$ret .= " />";
 		$ret .= "</div>";
