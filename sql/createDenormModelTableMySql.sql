@@ -19,6 +19,127 @@
 -- along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
 -- 
 --
+CREATE TABLE IF NOT EXISTS COUNTRY (id BIGINT AUTO_INCREMENT PRIMARY KEY
+,codealpha2 VARCHAR(2) NOT NULL
+,codealpha3 VARCHAR(3) NOT NULL
+,number VARCHAR(3) NOT NULL
+,enname VARCHAR(50) NOT NULL
+,description VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS COUNTRY_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
+,utctt_start DATETIME NOT NULL
+,utctt_end DATETIME NOT NULL
+,opcode VARCHAR(3) NOT NULL DEFAULT 'UNK'
+,idorig BIGINT NOT NULL
+,codealpha2 VARCHAR(2) NOT NULL
+,codealpha3 VARCHAR(3) NOT NULL
+,number VARCHAR(3) NOT NULL
+,enname VARCHAR(50) NOT NULL
+,description VARCHAR(255)
+);
+
+CREATE TRIGGER TRG_COUNTRY_INSERT_AFT AFTER INSERT
+ON COUNTRY
+FOR EACH ROW
+INSERT INTO COUNTRY_LOG (
+	utctt_start
+	,utctt_end
+	,opcode
+	,idorig
+	,codealpha2
+	,codealpha3
+	,number
+	,enname
+	,description
+) VALUES (
+	UTC_TIMESTAMP()
+	,UTC_TIMESTAMP()
+	,'INS'
+	,NEW.id
+	,NEW.codealpha2
+	,NEW.codealpha3
+	,NEW.number
+	,NEW.enname
+	,NEW.description
+);
+
+delimiter |
+
+CREATE TRIGGER TRG_COUNTRY_UPDATE_BFR BEFORE UPDATE
+ON COUNTRY
+FOR EACH ROW
+BEGIN
+UPDATE COUNTRY_LOG SET utctt_end = UTC_TIMESTAMP()
+WHERE
+(
+	(OLD.id = idorig)
+	AND
+	(utctt_end = utctt_start)
+);
+INSERT INTO COUNTRY_LOG (
+	utctt_start
+	,utctt_end
+	,opcode
+	,idorig
+	,codealpha2
+	,codealpha3
+	,number
+	,enname
+	,description
+) VALUES (
+	UTC_TIMESTAMP()
+	,UTC_TIMESTAMP()
+	,'UPD'
+	,NEW.id
+	,NEW.codealpha2
+	,NEW.codealpha3
+	,NEW.number
+	,NEW.enname
+	,NEW.description
+);
+END;
+
+|
+
+CREATE TRIGGER TRG_COUNTRY_DELETE_BFR BEFORE DELETE
+ON COUNTRY
+FOR EACH ROW
+BEGIN
+UPDATE COUNTRY_LOG SET utctt_end = UTC_TIMESTAMP()
+WHERE
+(
+	(OLD.id = idorig)
+	AND
+	(utctt_end = utctt_start)
+);
+INSERT INTO COUNTRY_LOG (
+	utctt_start
+	,utctt_end
+	,opcode
+	,idorig
+	,codealpha2
+	,codealpha3
+	,number
+	,enname
+	,description
+) VALUES (
+	UTC_TIMESTAMP()
+	,UTC_TIMESTAMP()
+	,'DEL'
+	,OLD.id
+	,OLD.codealpha2
+	,OLD.codealpha3
+	,OLD.number
+	,OLD.enname
+	,OLD.description
+);
+END;
+
+|
+
+delimiter ;
+
 CREATE TABLE IF NOT EXISTS DOCUMENT_DENORM (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,year VARCHAR(4) NOT NULL
 ,kind VARCHAR(50) NOT NULL
@@ -26,6 +147,7 @@ CREATE TABLE IF NOT EXISTS DOCUMENT_DENORM (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,contractor_kind VARCHAR(50)
 ,contractor_code VARCHAR(25)
 ,contractor VARCHAR(50)
+,country BIGINT
 ,date VARCHAR(10)
 ,description VARCHAR(255)
 );
@@ -41,6 +163,7 @@ CREATE TABLE IF NOT EXISTS DOCUMENT_DENORM_LOG (id BIGINT AUTO_INCREMENT PRIMARY
 ,contractor_kind VARCHAR(50)
 ,contractor_code VARCHAR(25)
 ,contractor VARCHAR(50)
+,country BIGINT
 ,date VARCHAR(10)
 ,description VARCHAR(255)
 );
@@ -59,6 +182,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,contractor_kind
 	,contractor_code
 	,contractor
+	,country
 	,date
 	,description
 ) VALUES (
@@ -72,6 +196,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,NEW.contractor_kind
 	,NEW.contractor_code
 	,NEW.contractor
+	,NEW.country
 	,NEW.date
 	,NEW.description
 );
@@ -100,6 +225,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,contractor_kind
 	,contractor_code
 	,contractor
+	,country
 	,date
 	,description
 ) VALUES (
@@ -113,6 +239,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,NEW.contractor_kind
 	,NEW.contractor_code
 	,NEW.contractor
+	,NEW.country
 	,NEW.date
 	,NEW.description
 );
@@ -142,6 +269,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,contractor_kind
 	,contractor_code
 	,contractor
+	,country
 	,date
 	,vt_start
 	,vt_end
@@ -157,6 +285,7 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,OLD.contractor_kind
 	,OLD.contractor_code
 	,OLD.contractor
+	,OLD.country
 	,OLD.date
 	,OLD.description
 );
@@ -174,7 +303,13 @@ CREATE TABLE IF NOT EXISTS ITEM_DENORM (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,producer VARCHAR(50)
 ,yearProd VARCHAR(4)
 ,batch VARCHAR(50)
+,batch_orig VARCHAR(100)
+,country BIGINT
+,district VARCHAR(50)
+,stabCEE VARCHAR(50)
 ,qty INT
+,kg DECIMAL(12,2)
+,arrival VARCHAR(10)
 ,vt_start VARCHAR(10)
 ,vt_end VARCHAR(10)
 ,description VARCHAR(255)
@@ -192,7 +327,13 @@ CREATE TABLE IF NOT EXISTS ITEM_DENORM_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,producer VARCHAR(50) NOT NULL
 ,yearProd VARCHAR(4)
 ,batch VARCHAR(50) NOT NULL
+,batch_orig VARCHAR(100)
+,country BIGINT
+,district VARCHAR(50)
+,stabCEE VARCHAR(50)
 ,qty INT
+,kg DECIMAL(12,2)
+,arrival VARCHAR(10)
 ,vt_start VARCHAR(10)
 ,vt_end VARCHAR(10)
 ,description VARCHAR(255)
@@ -213,7 +354,13 @@ INSERT INTO ITEM_DENORM_LOG (
 	,producer
 	,yearProd
 	,batch
+	,batch_orig
+	,country
+	,district
+	,stabCEE
 	,qty
+	,kg
+	,arrival
 	,vt_start
 	,vt_end
 	,description
@@ -229,7 +376,13 @@ INSERT INTO ITEM_DENORM_LOG (
 	,NEW.producer
 	,NEW.yearProd
 	,NEW.batch
+	,NEW.batch_orig
+	,NEW.country
+	,NEW.district
+	,NEW.stabCEE
 	,NEW.qty
+	,NEW.kg
+	,NEW.arrival
 	,NEW.vt_start
 	,NEW.vt_end
 	,NEW.description
@@ -260,7 +413,13 @@ INSERT INTO ITEM_DENORM_LOG (
 	,producer
 	,yearProd
 	,batch
+	,batch_orig
+	,country
+	,district
+	,stabCEE
 	,qty
+	,kg
+	,arrival
 	,vt_start
 	,vt_end
 	,description
@@ -276,7 +435,13 @@ INSERT INTO ITEM_DENORM_LOG (
 	,NEW.producer
 	,NEW.yearProd
 	,NEW.batch
+	,NEW.batch_orig
+	,NEW.country
+	,NEW.district
+	,NEW.stabCEE
 	,NEW.qty
+	,NEW.kg
+	,NEW.arrival
 	,NEW.vt_start
 	,NEW.vt_end
 	,NEW.description
@@ -308,7 +473,13 @@ INSERT INTO ITEM_DENORM_LOG (
 	,producer
 	,yearProd
 	,batch
+	,batch_orig
+	,country
+	,district
+	,stabCEE
 	,qty
+	,kg
+	,arrival
 	,vt_start
 	,vt_end
 	,description
@@ -324,7 +495,13 @@ INSERT INTO ITEM_DENORM_LOG (
 	,OLD.producer
 	,OLD.yearprod
 	,OLD.batch
+	,batch_orig
+	,OLD.country
+	,OLD.district
+	,OLD.stabCEE
 	,OLD.qty
+	,OLD.kg
+	,OLD.arrival
 	,OLD.vt_start
 	,OLD.vt_end
 	,OLD.description
@@ -448,8 +625,8 @@ CREATE TABLE IF NOT EXISTS ITEM_OUT (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,producer VARCHAR(50)
 ,yearProd VARCHAR(4)
 ,batch VARCHAR(50)
-,ownBatch VARCHAR(50)
 ,qty INT
+,kg DECIMAL(12,2)
 ,ownDocumentYear varchar(4)
 ,ownDocumentCode VARCHAR(20)
 ,description VARCHAR(255)
@@ -467,8 +644,8 @@ CREATE TABLE IF NOT EXISTS ITEM_OUT_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,producer VARCHAR(50) NOT NULL
 ,yearProd VARCHAR(4)
 ,batch VARCHAR(50) NOT NULL
-,ownBatch VARCHAR(50)
 ,qty INT
+,kg DECIMAL(12,2)
 ,ownDocumentYear varchar(4)
 ,ownDocumentCode VARCHAR(20)
 ,description VARCHAR(255)
@@ -489,8 +666,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,producer
 	,yearProd
 	,batch
-	,ownBatch
 	,qty
+	,kg
 	,ownDocumentYear
 	,ownDocumentCode
 	,description
@@ -506,8 +683,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,NEW.producer
 	,NEW.yearProd
 	,NEW.batch
-	,NEW.ownBatch
 	,NEW.qty
+	,NEW.kg
 	,NEW.ownDocumentYear
 	,NEW.ownDocumentCode
 	,NEW.description
@@ -538,8 +715,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,producer
 	,yearProd
 	,batch
-	,ownBatch
 	,qty
+	,kg
 	,ownDocumentYear
 	,ownDocumentCode
 	,description
@@ -555,8 +732,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,NEW.producer
 	,NEW.yearProd
 	,NEW.batch
-	,NEW.ownBatch
 	,NEW.qty
+	,NEW.kg
 	,NEW.ownDocumentYear
 	,NEW.ownDocumentCode
 	,NEW.description
@@ -588,8 +765,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,producer
 	,yearProd
 	,batch
-	,ownBatch
 	,qty
+	,kg
 	,ownDocumentYear
 	,ownDocumentCode
 	,description
@@ -605,8 +782,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,OLD.producer
 	,OLD.yearProd
 	,OLD.batch
-	,OLD.ownBatch
 	,OLD.qty
+	,OLD.kg
 	,OLD.ownDocumentYear
 	,OLD.ownDocumentCode
 	,OLD.description
