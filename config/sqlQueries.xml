@@ -21,48 +21,155 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
  -->
 <!DOCTYPE sqlQueries>
 <sqlQueries>
-	<sqlQuery id="itemsKindCodeName" displayName="Articoli Caricati per Categoria, Codice e Nome">
+	<sqlQuery id="ldBatch" displayName="Registro Carico e Identificazione dei Lotti">
 		<strSQL>
-			SELECT kind AS Categoria
-				,code AS Codice
-				,name AS Nome
-				,SUM(qty) AS QTA_Caricata
+			SELECT
+				Data
+				,FattN AS FatturaNumero
+				,Nazione
+				,LottoMacellazione
+				,LottoEntrato AS Lotto
+			FROM
+			(
+				SELECT
+					batch AS LottoEntrato
+					,batch_orig AS LottoMacellazione
+					,country
+					,document
 				FROM ITEM_DENORM
-				GROUP BY kind
-					,code
-					,name
-				ORDER BY kind
-					,code
-					,name
+			)AS I
+			INNER JOIN
+			(
+				SELECT
+					id AS docID
+					,doc_date AS Data
+					,code AS FattN
+				FROM DOCUMENT_DENORM
+			)AS D
+			ON
+			(I.document=D.docID)
+			INNER JOIN
+			(
+				SELECT
+					id AS countryID
+					,codealpha2 AS Nazione
+				FROM
+					COUNTRY
+			)AS C
+			ON
+			(I.country = C.countryID)
 		</strSQL>
 		<printInfo pageOrientation="P" unit="mm" pageSize="A4">
 			<rowInfo headerHSize="7" bodyHSize="6" />
-			<columnInfo sqlId="Categoria" wSize="40">
-				<header display="Categoria" fontFamily="Helvetica" fontStyle="B"
+			<columnInfo sqlId="Data" wSize="30">
+				<header display="Data" fontFamily="Helvetica" fontStyle="B"
 					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="text" />
 			</columnInfo>
-			<columnInfo sqlId="Codice" wSize="50">
-				<header display="Codice" fontFamily="Helvetica" fontStyle="B"
+			<columnInfo sqlId="FatturaNumero" wSize="30">
+				<header display="FATT N" fontFamily="Helvetica" fontStyle="B"
 					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="text" />
 			</columnInfo>
-			<columnInfo sqlId="Nome" wSize="40">
-				<header display="Nome" fontFamily="Helvetica" fontStyle="B"
+			<columnInfo sqlId="Nazione" wSize="25">
+				<header display="Nazione" fontFamily="Helvetica" fontStyle="B"
 					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="text" />
 			</columnInfo>
-			<columnInfo sqlId="QTA_Caricata" wSize="35">
-				<header display="QTA_Caricata" fontFamily="Helvetica" fontStyle="B"
+			<columnInfo sqlId="LottoMacellazione" wSize="50">
+				<header display="Lotto Macellazione" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="Lotto" wSize="30">
+				<header display="Lotto" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+		</printInfo>
+	</sqlQuery>
+	<sqlQuery id="ldUnldMeat" displayName="Registro Carico e Scarico delle Carni Bovine">
+		<strSQL>
+			SELECT
+				LottoEntrato AS Lotto
+				,CONCAT(SUBSTRING(I.MinDate,7,2),'/',SUBSTRING(I.MinDate,5,2),'/',SUBSTRING(I.MinDate,1,4)) AS DataArrivo
+				,REPLACE(CAST( qta AS CHAR),'.',',') AS quantita
+				,IFNULL(dic,'') AS DataInizioComm
+				,IFNULL(dfc,'') AS DataFineComm
+			FROM
+			(
+				SELECT
+					batch AS LottoEntrato
+					,CAST(MIN(CAST(CONCAT(SUBSTRING(arrival,7,4),SUBSTRING(arrival,4,2),SUBSTRING(arrival,1,2)) AS UNSIGNED INTEGER)) AS CHAR) AS MinDate
+					,SUM(kg) AS qta
+				FROM ITEM_DENORM
+				GROUP BY
+					batch
+			)AS I
+			LEFT OUTER JOIN
+			(
+				SELECT
+					batch AS LottoUscita
+					,vt_start AS dic
+					,vt_end AS dfc
+				FROM BATCH
+				GROUP BY
+					batch
+			)AS O
+			ON
+			(I.LottoEntrato=O.LottoUscita)
+		</strSQL>
+		<printInfo pageOrientation="P" unit="mm" pageSize="A4">
+			<rowInfo headerHSize="7" bodyHSize="6" />
+			<columnInfo sqlId="Lotto" wSize="30">
+				<header display="Lotto" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="DataArrivo" wSize="30">
+				<header display="Data arrivo" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="quantita" wSize="30">
+				<header display="quantita'" fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="DataInizioComm" wSize="43">
+				<header display="Data inizio comm." fontFamily="Helvetica" fontStyle="B"
+					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="DataFineComm" wSize="43">
+				<header display="Data fine comm." fontFamily="Helvetica" fontStyle="B"
 					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
