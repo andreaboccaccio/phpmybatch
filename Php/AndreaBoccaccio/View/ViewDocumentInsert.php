@@ -69,20 +69,8 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 		if(isset($_GET["toDo"])) {
 			if(!is_null($_GET["toDo"])) {
 				if(strncmp($_GET["toDo"],'save',strlen('save'))==0) {
-					if(isset($_POST["year"])) {
-						if(preg_match("/^\d{4}$/", $_POST["year"])) {
-							$koBitArray = $koBitArray & 0x7ffffffe;
-							$initArray["year"] = $db->sanitize($_POST["year"]);
-						}
-						else {
-							$koBitArray = $koBitArray | 0x1;
-						}
-					}
-					else {
-						$koBitArray = $koBitArray | 0x1;
-					}
 					if(isset($_POST["kind"])) {
-						if(preg_match("/^[a-zA-Z]{2,50}$/", $_POST["kind"])) {
+						if(preg_match("/^[a-zA-Z]{0,50}$/", $_POST["kind"])) {
 							$koBitArray = $koBitArray & 0x7ffffffd;
 							$initArray["kind"] = $db->sanitize($_POST["kind"]);
 						}
@@ -106,7 +94,7 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 						$koBitArray = $koBitArray | 0x4;
 					}
 					if(isset($_POST["contractor_code"])) {
-						if(preg_match("/^\w{1,25}$/", $_POST["contractor_code"])) {
+						if(preg_match("/^\w{0,25}$/", $_POST["contractor_code"])) {
 							$koBitArray = $koBitArray & 0x7fffffef;
 							$initArray["contractor_code"] = $db->sanitize($_POST["contractor_code"]);
 						}
@@ -118,7 +106,7 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 						$koBitArray = $koBitArray | 0x10;
 					}
 					if(isset($_POST["contractor"])) {
-						if(preg_match("/^[a-zA-Z0-9 \-_]{1,25}$/", $_POST["contractor"])) {
+						if(preg_match("/^[a-zA-Z0-9 \-_]{0,50}$/", $_POST["contractor"])) {
 							$koBitArray = $koBitArray & 0x7fffffdf;
 							$initArray["contractor"] = $db->sanitize($_POST["contractor"]);
 						}
@@ -130,7 +118,7 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 						$koBitArray = $koBitArray | 0x20;
 					}
 					if(isset($_POST["date"])) {
-						if(preg_match("/^\d{2}.\d{2}.\d{4}$/", $_POST["date"])) {
+						if(preg_match("/^(0[1-9]|[12][0-9]|3[01])[- \/\.](0[1-9]|1[012])[- \/\.](19|20)\d\d$/", $_POST["date"])) {
 							$koBitArray = $koBitArray & 0x7fffff7f;
 							$initArray["date"] = $db->sanitize($_POST["date"]);
 						}
@@ -170,38 +158,19 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 		$ret .= "<form method=\"post\" action=\"";
 		$ret .= $_SERVER["PHP_SELF"];
 		$ret .= "?op=docNew&toDo=save\"> ";
-		if(($koBitArray & 0x1) == 0x1) {
-			$ret .= "<div class=\"error\">Anno errato</div>";
+		if(($koBitArray & 0x80) == 0x80) {
+			$ret .= "<div class=\"error\">Data documento errata</div>";
 			$ret .= "<br />";
 		}
-		$ret .= "<div class=\"label\">Anno:</div>";
+		$ret .= "<div class=\"label\">Data documento:</div>";
 		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"year\"";
+		$ret .= "<input type=\"text\" name=\"date\"";
 		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["year"] . "\"";
-		} else if(isset($_GET["year"])) {
-			if(!is_null($_GET["year"])) {
-				if(strlen($_GET["year"])>0) {
-					$ret .= " value=\"" . $_GET["year"] . "\"";
-				}
-			}
-		}
-		$ret .= " />";
-		$ret .= "</div>";
-		$ret .= "<br />";
-		if(($koBitArray & 0x2) == 0x2) {
-			$ret .= "<div class=\"error\">Tipo Documento errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Tipo Documento:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"kind\"";
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["kind"] . "\"";
-		} else if(isset($_GET["kind"])) {
-			if(!is_null($_GET["kind"])) {
-				if(strlen($_GET["kind"])>0) {
-					$ret .= " value=\"" . $_GET["kind"] . "\"";
+			$ret .= " value=\"" . $_POST["date"] . "\"";
+		} else if(isset($_GET["date"])) {
+			if(!is_null($_GET["date"])) {
+				if(strlen($_GET["date"])>0) {
+					$ret .= " value=\"" . $_GET["date"] . "\"";
 				}
 			}
 		}
@@ -223,19 +192,6 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 					$ret .= " value=\"" . $_GET["code"] . "\"";
 				}
 			}
-		}
-		$ret .= " />";
-		$ret .= "</div>";
-		$ret .= "<br />";
-		if(($koBitArray & 0x80) == 0x80) {
-			$ret .= "<div class=\"error\">Data documento errata</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Data documento:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"date\"";
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["date"] . "\"";
 		}
 		$ret .= " />";
 		$ret .= "</div>";
@@ -272,6 +228,25 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 			if(!is_null($_GET["contractor"])) {
 				if(strlen($_GET["contractor"])>0) {
 					$ret .= " value=\"" . $_GET["contractor"] . "\"";
+				}
+			}
+		}
+		$ret .= " />";
+		$ret .= "</div>";
+		$ret .= "<br />";
+		if(($koBitArray & 0x2) == 0x2) {
+			$ret .= "<div class=\"error\">Tipo Documento errato</div>";
+			$ret .= "<br />";
+		}
+		$ret .= "<div class=\"label\">Tipo Documento:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"kind\"";
+		if($koBitArray != 0x0) {
+			$ret .= " value=\"" . $_POST["kind"] . "\"";
+		} else if(isset($_GET["kind"])) {
+			if(!is_null($_GET["kind"])) {
+				if(strlen($_GET["kind"])>0) {
+					$ret .= " value=\"" . $_GET["kind"] . "\"";
 				}
 			}
 		}

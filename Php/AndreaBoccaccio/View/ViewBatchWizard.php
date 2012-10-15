@@ -1,6 +1,6 @@
 <?php
 /*
- * phpmybatch - An open source warehouse management software.
+ * phpmybatch - An open source batches of goods management system software.
  * Copyright (C)2012 Andrea Boccaccio
  * contact email: andrea@andreaboccaccio.com
  * 
@@ -20,7 +20,7 @@
  * along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-class Php_AndreaBoccaccio_Model_MappingModelDocument extends Php_AndreaBoccaccio_Model_MappingModelAbstract {
+class Php_AndreaBoccaccio_View_ViewBatchWizard extends Php_AndreaBoccaccio_View_ViewWizardAbstract {
 	
 	private static $instance = null;
 	
@@ -29,13 +29,14 @@ class Php_AndreaBoccaccio_Model_MappingModelDocument extends Php_AndreaBoccaccio
 	}
 	
 	private function __construct() {
-		$this->setKind('document');
-		$this->loadStructureFromXml();
+		$this->setKind('batchWizard');
+		$this->setWizard(Php_AndreaBoccaccio_Model_BatchWizard::getInstance());
+		$this->setQueryId('newBatch');
 	}
 	
 	public static function getInstance() {
 		if(self::$instance == null) {
-			self::$instance = new Php_AndreaBoccaccio_Model_MappingModelDocument();
+			self::$instance = new Php_AndreaBoccaccio_View_ViewBatchWizard();
 		}
 		return self::$instance;
 	}

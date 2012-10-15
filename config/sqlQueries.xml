@@ -191,84 +191,126 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			</columnInfo>
 		</printInfo>
 	</sqlQuery>
-	<wizard id="newItemOut" displayName="Lotti in commercializzazione">
+	<wizard id="newBatch" displayName="Lotti non ancora commercializzati">
 		<strSQL>
 			SELECT
-				batch AS Lotto 
-				,kind AS Categoria
-				,code AS Codice
-				,name AS Nome
-				,producer AS Produttore
-				,yearProd AS AnnoProdotto
-				,vt_end AS FineComm
-			FROM ITEM_DENORM
+				LottoEntrato AS Lotto
+				,CONCAT(SUBSTRING(I.MinDate,7,2),'/',SUBSTRING(I.MinDate,5,2),'/',SUBSTRING(I.MinDate,1,4)) AS DataArrivo
+			FROM
+			(
+				SELECT
+					batch AS LottoEntrato
+					,CAST(MIN(CAST(CONCAT(SUBSTRING(arrival,7,4),SUBSTRING(arrival,4,2),SUBSTRING(arrival,1,2)) AS UNSIGNED INTEGER)) AS CHAR) AS MinDate
+				FROM ITEM_DENORM
+				GROUP BY
+					batch
+			)AS I
+			LEFT OUTER JOIN
+			(
+				SELECT
+					batch AS LottoUscita
+				FROM BATCH
+				GROUP BY
+					batch
+			)AS O
+			ON
+			(I.LottoEntrato=O.LottoUscita)
+			WHERE
+			(
+				(LottoUscita IS NULL)
+			)
 		</strSQL>
 		<fieldsMapping>
-			<insView id="itemOutNew"/>
+			<insView id="batchNew"/>
 			<fieldMapping sql="Lotto" viewInsert="batch"/>
-			<fieldMapping sql="Categoria" viewInsert="kind"/>
-			<fieldMapping sql="Codice" viewInsert="code"/>
-			<fieldMapping sql="Nome" viewInsert="name"/>
-			<fieldMapping sql="Produttore" viewInsert="producer"/>
-			<fieldMapping sql="AnnoProdotto" viewInsert="yearProd"/>
 		</fieldsMapping>
 		<fieldsView>
 			<fieldView sql="Lotto" viewField="Lotto"/>
-			<fieldView sql="Categoria" viewField="Categoria"/>
-			<fieldView sql="Codice" viewField="Codice"/>
-			<fieldView sql="Nome" viewField="Nome"/>
-			<fieldView sql="Produttore" viewField="Produttore"/>
-			<fieldView sql="AnnoProdotto" viewField="AnnoProdotto"/>
+			<fieldView sql="DataArrivo" viewField="DataArrivo"/>
 		</fieldsView>
 		<fieldsFilter>
 			<fieldFilter sql="Lotto" filterField="batch"/>
-			<fieldFilter sql="Categoria" filterField="Categoria"/>
-			<fieldFilter sql="Codice" filterField="Codice"/>
-			<fieldFilter sql="Nome" filterField="Nome"/>
-			<fieldFilter sql="Produttore" filterField="producer"/>
-			<fieldFilter sql="AnnoProdotto" filterField="yearProd"/>
 		</fieldsFilter>
 	</wizard>
-	<wizard id="newItemIn" displayName="Articoli immessi nel sistema">
+	<wizard id="newItemIn" displayName="Lotti immessi nel sistema">
 		<strSQL>
-			SELECT kind AS Categoria
-				,code AS Codice
-				,name AS Nome
+			SELECT
+				Fornitore
+				,Nazione
+				,Dipartimento
+				,NStabCEE
+				,Lotto
+				,Categoria
+				,Colli
+				,kg
+				,DataArrivo
+				,country
 			FROM
-			(
-				SELECT kind
-					,code
-					,name	
-				FROM ITEM_DENORM
-				UNION
-				SELECT
-					kind
-					,code
-					,name
-				FROM ITEM_OUT
-			)AS UNITED_TABLES
-			GROUP BY kind
-				,code
-				,name
-			ORDER BY kind 
-				,code
-				,name
+				(
+					SELECT
+						kind AS Categoria
+						,batch AS Lotto
+						,country
+						,district AS Dipartimento
+						,stabCEE AS NStabCEE
+						,qty AS Colli
+						,kg
+						,arrival AS DataArrivo
+						,document
+					 FROM ITEM_DENORM
+				) AS L
+				INNER JOIN
+				(
+					SELECT
+						id AS countryID
+						,codealpha2 AS Nazione
+					FROM COUNTRY
+				) AS C
+				ON
+				(L.country = C.countryID)
+				INNER JOIN
+				(
+					SELECT
+						id
+						,contractor AS Fornitore
+					FROM DOCUMENT_DENORM
+				)AS D
+				ON
+				(L.document = D.id)
+				ORDER BY
+					Fornitore
+					,Nazione
+					,Dipartimento
+					,NStabCEE
+					,Categoria
+					,DataArrivo
 		</strSQL>
 		<fieldsMapping>
 			<insView id="itemNew"/>
+			<fieldMapping sql="country" viewInsert="country"/>
+			<fieldMapping sql="Dipartimento" viewInsert="district"/>
+			<fieldMapping sql="NStabCEE" viewInsert="stabCEE"/>
+			<fieldMapping sql="Lotto" viewInsert="batch"/>
 			<fieldMapping sql="Categoria" viewInsert="kind"/>
-			<fieldMapping sql="Codice" viewInsert="code"/>
-			<fieldMapping sql="Nome" viewInsert="name"/>
+			<fieldMapping sql="Colli" viewInsert="qty"/>
+			<fieldMapping sql="kg" viewInsert="kg"/>
 		</fieldsMapping>
 		<fieldsView>
-			<fieldView sql="Categoria" viewField="Categoria"/>
-			<fieldView sql="Codice" viewField="Codice"/>
-			<fieldView sql="Nome" viewField="Nome"/>
+			<fieldView sql="Fornitore" viewField="Fornitore"/>
+			<fieldView sql="Nazione" viewField="Nazione"/>
+			<fieldView sql="Dipartimento" viewField="Dipartimento"/>
+			<fieldView sql="NStabCEE" viewField="NStabCEE"/>
+			<fieldView sql="Lotto" viewField="batch"/>
+			<fieldView sql="DataArrivo" viewField="DataArrivo"/>
+			<fieldView sql="Categoria" viewField="kind"/>
 		</fieldsView>
 		<fieldsFilter>
-			<fieldFilter sql="Categoria" filterField="Categoria"/>
-			<fieldFilter sql="Codice" filterField="Codice"/>
-			<fieldFilter sql="Nome" filterField="Nome"/>
+			<fieldFilter sql="Fornitore" filterField="Fornitore"/>
+			<fieldFilter sql="Nazione" filterField="Nazione"/>
+			<fieldFilter sql="Dipartimento" filterField="Dipartimento"/>
+			<fieldFilter sql="NStabCEE" filterField="NStabCEE"/>
+			<fieldFilter sql="Lotto" filterField="batch"/>
+			<fieldFilter sql="Categoria" filterField="kind"/>
 		</fieldsFilter>
 	</wizard>
 </sqlQueries>

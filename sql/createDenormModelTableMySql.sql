@@ -141,14 +141,12 @@ END;
 delimiter ;
 
 CREATE TABLE IF NOT EXISTS DOCUMENT_DENORM (id BIGINT AUTO_INCREMENT PRIMARY KEY
-,year VARCHAR(4) NOT NULL
-,kind VARCHAR(50) NOT NULL
-,code VARCHAR(20)
-,contractor_kind VARCHAR(50)
+,kind VARCHAR(50)
+,code VARCHAR(20) NOT NULL
 ,contractor_code VARCHAR(25)
 ,contractor VARCHAR(50)
 ,country BIGINT
-,date VARCHAR(10)
+,doc_date VARCHAR(10) NOT NULL
 ,description VARCHAR(255)
 );
 
@@ -157,14 +155,12 @@ CREATE TABLE IF NOT EXISTS DOCUMENT_DENORM_LOG (id BIGINT AUTO_INCREMENT PRIMARY
 ,utctt_end DATETIME NOT NULL
 ,opcode VARCHAR(3) NOT NULL DEFAULT 'UNK'
 ,idorig BIGINT NOT NULL
-,year VARCHAR(4) NOT NULL
-,kind VARCHAR(50) NOT NULL
-,code VARCHAR(20)
-,contractor_kind VARCHAR(50)
+,kind VARCHAR(50)
+,code VARCHAR(20) NOT NULL
 ,contractor_code VARCHAR(25)
 ,contractor VARCHAR(50)
 ,country BIGINT
-,date VARCHAR(10)
+,doc_date VARCHAR(10) NOT NULL
 ,description VARCHAR(255)
 );
 
@@ -176,28 +172,24 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,utctt_end
 	,opcode
 	,idorig
-	,year
 	,kind
 	,code
-	,contractor_kind
 	,contractor_code
 	,contractor
 	,country
-	,date
+	,doc_date
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
 	,UTC_TIMESTAMP()
 	,'INS'
 	,NEW.id
-	,NEW.year
 	,NEW.kind
 	,NEW.code
-	,NEW.contractor_kind
 	,NEW.contractor_code
 	,NEW.contractor
 	,NEW.country
-	,NEW.date
+	,NEW.doc_date
 	,NEW.description
 );
 
@@ -219,28 +211,24 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,utctt_end
 	,opcode
 	,idorig
-	,year
 	,kind
 	,code
-	,contractor_kind
 	,contractor_code
 	,contractor
 	,country
-	,date
+	,doc_date
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
 	,UTC_TIMESTAMP()
 	,'UPD'
 	,NEW.id
-	,NEW.year
 	,NEW.kind
 	,NEW.code
-	,NEW.contractor_kind
 	,NEW.contractor_code
 	,NEW.contractor
 	,NEW.country
-	,NEW.date
+	,NEW.doc_date
 	,NEW.description
 );
 END;
@@ -263,30 +251,24 @@ INSERT INTO DOCUMENT_DENORM_LOG (
 	,utctt_end
 	,opcode
 	,idorig
-	,year
 	,kind
 	,code
-	,contractor_kind
 	,contractor_code
 	,contractor
 	,country
-	,date
-	,vt_start
-	,vt_end
+	,doc_date
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
 	,UTC_TIMESTAMP()
 	,'DEL'
 	,OLD.id
-	,OLD.year
 	,OLD.kind
 	,OLD.code
-	,OLD.contractor_kind
 	,OLD.contractor_code
 	,OLD.contractor
 	,OLD.country
-	,OLD.date
+	,OLD.doc_date
 	,OLD.description
 );
 END;
@@ -297,7 +279,7 @@ delimiter ;
 
 CREATE TABLE IF NOT EXISTS ITEM_DENORM (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,document BIGINT NOT NULL
-,kind VARCHAR(50) NOT NULL
+,kind VARCHAR(50)
 ,code VARCHAR(50)
 ,name VARCHAR(50)
 ,producer VARCHAR(50)
@@ -321,10 +303,10 @@ CREATE TABLE IF NOT EXISTS ITEM_DENORM_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,opcode VARCHAR(3) NOT NULL DEFAULT 'UNK'
 ,idorig BIGINT NOT NULL
 ,document BIGINT NOT NULL
-,kind VARCHAR(50) NOT NULL
+,kind VARCHAR(50)
 ,code VARCHAR(50)
 ,name VARCHAR(50)
-,producer VARCHAR(50) NOT NULL
+,producer VARCHAR(50)
 ,yearProd VARCHAR(4)
 ,batch VARCHAR(50) NOT NULL
 ,batch_orig VARCHAR(100)
@@ -629,6 +611,8 @@ CREATE TABLE IF NOT EXISTS ITEM_OUT (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,kg DECIMAL(12,2)
 ,ownDocumentYear varchar(4)
 ,ownDocumentCode VARCHAR(20)
+,vt_start VARCHAR(10)
+,vt_end VARCHAR(10)
 ,description VARCHAR(255)
 );
 
@@ -648,6 +632,8 @@ CREATE TABLE IF NOT EXISTS ITEM_OUT_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
 ,kg DECIMAL(12,2)
 ,ownDocumentYear varchar(4)
 ,ownDocumentCode VARCHAR(20)
+,vt_start VARCHAR(10)
+,vt_end VARCHAR(10)
 ,description VARCHAR(255)
 );
 
@@ -670,6 +656,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,kg
 	,ownDocumentYear
 	,ownDocumentCode
+	,vt_start
+	,vt_end
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -687,6 +675,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,NEW.kg
 	,NEW.ownDocumentYear
 	,NEW.ownDocumentCode
+	,NEW.vt_start
+	,NEW.vt_end
 	,NEW.description
 );
 
@@ -719,6 +709,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,kg
 	,ownDocumentYear
 	,ownDocumentCode
+	,vt_start
+	,vt_end
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -736,6 +728,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,NEW.kg
 	,NEW.ownDocumentYear
 	,NEW.ownDocumentCode
+	,NEW.vt_start
+	,NEW.vt_end
 	,NEW.description
 );
 END;
@@ -769,6 +763,8 @@ INSERT INTO ITEM_OUT_LOG (
 	,kg
 	,ownDocumentYear
 	,ownDocumentCode
+	,vt_start
+	,vt_end
 	,description
 ) VALUES (
 	UTC_TIMESTAMP()
@@ -786,6 +782,121 @@ INSERT INTO ITEM_OUT_LOG (
 	,OLD.kg
 	,OLD.ownDocumentYear
 	,OLD.ownDocumentCode
+	,OLD.vt_start
+	,OLD.vt_end
+	,OLD.description
+);
+END;
+
+|
+
+delimiter ;
+
+CREATE TABLE IF NOT EXISTS BATCH (id BIGINT AUTO_INCREMENT PRIMARY KEY
+,batch VARCHAR(50)
+,vt_start VARCHAR(10)
+,vt_end VARCHAR(10)
+,description VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS BATCH_LOG (id BIGINT AUTO_INCREMENT PRIMARY KEY
+,utctt_start DATETIME NOT NULL
+,utctt_end DATETIME NOT NULL
+,opcode VARCHAR(3) NOT NULL DEFAULT 'UNK'
+,idorig BIGINT NOT NULL
+,batch VARCHAR(50) NOT NULL
+,vt_start VARCHAR(10)
+,vt_end VARCHAR(10)
+,description VARCHAR(255)
+);
+
+CREATE TRIGGER TRG_BATCH_INSERT_AFT AFTER INSERT
+ON BATCH
+FOR EACH ROW
+INSERT INTO BATCH_LOG (
+	utctt_start
+	,utctt_end
+	,opcode
+	,idorig
+	,batch
+	,vt_start
+	,vt_end
+	,description
+) VALUES (
+	UTC_TIMESTAMP()
+	,UTC_TIMESTAMP()
+	,'INS'
+	,NEW.id
+	,NEW.batch
+	,NEW.vt_start
+	,NEW.vt_end
+	,NEW.description
+);
+
+delimiter |
+
+CREATE TRIGGER TRG_BATCH_UPDATE_BFR BEFORE UPDATE
+ON BATCH
+FOR EACH ROW
+BEGIN
+UPDATE BATCH_LOG SET utctt_end = UTC_TIMESTAMP()
+WHERE
+(
+	(OLD.id = idorig)
+	AND
+	(utctt_end = utctt_start)
+);
+INSERT INTO BATCH_LOG (
+	utctt_start
+	,utctt_end
+	,opcode
+	,idorig
+	,batch
+	,vt_start
+	,vt_end
+	,description
+) VALUES (
+	UTC_TIMESTAMP()
+	,UTC_TIMESTAMP()
+	,'UPD'
+	,NEW.id
+	,NEW.batch
+	,NEW.vt_start
+	,NEW.vt_end
+	,NEW.description
+);
+END;
+
+|
+
+CREATE TRIGGER TRG_BATCH_DELETE_BFR BEFORE DELETE
+ON BATCH
+FOR EACH ROW
+BEGIN
+UPDATE BATCH_LOG SET utctt_end = UTC_TIMESTAMP()
+WHERE
+(
+	(OLD.id = idorig)
+	AND
+	(utctt_end = utctt_start)
+);
+INSERT INTO BATCH_LOG (
+	utctt_start
+	,utctt_end
+	,opcode
+	,idorig
+	,batch
+	,vt_start
+	,vt_end
+	,description
+) VALUES (
+	UTC_TIMESTAMP()
+	,UTC_TIMESTAMP()
+	,'DEL'
+	,OLD.id
+	,OLD.batch
+	,OLD.vt_start
+	,OLD.vt_end
 	,OLD.description
 );
 END;

@@ -73,7 +73,7 @@ class Php_MyPhpWarehouse implements Php_AppInterface {
 		$strToShow .= "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
 		$strToShow .= "<html xmlns=\"http://www.w3.org/1999/xhtml\">";
 		$strToShow .= "<head>";
-		$strToShow .= "<title>phpmywhs by Andrea Boccaccio</title>";
+		$strToShow .= "<title>phpmybatch by Andrea Boccaccio</title>";
 		$strToShow .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\" />";
 		$strToShow .= "</head>";
 		$strToShow .= "<body>\n";

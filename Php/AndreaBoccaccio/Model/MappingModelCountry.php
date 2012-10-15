@@ -20,7 +20,7 @@
  * along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-class Php_AndreaBoccaccio_Model_MappingModelDocument extends Php_AndreaBoccaccio_Model_MappingModelAbstract {
+class Php_AndreaBoccaccio_Model_MappingModelCountry extends Php_AndreaBoccaccio_Model_MappingModelAbstract {
 	
 	private static $instance = null;
 	
@@ -29,13 +29,13 @@ class Php_AndreaBoccaccio_Model_MappingModelDocument extends Php_AndreaBoccaccio
 	}
 	
 	private function __construct() {
-		$this->setKind('document');
+		$this->setKind('country');
 		$this->loadStructureFromXml();
 	}
 	
 	public static function getInstance() {
 		if(self::$instance == null) {
-			self::$instance = new Php_AndreaBoccaccio_Model_MappingModelDocument();
+			self::$instance = new Php_AndreaBoccaccio_Model_MappingModelCountry();
 		}
 		return self::$instance;
 	}

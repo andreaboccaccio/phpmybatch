@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-phpmywhs - An open source warehouse management software.
+phpmybatch - An open source batches of goods management system software.
 Copyright (C)2012 Andrea Boccaccio
 contact email: andrea@andreaboccaccio.com
 
-This file is part of phpmywhs.
+This file is part of phpmybatch.
  
-phpmywhs is free software: you can redistribute it and/or modify
+phpmybatch is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpmywhs is distributed in the hope that it will be useful,
+phpmybatch is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
@@ -31,13 +31,11 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 	<class id="document">
 		<dbtab name="DOCUMENT_DENORM" />
 		<var name="id" kind="int" value="-1" dbName="id" />
-		<var name="year" kind="string" value="" dbName="year" />
 		<var name="kind" kind="string" value="" dbName="kind" />
 		<var name="code" kind="string" value="" dbName="code" />
-		<var name="contractor_kind" kind="string" value="" dbName="contractor_kind" />
 		<var name="contractor_code" kind="string" value="" dbName="contractor_code" />
 		<var name="contractor" kind="string" value="" dbName="contractor" />
-		<var name="date" kind="string" value="" dbName="date" />
+		<var name="date" kind="string" value="" dbName="doc_date" />
 		<var name="description" kind="string" value="" dbName="description" />
 	</class>
 	<class id="item">
@@ -45,30 +43,39 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<var name="id" kind="int" value="-1" dbName="id" />
 		<var name="document" kind="int" value="-1" dbName="document" />
 		<var name="kind" kind="string" value="" dbName="kind" />
-		<var name="code" kind="string" value="" dbName="code" />
-		<var name="name" kind="string" value="" dbName="name" />
-		<var name="producer" kind="string" value="" dbName="producer" />
-		<var name="yearProd" kind="string" value="" dbName="yearProd" />
 		<var name="batch" kind="string" value="" dbName="batch" />
+		<var name="batch_orig" kind="string" value="" dbName="batch_orig" />
+		<var name="country" kind="int" value="-1" dbName="country" />
+		<var name="district" kind="string" value="" dbName="district" />
+		<var name="stabCEE" kind="string" value="" dbName="stabCEE" />
 		<var name="qty" kind="int" value="-1" dbName="qty" />
-		<var name="vt_start" kind="string" value="" dbName="vt_start" />
-		<var name="vt_end" kind="string" value="" dbName="vt_end" />
+		<var name="kg" kind="float" value="-1" dbName="kg" />
+		<var name="arrival" kind="string" value="" dbName="arrival" />
 		<var name="description" kind="string" value="" dbName="description" />
 	</class>
 	<class id="itemout">
 		<dbtab name="ITEM_OUT" />
 		<var name="id" kind="int" value="-1" dbName="id" />
-		<var name="cause" kind="int" value="-1" dbName="cause" />
-		<var name="kind" kind="string" value="" dbName="kind" />
-		<var name="code" kind="string" value="" dbName="code" />
-		<var name="name" kind="string" value="" dbName="name" />
-		<var name="producer" kind="string" value="" dbName="producer" />
-		<var name="yearProd" kind="string" value="" dbName="yearProd" />
 		<var name="batch" kind="string" value="" dbName="batch" />
-		<var name="ownBatch" kind="string" value="" dbName="ownBatch" />
-		<var name="qty" kind="int" value="-1" dbName="qty" />
-		<var name="ownDocumentYear" kind="string" value="" dbName="ownDocumentYear" />
-		<var name="ownDocumentCode" kind="string" value="" dbName="ownDocumentCode" />
+		<var name="vt_start" kind="string" value="" dbName="vt_start" />
+		<var name="vt_end" kind="string" value="" dbName="vt_end" />
+		<var name="description" kind="string" value="" dbName="description" />
+	</class>
+	<class id="country">
+		<dbtab name="COUNTRY" />
+		<var name="id" kind="int" value="-1" dbName="id" />
+		<var name="codealpha2" kind="string" value="" dbName="codealpha2" />
+		<var name="codealpha3" kind="string" value="" dbName="codealpha3" />
+		<var name="number" kind="string" value="" dbName="number" />
+		<var name="enname" kind="string" value="" dbName="enname" />
+		<var name="description" kind="string" value="" dbName="description" />
+	</class>
+	<class id="batch">
+		<dbtab name="BATCH" />
+		<var name="id" kind="int" value="-1" dbName="id" />
+		<var name="batch" kind="string" value="" dbName="batch" />
+		<var name="vt_start" kind="string" value="" dbName="vt_start" />
+		<var name="vt_end" kind="string" value="" dbName="vt_end" />
 		<var name="description" kind="string" value="" dbName="description" />
 	</class>
 </model>

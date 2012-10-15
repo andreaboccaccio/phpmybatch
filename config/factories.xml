@@ -42,15 +42,12 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemListSubDocument" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemInsert" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewItem" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemOutList" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemOut" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemOutInsert" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewCauseList" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewCauseInsert" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewCause" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewPDFSqlQueries" />
-		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemOutWizardInsView" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewItemInWizardInsView" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewBatchList" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewBatchInsert" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewBatch" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewBatchWizard" />
 	</factory>
 	<factory id="mappingModel">
 		<class default="yes" id="Php_AndreaBoccaccio_Model_MappingModelNull" />
@@ -59,5 +56,7 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelDocument" />
 		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelItem" />
 		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelItemOut" />
+		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelCountry" />
+		<class default="no" id="Php_AndreaBoccaccio_Model_MappingModelBatch" />
 	</factory>
 </factories>

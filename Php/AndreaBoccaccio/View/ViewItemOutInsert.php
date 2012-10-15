@@ -222,6 +222,7 @@ class Php_AndreaBoccaccio_View_ViewItemOutInsert extends Php_AndreaBoccaccio_Vie
 		}
 		$ret .= "</select>";
 		$ret .= "</div><br />";
+		
 		$ret .= "<div class=\"label\">Lotto:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"batch\"";
@@ -251,76 +252,13 @@ class Php_AndreaBoccaccio_View_ViewItemOutInsert extends Php_AndreaBoccaccio_Vie
 		if($koBitArray != 0x0) {
 			$ret .= " value=\"" . $_POST["kind"] . "\"";
 		}
-		
-		$ret .= " />";
-		$ret .= "</div><br />";
-		if(($koBitArray & 0x4) == 0x4) {
-			$ret .= "<div class=\"error\">Codice errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Codice:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"code\"";
-		if(isset($_GET["code"])) {
-			if(!is_null($_GET["code"])) {
-				if(strlen($_GET["code"])>0) {
-					$ret .= " value=\"" . $_GET["code"] . "\"";
-				}
-			}
-		}
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["code"] . "\"";
-		}
-		$ret .= " />";
-		$ret .= "</div><br />";
-		if(($koBitArray & 0x8) == 0x8) {
-			$ret .= "<div class=\"error\">Nome errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Nome:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"name\"";
-		if(isset($_GET["name"])) {
-			if(!is_null($_GET["name"])) {
-				if(strlen($_GET["name"])>0) {
-					$ret .= " value=\"" . $_GET["name"] . "\"";
-				}
-			}
-		}
-		if($koBitArray != 0x0) {
-			$ret .= " value=\"" . $_POST["name"] . "\"";
-		}
-		$ret .= " />";
-		$ret .= "</div><br />";
-		$ret .= "<div class=\"label\">Produttore:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"producer\"";
-		if(isset($_GET["producer"])) {
-			if(!is_null($_GET["producer"])) {
-				if(strlen($_GET["producer"])>0) {
-					$ret .= " value=\"" . $_GET["producer"] . "\"";
-				}
-			}
-		}
-		$ret .= " />";
-		$ret .= "</div><br />";
-		$ret .= "<div class=\"label\">Anno di produzione:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"yearProd\"";
-		if(isset($_GET["yearProd"])) {
-			if(!is_null($_GET["yearProd"])) {
-				if(strlen($_GET["yearProd"])>0) {
-					$ret .= " value=\"" . $_GET["yearProd"] . "\"";
-				}
-			}
-		}
 		$ret .= " />";
 		$ret .= "</div><br />";
 		if(($koBitArray & 0x10) == 0x10) {
-			$ret .= "<div class=\"error\">Quantita' errata</div>";
+			$ret .= "<div class=\"error\">Colli errati</div>";
 			$ret .= "<br />";
 		}
-		$ret .= "<div class=\"label\">Quantita':</div>";
+		$ret .= "<div class=\"label\">Colli:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"qty\"";
 		if($koBitArray != 0x0) {
@@ -334,6 +272,7 @@ class Php_AndreaBoccaccio_View_ViewItemOutInsert extends Php_AndreaBoccaccio_Vie
 		}
 		$ret .= " />";
 		$ret .= "</div><br />";
+		
 		$ret .= "<div class=\"label\">Anno proprio documento:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"ownDocumentYear\"";

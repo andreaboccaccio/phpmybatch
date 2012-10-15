@@ -69,6 +69,11 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 		$itemDenorm = new Php_AndreaBoccaccio_Model_Item();
 		$itemDenormManager = new Php_AndreaBoccaccio_Model_ItemManager();
 		$initArray = array();
+		$countries = array();
+		$filterCountries = array();
+		$countryMan = new Php_AndreaBoccaccio_Model_CountryManager();
+		$gotCountry;
+		$tmpArray = array();
 		$koBitArray = 0x0;
 		$itemId = -1;
 		$eraser = 0;
@@ -108,8 +113,20 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 					if(isset($_POST["batch"])) {
 						$initArray["batch"] = $db->sanitize($_POST["batch"]);
 					}
+					if(isset($_POST["batch_orig"])) {
+						$initArray["batch_orig"] = $db->sanitize($_POST["batch_orig"]);
+					}
+					if(isset($_POST["country"])) {
+						$initArray["country"] = $db->sanitize($_POST["country"]);
+					}
+					if(isset($_POST["district"])) {
+						$initArray["district"] = $db->sanitize($_POST["district"]);
+					}
+					if(isset($_POST["stabCEE"])) {
+						$initArray["stabCEE"] = $db->sanitize($_POST["stabCEE"]);
+					}
 					if(isset($_POST["kind"])) {
-						if(preg_match("/^[a-zA-Z -]{2,50}$/", $_POST["kind"])) {
+						if(preg_match("/^[a-zA-Z -]{0,50}$/", $_POST["kind"])) {
 							$koBitArray = $koBitArray & 0x7ffffffd;
 							$initArray["kind"] = $db->sanitize($_POST["kind"]);
 						}
@@ -120,30 +137,7 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 					else {
 						$koBitArray = $koBitArray | 0x2;
 					}
-					if(isset($_POST["code"])) {
-						if(preg_match("/^\w{1,50}$/", $_POST["code"])) {
-							$koBitArray = $koBitArray & 0x7ffffffb;
-							$initArray["code"] = $db->sanitize($_POST["code"]);
-						}
-						else {
-							$koBitArray = $koBitArray | 0x4;
-						}
-					}
-					else {
-						$koBitArray = $koBitArray | 0x4;
-					}
-					if(isset($_POST["name"])) {
-						if(preg_match("/^[a-zA-Z0-9 -]{0,50}$/", $_POST["name"])) {
-							$koBitArray = $koBitArray & 0x7ffffff7;
-							$initArray["name"] = $db->sanitize($_POST["name"]);
-						}
-						else {
-							$koBitArray = $koBitArray | 0x8;
-						}
-					}
-					else {
-						$koBitArray = $koBitArray | 0x8;
-					}
+					
 					if(isset($_POST["qty"])) {
 						if(preg_match("/^\d+$/", $_POST["qty"])) {
 							$koBitArray = $koBitArray & 0x7fffffef;
@@ -156,17 +150,20 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 					else {
 						$koBitArray = $koBitArray | 0x10;
 					}
-					if(isset($_POST["producer"])) {
-						$initArray["producer"] = $db->sanitize($_POST["producer"]);
+					if(isset($_POST["kg"])) {
+						$initArray["kg"] = $db->sanitize(str_replace(",", ".", $_POST["kg"]));
 					}
-					if(isset($_POST["yearProd"])) {
-						$initArray["yearProd"] = $db->sanitize($_POST["yearProd"]);
+					if(isset($_POST["arrival"])) {
+						if(preg_match("/^(0[1-9]|[12][0-9]|3[01])[- \/\.](0[1-9]|1[012])[- \/\.](19|20)\d\d$/", $_POST["arrival"])) {
+							$koBitArray = $koBitArray & 0x7fffffdf;
+							$initArray["arrival"] = $db->sanitize($_POST["arrival"]);
+						}
+						else {
+							$koBitArray = $koBitArray | 0x20;
+						}
 					}
-					if(isset($_POST["vt_start"])) {
-						$initArray["vt_start"] = $db->sanitize($_POST["vt_start"]);
-					}
-					if(isset($_POST["vt_end"])) {
-						$initArray["vt_end"] = $db->sanitize($_POST["vt_end"]);
+					else {
+						$koBitArray = $koBitArray | 0x20;
 					}
 					if(isset($_POST["description"])) {
 						if(preg_match("/^[a-zA-Z0-9 \-_:]{0,255}$/", $_POST["description"])) {
@@ -205,9 +202,50 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 		else {
 			$ret .= "?op=item&toDo=modify&id=". $itemDenorm->getVar('id') ."&docId=";
 			$ret .= $_GET["docId"] . "\"> ";
+			$ret .= "<div>";
+			$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
+			$ret .= "?op=itemNew&docId=" . $_GET["docId"];
+			$ret .= "&country=" . $itemDenorm->getVar('country');
+			$ret .= "&district=" . $itemDenorm->getVar('district');
+			$ret .= "&stabCEE=" . $itemDenorm->getVar('stabCEE');
+			$ret .= "&batch_orig=" . $itemDenorm->getVar('batch_orig');
+			$ret .= "&batch=" . $itemDenorm->getVar('batch');
+			$ret .= "&kind=" . $itemDenorm->getVar('kind');
+			$ret .= "&qty=" . $itemDenorm->getVar('qty');
+			$ret .= "&kg=" . $itemDenorm->getVar('kg');
+			$ret .= "&arrival=" . $itemDenorm->getVar('arrival');
+			$ret .= "\">Copia come nuovo";
+			$ret .= "</a>";
+			$ret .= "</div>";
 		}
 		$ret .= "<input type=\"hidden\" name=\"itemDenormId\" value=\"" . $itemDenorm->getVar('id') . "\" />";
 		$ret .= "<input type=\"hidden\" name=\"docDenormId\" value=\"" . $itemDenorm->getVar('document') . "\" />";
+		$ret .= "<div class=\"label\">Nazione:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<select name=\"country\">";
+		$tmpArr = $countryMan->getModels(null,$filterCountries,'codealpha2');
+		$countries = $tmpArr["result"];
+		foreach ($countries as $gotCountry) {
+			$ret .= "<option value=\"". $gotCountry->getVar('id');
+			if($itemDenorm->getVar('country') == $gotCountry->getVar('id')) {
+				$ret .= "\" selected=\"selected";
+			}
+			$ret .= "\">". $gotCountry->getVar('codealpha2') . '-' . $gotCountry->getVar('enname') . "</option>";
+		}
+		$ret .= "</select>";
+		$ret .= "</div><br />";
+		$ret .= "<div class=\"label\">Dipartimento di prov.:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"district\" value=\"" . $itemDenorm->getVar('district') . "\" />";
+		$ret .= "</div><br />";
+		$ret .= "<div class=\"label\">N. stab. CEE:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"stabCEE\" value=\"" . $itemDenorm->getVar('stabCEE') . "\" />";
+		$ret .= "</div><br />";
+		$ret .= "<div class=\"label\">Lotto Macellazione:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"batch_orig\" value=\"" . $itemDenorm->getVar('batch_orig') . "\" />";
+		$ret .= "</div><br />";
 		$ret .= "<div class=\"label\">Lotto:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"batch\" value=\"" . $itemDenorm->getVar('batch') . "\" />";
@@ -220,49 +258,26 @@ class Php_AndreaBoccaccio_View_ViewItem extends Php_AndreaBoccaccio_View_ViewCon
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"kind\" value=\"" . $itemDenorm->getVar('kind') . "\" />";
 		$ret .= "</div><br />";
-		if(($koBitArray & 0x4) == 0x4) {
-			$ret .= "<div class=\"error\">Codice errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Codice:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"code\" value=\"" . $itemDenorm->getVar('code') . "\" />";
-		$ret .= "</div><br />";
-		if(($koBitArray & 0x8) == 0x8) {
-			$ret .= "<div class=\"error\">Nome errato</div>";
-			$ret .= "<br />";
-		}
-		$ret .= "<div class=\"label\">Nome:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"name\" value=\"" . $itemDenorm->getVar('name') . "\" />";
-		$ret .= "</div><br />";
+		
 		if(($koBitArray & 0x10) == 0x10) {
-			$ret .= "<div class=\"error\">Quantita' errata</div>";
+			$ret .= "<div class=\"error\">Colli errati</div>";
 			$ret .= "<br />";
 		}
-		$ret .= "<div class=\"label\">Quantita':</div>";
+		$ret .= "<div class=\"label\">Colli:</div>";
 		$ret .= "<div class=\"input\">";
 		$ret .= "<input type=\"text\" name=\"qty\" value=\"" . $itemDenorm->getVar('qty') . "\" />";
 		$ret .= "</div><br />";
+		$ret .= "<div class=\"label\">Kg:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"kg\" value=\"" . number_format($itemDenorm->getVar('kg'),2,',','') . "\" />";
+		$ret .= "</div><br />";
 		if(($koBitArray & 0x20) == 0x20) {
-			$ret .= "<div class=\"error\">Costo errato</div>";
+			$ret .= "<div class=\"error\">Data di arrivo errata formato corretto GG/MM/AAAA</div>";
 			$ret .= "<br />";
 		}
-		$ret .= "<div class=\"label\">Produttore:</div>";
+		$ret .= "<div class=\"label\">Data di arrivo:</div>";
 		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"producer\" value=\"" . $itemDenorm->getVar('producer') . "\" />";
-		$ret .= "</div><br />";
-		$ret .= "<div class=\"label\">Anno di produzione:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"yearProd\" value=\"" . $itemDenorm->getVar('yearProd') . "\" />";
-		$ret .= "</div><br />";
-		$ret .= "<div class=\"label\">Inizio commercializzazione:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"vt_start\" value=\"" . $itemDenorm->getVar('vt_start') . "\" />";
-		$ret .= "</div><br />";
-		$ret .= "<div class=\"label\">Fine commercializzazione:</div>";
-		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"vt_end\" value=\"" . $itemDenorm->getVar('vt_end') . "\" />";
+		$ret .= "<input type=\"text\" name=\"arrival\" value=\"" . $itemDenorm->getVar('arrival') . "\" />";
 		$ret .= "</div><br />";
 		if(($koBitArray & 0x80) == 0x80) {
 			$ret .= "<div class=\"error\">Descrizione errata</div>";
