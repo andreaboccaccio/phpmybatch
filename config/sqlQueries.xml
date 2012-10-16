@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-phpmywhs - An open source warehouse management software.
+phpmybatch - An open source batches of goods management system software.
 Copyright (C)2012 Andrea Boccaccio
 contact email: andrea@andreaboccaccio.com
 
-This file is part of phpmywhs.
+This file is part of phpmybatch.
  
-phpmywhs is free software: you can redistribute it and/or modify
+phpmybatch is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpmywhs is distributed in the hope that it will be useful,
+phpmybatch is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
@@ -178,93 +178,145 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			</columnInfo>
 		</printInfo>
 	</sqlQuery>
-	<sqlQuery id="stocks" displayName="Giacenze per Categoria, Codice e Nome">
+	<sqlQuery id="monthlyPro" displayName="Prospetto mensile dei controlli documentali">
 		<strSQL>
-			SELECT ITEM_IN.Categoria AS Categoria
-				,ITEM_IN.Codice AS Codice
-				,ITEM_IN.Nome AS Nome
-				,QTA_Caricata
-				,IFNULL(QTA_Scaricata,0) AS QTA_Scaricata
-				,(QTA_Caricata - IFNULL(QTA_Scaricata,0)) AS Giacenza
+			SELECT
+				FattN AS Numero
+				,Data
+				,Fornitore AS RilasciatoA
+				,Nazione AS StatoOrigine
+				,district AS Dipartimento
+				,stabCEE AS NstabCEE
+				,TipoProdotto
+				,Colli
+				,Kg
+				,'' AS DataControllo
+				,'' AS Esito
 			FROM
 			(
-				SELECT kind AS Categoria
-					,code AS Codice
-					,name AS Nome
-					,SUM(qty) AS QTA_Caricata
+				SELECT
+					country
+					,district
+					,stabCEE
+					,kind AS TipoProdotto
+					,qty AS Colli
+					,kg AS Kg
+					,document
 				FROM ITEM_DENORM
-				GROUP BY kind
-					,code
-					,name
-			) AS ITEM_IN
-			LEFT JOIN
+			)AS I
+			INNER JOIN
 			(
-				SELECT kind AS Categoria
-					,code AS Codice
-					,name AS Nome
-					,SUM(qty) AS QTA_Scaricata
-				FROM ITEM_OUT
-				GROUP BY kind
-					,code
-					,name
-			) AS ITEM_OUT
+				SELECT
+					id AS docID
+					,doc_date AS Data
+					,code AS FattN
+					,contractor AS Fornitore
+				FROM DOCUMENT_DENORM
+			)AS D
 			ON
+			(I.document=D.docID)
+			INNER JOIN
 			(
-				(ITEM_IN.Categoria = ITEM_OUT.Categoria)
-				AND (ITEM_IN.Codice = ITEM_OUT.Codice)
-				AND (ITEM_IN.Nome = ITEM_OUT.Nome)
-			)
-			ORDER BY ITEM_IN.Categoria
-				,ITEM_IN.Codice
-				,ITEM_IN.Nome
+				SELECT
+					id AS countryID
+					,codealpha2 AS Nazione
+				FROM
+					COUNTRY
+				WHERE
+				(
+					(codealpha2 != 'IT')
+				)
+			)AS C
+			ON
+			(I.country = C.countryID)
 		</strSQL>
 		<printInfo pageOrientation="L" unit="mm" pageSize="A4">
 			<rowInfo headerHSize="7" bodyHSize="6" />
-			<columnInfo sqlId="Categoria" wSize="40">
-				<header display="Categoria" fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+			<columnInfo sqlId="Numero" wSize="20">
+				<header display="Numero" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="L"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="text" />
 			</columnInfo>
-			<columnInfo sqlId="Codice" wSize="50">
-				<header display="Codice" fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+			<columnInfo sqlId="Data" wSize="20">
+				<header display="Data" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="L"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="text" />
 			</columnInfo>
-			<columnInfo sqlId="Nome" wSize="40">
-				<header display="Nome" fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+			<columnInfo sqlId="RilasciatoA" wSize="25">
+				<header display="Rilasciato a" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="L"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="text" />
 			</columnInfo>
-			<columnInfo sqlId="QTA_Caricata" wSize="35">
-				<header display="QTA_Caricata" fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+			<columnInfo sqlId="StatoOrigine" wSize="30">
+				<header display="Stato di origine" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="integer" />
 			</columnInfo>
-			<columnInfo sqlId="QTA_Scaricata" wSize="35">
-				<header display="QTA_Scaricata" fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+			<columnInfo sqlId="Dipartimento" wSize="33">
+				<header display="Dipartimento prov." fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="integer" />
 			</columnInfo>
-			<columnInfo sqlId="Giacenza" wSize="30">
-				<header display="Giacenza" fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
+			<columnInfo sqlId="NstabCEE" wSize="30">
+				<header display="N. stab. CEE" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="TipoProdotto" wSize="30">
+				<header display="Tipo prodotto" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="Colli" wSize="20">
+				<header display="Colli" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="Kg" wSize="20">
+				<header display="Kg" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="DataControllo" wSize="30">
+				<header display="Data controllo id." fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LR" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="Esito" wSize="15">
+				<header display="Esito" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="integer" />
 			</columnInfo>
