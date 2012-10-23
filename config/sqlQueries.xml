@@ -59,8 +59,16 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			ON
 			(I.country = C.countryID)
 		</strSQL>
-		<printInfo pageOrientation="P" unit="mm" pageSize="A4">
-			<rowInfo headerHSize="7" bodyHSize="6" />
+		<printInfo pageOrientation="P" unit="mm" pageSize="A4"
+			creator="phpmybatch by Andrea Boccaccio" author="Andrea Boccaccio"
+			subject="Registro Carico e Identificazione dei Lotti"
+			title="Registro Carico e Identificazione dei Lotti" >
+			<pageHeader kind="Cell" hSize="15"
+				display="Registro di Carico e Identificazione dei Lotti"
+				fontFamily="Helvetica" fontStyle="B" fontSize="16" align="C"
+				textColor="0,0,0" fill="enabled" fillColor="255,255,255"
+				border="LTRB" ln="1"/>
+			<rowInfo headerHSize="7" bodyHSize="6" rowsPerPage="31" />
 			<columnInfo sqlId="Data" wSize="30">
 				<header display="Data" fontFamily="Helvetica" fontStyle="B"
 					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
@@ -134,51 +142,104 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			ON
 			(I.LottoEntrato=O.LottoUscita)
 		</strSQL>
-		<printInfo pageOrientation="P" unit="mm" pageSize="A4">
-			<rowInfo headerHSize="7" bodyHSize="6" />
+		<printInfo pageOrientation="P" unit="mm" pageSize="A4"
+			creator="phpmybatch by Andrea Boccaccio" author="Andrea Boccaccio"
+			subject="Registro Carico e Scarico delle Carni Bovine"
+			title="Registro Carico e Scarico delle Carni Bovine" >
+			<pageHeader kind="Cell" hSize="7"
+				display="Carni Bovine S.r.l."
+				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" wSize="20" hSize="7"
+				display=""
+				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0" />
+			<pageHeader kind="Cell" wSize="75" hSize="7"
+				display="Via Buoi, 37"
+				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageHeader kind="Cell" wSize="75" hSize="7"
+				display="XXXXX Tori Impazziti XX"
+				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageHeader kind="Cell" wSize="20" hSize="7"
+				display=""
+				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="7"
+				display="P. IVA XXXXXXXXXXX"
+				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="3"
+				display=""
+				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1" />
+			<pageHeader kind="Cell" hSize="10"
+				display="REGISTRO CARICO E SCARICO DELLE CARNI BOVINE"
+				fontFamily="Helvetica" fontStyle="B" fontSize="14" align="C"
+				textColor="0,0,0" fill="enabled" fillColor="200,200,200"
+				border="LTRB" ln="1"/>
+			<pageHeader kind="Cell" hSize="5"
+				display=""
+				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1" />
+			<pageFooter kind="Cell" wSize="0" hSize="5"
+				display="Pagina__________"
+				fontFamily="Helvetica" fontStyle="" fontSize="10" align="R"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<rowInfo headerHSize="7" bodyHSize="6" rowsPerPage="18" />
 			<columnInfo sqlId="Lotto" wSize="30">
-				<header display="Lotto" fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
-					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
-					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="text" />
+				<header display="Identificazione" fontFamily="Helvetica" fontStyle="B"
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="200,200,200"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="10" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="255,255,255"
+					fillBColor="200,200,200" border="LR" format="text" />
 			</columnInfo>
 			<columnInfo sqlId="DataArrivo" wSize="30">
 				<header display="Data arrivo" fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
-					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
-					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="text" />
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="200,200,200"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="10" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="255,255,255"
+					fillBColor="200,200,200" border="LR" format="text" />
 			</columnInfo>
 			<columnInfo sqlId="quantita" wSize="30">
 				<header display="quantita'" fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
-					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="L"
-					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="text" />
+					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="200,200,200"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="10" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="255,255,255"
+					fillBColor="200,200,200" border="LR" format="text" />
 			</columnInfo>
-			<columnInfo sqlId="DataInizioComm" wSize="43">
-				<header display="Data inizio comm." fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
-					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
-					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+			<columnInfo sqlId="DataInizioComm" wSize="50">
+				<header display="Data inizio commercializzazione" fontFamily="Helvetica" fontStyle="B"
+					fontSize="9" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="200,200,200"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="10" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="255,255,255"
+					fillBColor="200,200,200" border="LR" format="integer" />
 			</columnInfo>
-			<columnInfo sqlId="DataFineComm" wSize="43">
-				<header display="Data fine comm." fontFamily="Helvetica" fontStyle="B"
-					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
-					fillColor="255,255,255"	border="LTRB" />
-				<body fontFamily="Times" fontStyle="" fontSize="12" align="R"
-					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+			<columnInfo sqlId="DataFineComm" wSize="50">
+				<header display="Data fine commercializzazione" fontFamily="Helvetica" fontStyle="B"
+					fontSize="9" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="200,200,200"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="10" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="255,255,255"
+					fillBColor="200,200,200" border="LR" format="integer" />
 			</columnInfo>
 		</printInfo>
 	</sqlQuery>
-	<sqlQuery id="monthlyPro" displayName="Prospetto mensile dei controlli documentali">
+	<sqlQuery id="monthlyProDA" displayName="Prospetto mensile dei controlli documentali - Data Arrivo">
 		<strSQL>
 			SELECT
 				FattN AS Numero
@@ -189,20 +250,29 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 				,stabCEE AS NstabCEE
 				,TipoProdotto
 				,Colli
-				,Kg
+				,REPLACE(CAST(Kg AS CHAR),'.',',') AS Kg
+				,SUBSTRING(SelDate,1,4) AS Anno
+				,SUBSTRING(SelDate,5,2) AS Mese
 				,'' AS DataControllo
 				,'' AS Esito
 			FROM
 			(
 				SELECT
-					country
+					document
+					,country
 					,district
 					,stabCEE
 					,kind AS TipoProdotto
-					,qty AS Colli
-					,kg AS Kg
-					,document
+					,SUM(qty) AS Colli
+					,SUM(kg) AS Kg
+					,CAST(MIN(CAST(CONCAT(SUBSTRING(arrival,7,4),SUBSTRING(arrival,4,2),SUBSTRING(arrival,1,2)) AS UNSIGNED INTEGER)) AS CHAR) AS SelDate
 				FROM ITEM_DENORM
+				GROUP BY
+					document
+					,country
+					,district
+					,stabCEE
+					,kind
 			)AS I
 			INNER JOIN
 			(
@@ -229,96 +299,431 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			)AS C
 			ON
 			(I.country = C.countryID)
+			ORDER BY
+				CAST(SelDate AS UNSIGNED INTEGER)
 		</strSQL>
-		<printInfo pageOrientation="L" unit="mm" pageSize="A4">
-			<rowInfo headerHSize="7" bodyHSize="6" />
+		<printInfo pageOrientation="L" unit="mm" pageSize="A4"
+			creator="phpmybatch by Andrea Boccaccio" author="Andrea Boccaccio"
+			subject="Prospetto mensile dei controlli documentali"
+			title="Prospetto mensile dei controlli documentali" >
+			<pageHeader kind="Cell" wSize="18" hSize="5"
+				display="Allegato n. .........."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageHeader kind="Cell" wSize="20" hSize="5"
+				display="di pagine .........."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" wSize="35" hSize="5"
+				display="alla comunicazione del ....................."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageHeader kind="Cell" wSize="10" hSize="5"
+				display="prot. n. .........."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" wSize="135" hSize="5"
+				display="U.S.L n. ............."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="R"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageHeader kind="Cell" wSize="40" hSize="5"
+				display="di ..........................."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="5"
+				display="Servizio Veterinario"
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="10"
+				display=""
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="5"
+				display="PROSPETTO MENSILE DEI CONTROLLI DOCUMENTALI"
+				fontFamily="Helvetica" fontStyle="B" fontSize="8" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="5"
+				display="relativi ai PRODOTTI oggetto di scambio comunitario"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" wSize="160" hSize="5"
+				display="DATI CERTIFICATO/DOCUMENTI COMMERCIALI"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="LTRB" ln="0"/>
+			<pageHeader kind="Cell" wSize="115" hSize="5"
+				display="DATI PRODOTTI"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="LTRB" ln="1"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="____________________"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="(1) FAVOREVOLE=F/NON FAVOREVOLE=NF"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="PAGINA N. ....."
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="R"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="In caso di esito non favorevole fare immediata comunicazione, utilizzando gli appositi modelli, all'Ufficio Veterinario per gli adempimenti comunitari del Piemonte"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="* SI/NO (si richiede un minimo del 5%)"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<rowInfo headerHSize="5" bodyHSize="4" rowsPerPage="11"
+				pageFooterStart="40" />
 			<columnInfo sqlId="Numero" wSize="20">
 				<header display="Numero" fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="L"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="text" />
+					fillBColor="255,255,255" border="LTRB" format="text" />
 			</columnInfo>
 			<columnInfo sqlId="Data" wSize="20">
 				<header display="Data" fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="L"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="text" />
+					fillBColor="255,255,255" border="LTRB" format="text" />
 			</columnInfo>
 			<columnInfo sqlId="RilasciatoA" wSize="25">
 				<header display="Rilasciato a" fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="L"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="text" />
+					fillBColor="255,255,255" border="LTRB" format="text" />
 			</columnInfo>
-			<columnInfo sqlId="StatoOrigine" wSize="30">
+			<columnInfo sqlId="StatoOrigine" wSize="25">
 				<header display="Stato di origine" fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+					fillBColor="255,255,255" border="LTRB" format="integer" />
 			</columnInfo>
-			<columnInfo sqlId="Dipartimento" wSize="33">
-				<header display="Dipartimento prov." fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+			<columnInfo sqlId="Dipartimento" wSize="45">
+				<header display="Regione o Dipartimento di provenienza" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+					fillBColor="255,255,255" border="LTRB" format="integer" />
 			</columnInfo>
-			<columnInfo sqlId="NstabCEE" wSize="30">
+			<columnInfo sqlId="NstabCEE" wSize="25">
 				<header display="N. stab. CEE" fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+					fillBColor="255,255,255" border="LTRB" format="integer" />
 			</columnInfo>
 			<columnInfo sqlId="TipoProdotto" wSize="30">
 				<header display="Tipo prodotto" fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+					fillBColor="255,255,255" border="LTRB" format="integer" />
 			</columnInfo>
 			<columnInfo sqlId="Colli" wSize="20">
 				<header display="Colli" fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+					fillBColor="255,255,255" border="LTRB" format="integer" />
 			</columnInfo>
 			<columnInfo sqlId="Kg" wSize="20">
 				<header display="Kg" fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+					fillBColor="255,255,255" border="LTRB" format="integer" />
 			</columnInfo>
 			<columnInfo sqlId="DataControllo" wSize="30">
-				<header display="Data controllo id." fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+				<header display="Data controllo identita'*" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+					fillBColor="255,255,255" border="LTRB" format="integer" />
 			</columnInfo>
 			<columnInfo sqlId="Esito" wSize="15">
-				<header display="Esito" fontFamily="Helvetica" fontStyle="B"
-					fontSize="10" align="C"	textColor="0,0,0" fill="enabled"
+				<header display="Esito(1)" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
 				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
-					fillBColor="255,255,255" border="LR" format="integer" />
+					fillBColor="255,255,255" border="LTRB" format="integer" />
+			</columnInfo>
+		</printInfo>
+	</sqlQuery>
+	<sqlQuery id="monthlyProDF" displayName="Prospetto mensile dei controlli documentali - data fattura">
+		<strSQL>
+			SELECT
+				FattN AS Numero
+				,Data
+				,Fornitore AS RilasciatoA
+				,Nazione AS StatoOrigine
+				,district AS Dipartimento
+				,stabCEE AS NstabCEE
+				,TipoProdotto
+				,Colli
+				,REPLACE(CAST(Kg AS CHAR),'.',',') AS Kg
+				,SUBSTRING(SelDate,1,4) AS Anno
+				,SUBSTRING(SelDate,5,2) AS Mese
+				,'' AS DataControllo
+				,'' AS Esito
+			FROM
+			(
+				SELECT
+					document
+					,country
+					,district
+					,stabCEE
+					,kind AS TipoProdotto
+					,SUM(qty) AS Colli
+					,SUM(kg) AS Kg
+				FROM ITEM_DENORM
+				GROUP BY
+					document
+					,country
+					,district
+					,stabCEE
+					,kind
+			)AS I
+			INNER JOIN
+			(
+				SELECT
+					id AS docID
+					,doc_date AS Data
+					,CONCAT(SUBSTRING(doc_date,7,4),SUBSTRING(doc_date,4,2),SUBSTRING(doc_date,1,2)) AS SelDate
+					,code AS FattN
+					,contractor AS Fornitore
+				FROM DOCUMENT_DENORM
+			)AS D
+			ON
+			(I.document=D.docID)
+			INNER JOIN
+			(
+				SELECT
+					id AS countryID
+					,codealpha2 AS Nazione
+				FROM
+					COUNTRY
+				WHERE
+				(
+					(codealpha2 != 'IT')
+				)
+			)AS C
+			ON
+			(I.country = C.countryID)
+			ORDER BY
+				CAST(SelDate AS UNSIGNED INTEGER)
+		</strSQL>
+		<printInfo pageOrientation="L" unit="mm" pageSize="A4"
+			creator="phpmybatch by Andrea Boccaccio" author="Andrea Boccaccio"
+			subject="Prospetto mensile dei controlli documentali"
+			title="Prospetto mensile dei controlli documentali" >
+			<pageHeader kind="Cell" wSize="18" hSize="5"
+				display="Allegato n. .........."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageHeader kind="Cell" wSize="20" hSize="5"
+				display="di pagine .........."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" wSize="35" hSize="5"
+				display="alla comunicazione del ....................."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageHeader kind="Cell" wSize="10" hSize="5"
+				display="prot. n. .........."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" wSize="135" hSize="5"
+				display="U.S.L n. ............."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="R"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageHeader kind="Cell" wSize="40" hSize="5"
+				display="di ..........................."
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="5"
+				display="Servizio Veterinario"
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="10"
+				display=""
+				fontFamily="Helvetica" fontStyle="" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="5"
+				display="PROSPETTO MENSILE DEI CONTROLLI DOCUMENTALI"
+				fontFamily="Helvetica" fontStyle="B" fontSize="8" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" hSize="5"
+				display="relativi ai PRODOTTI oggetto di scambio comunitario"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageHeader kind="Cell" wSize="160" hSize="5"
+				display="DATI CERTIFICATO/DOCUMENTI COMMERCIALI"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="LTRB" ln="0"/>
+			<pageHeader kind="Cell" wSize="115" hSize="5"
+				display="DATI PRODOTTI"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="C"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="LTRB" ln="1"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="____________________"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="(1) FAVOREVOLE=F/NON FAVOREVOLE=NF"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="0"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="PAGINA N. ....."
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="R"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="In caso di esito non favorevole fare immediata comunicazione, utilizzando gli appositi modelli, all'Ufficio Veterinario per gli adempimenti comunitari del Piemonte"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<pageFooter kind="Cell" hSize="5"
+				display="* SI/NO (si richiede un minimo del 5%)"
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="L"
+				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
+				border="" ln="1"/>
+			<rowInfo headerHSize="5" bodyHSize="4" rowsPerPage="11"
+				pageFooterStart="40" />
+			<columnInfo sqlId="Numero" wSize="20">
+				<header display="Numero" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="Data" wSize="20">
+				<header display="Data" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="RilasciatoA" wSize="25">
+				<header display="Rilasciato a" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="L"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="text" />
+			</columnInfo>
+			<columnInfo sqlId="StatoOrigine" wSize="25">
+				<header display="Stato di origine" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="Dipartimento" wSize="45">
+				<header display="Regione o Dipartimento di provenienza" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="NstabCEE" wSize="25">
+				<header display="N. stab. CEE" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="TipoProdotto" wSize="30">
+				<header display="Tipo prodotto" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="Colli" wSize="20">
+				<header display="Colli" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="Kg" wSize="20">
+				<header display="Kg" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="DataControllo" wSize="30">
+				<header display="Data controllo identita'*" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="integer" />
+			</columnInfo>
+			<columnInfo sqlId="Esito" wSize="15">
+				<header display="Esito(1)" fontFamily="Helvetica" fontStyle="B"
+					fontSize="6" align="C"	textColor="0,0,0" fill="enabled"
+					fillColor="255,255,255"	border="LTRB" />
+				<body fontFamily="Times" fontStyle="" fontSize="8" align="R"
+					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
+					fillBColor="255,255,255" border="LTRB" format="integer" />
 			</columnInfo>
 		</printInfo>
 	</sqlQuery>
@@ -330,7 +735,9 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 				GROUP BY contractor_code
 					,contractor
 		</strSQL>
-		<printInfo  pageOrientation="P" unit="mm" pageSize="A4">
+		<printInfo  pageOrientation="P" unit="mm" pageSize="A4"
+			creator="phpmybatch by Andrea Boccaccio" author="Andrea Boccaccio"
+			subject="Fornitori" title="Fornitori" >
 			<rowInfo headerHSize="7" bodyHSize="6" />
 			<columnInfo sqlId="PIVA" wSize="40">
 				<header display="PIVA" fontFamily="Helvetica" fontStyle="B"
@@ -388,7 +795,7 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			<fieldView sql="DataArrivo" viewField="DataArrivo"/>
 		</fieldsView>
 		<fieldsFilter>
-			<fieldFilter sql="Lotto" filterField="batch"/>
+			<fieldFilter sql="Lotto" filterField="Lotto"/>
 		</fieldsFilter>
 	</wizard>
 	<wizard id="newItemIn" displayName="Lotti immessi nel sistema">
@@ -458,18 +865,18 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			<fieldView sql="Fornitore" viewField="Fornitore"/>
 			<fieldView sql="Nazione" viewField="Nazione"/>
 			<fieldView sql="Dipartimento" viewField="Dipartimento"/>
-			<fieldView sql="NStabCEE" viewField="NStabCEE"/>
-			<fieldView sql="Lotto" viewField="batch"/>
+			<fieldView sql="NStabCEE" viewField="StabCEE"/>
+			<fieldView sql="Lotto" viewField="Lotto"/>
 			<fieldView sql="DataArrivo" viewField="DataArrivo"/>
-			<fieldView sql="Categoria" viewField="kind"/>
+			<fieldView sql="Categoria" viewField="Categoria"/>
 		</fieldsView>
 		<fieldsFilter>
 			<fieldFilter sql="Fornitore" filterField="Fornitore"/>
 			<fieldFilter sql="Nazione" filterField="Nazione"/>
 			<fieldFilter sql="Dipartimento" filterField="Dipartimento"/>
-			<fieldFilter sql="NStabCEE" filterField="NStabCEE"/>
-			<fieldFilter sql="Lotto" filterField="batch"/>
-			<fieldFilter sql="Categoria" filterField="kind"/>
+			<fieldFilter sql="NStabCEE" filterField="StabCEE"/>
+			<fieldFilter sql="Lotto" filterField="Lotto"/>
+			<fieldFilter sql="Categoria" filterField="Categoria"/>
 		</fieldsFilter>
 	</wizard>
 </sqlQueries>

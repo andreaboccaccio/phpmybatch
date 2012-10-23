@@ -42,7 +42,7 @@ class Php_AndreaBoccaccio_Model_PDFXmlSqlQueriesManager extends Php_AndreaBoccac
 				default:
 					$tmpPageSize = preg_split("/x/", $pageSize);
 			}
-			$this->pdfTables[$sqlId] = new Php_AndreaBoccaccio_PDF_SimplePDFTable(
+			$this->pdfTables[$sqlId] = new Php_AndreaBoccaccio_PDF_MyPDFTable(
 					$pageOrientation
 					,$unit
 					,$tmpPageSize
@@ -69,6 +69,28 @@ class Php_AndreaBoccaccio_Model_PDFXmlSqlQueriesManager extends Php_AndreaBoccac
 		$tmpStrNode;
 		$tmpPrintNodes;
 		$tmpPrintNode;
+		$tmpPageHeaderNodes;
+		$tmpPageHeaderNode;
+		$pFound = -1;
+		$tmpPageFooterNodes;
+		$tmpPageFooterNode;
+		$pKind = null;
+		$pX = null;
+		$pY = null;
+		$pWSize = null;
+		$pHSize = null;
+		$pDisplay = null;
+		$pFontFamily = null;
+		$pFontStyle = null;
+		$pFontSize = null;
+		$pAlign = null;
+		$pTextColor = null;
+		$pFill = null;
+		$pFillColor = null;
+		$pBorder = null;
+		$pLn = null;
+		$pType = null;
+		$pLink = null;
 		$tmpRowNodes;
 		$tmpRowNode;
 		$tmpColoumnNodes;
@@ -109,14 +131,249 @@ class Php_AndreaBoccaccio_Model_PDFXmlSqlQueriesManager extends Php_AndreaBoccac
 						,$tmpPrintNode->getAttribute('unit')
 						,$tmpPrintNode->getAttribute('pageSize')
 						);
-				$tmpRowNodes = $tmpPrintNode->getElementsByTagName('rowInfo');
 				$tmpPDFTable = $this->pdfTables[$tmpNode->getAttribute('id')];
+				$tmpPageHeaderNodes = $tmpPrintNode->getElementsByTagName('pageHeader');
+				$pFound = $tmpPageHeaderNodes->length;
+				for($j=0; $j < $pFound; ++$j) {
+					$tmpPageHeaderNode = $tmpPageHeaderNodes->item($j);
+					$pKind = $tmpPageHeaderNode->getAttribute('kind');
+					if($tmpPageHeaderNode->hasAttribute('x')) {
+						$pX = $tmpPageHeaderNode->getAttribute('x');
+					} else {
+						$pX = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('y')) {
+						$pY = $tmpPageHeaderNode->getAttribute('y');
+					} else {
+						$pY = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('wSize')) {
+						$pWSize = $tmpPageHeaderNode->getAttribute('wSize');
+					} else {
+						$pWSize = 0;
+					}
+					if($tmpPageHeaderNode->hasAttribute('hSize')) {
+						$pHSize = $tmpPageHeaderNode->getAttribute('hSize');
+					} else {
+						$pHSize = 0;
+					}
+					if($tmpPageHeaderNode->hasAttribute('display')) {
+						$pDisplay = $tmpPageHeaderNode->getAttribute('display');
+					} else {
+						$pDisplay = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('fontFamily')) {
+						$pFontFamily = $tmpPageHeaderNode->getAttribute('fontFamily');
+					} else {
+						$pFontFamily = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('fontStyle')) {
+						$pFontStyle = $tmpPageHeaderNode->getAttribute('fontStyle');
+					} else {
+						$pFontStyle = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('fontSize')) {
+						$pFontSize = $tmpPageHeaderNode->getAttribute('fontSize');
+					} else {
+						$pFontSize = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('align')) {
+						$pAlign = $tmpPageHeaderNode->getAttribute('align');
+					} else {
+						$pAlign = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('textColor')) {
+						$pTextColor = $tmpPageHeaderNode->getAttribute('textColor');
+					} else {
+						$pTextColor = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('fill')) {
+						if(strncmp($tmpPageHeaderNode->getAttribute('fill'),'enabled',strlen('enabled')) == 0) {
+							$pFill = true;
+						} else {
+							$pFill = false;
+						}
+					} else {
+						$pFill = false;
+					}
+					if($tmpPageHeaderNode->hasAttribute('fillColor')) {
+						$pFillColor = $tmpPageHeaderNode->getAttribute('fillColor');
+					} else {
+						$pFillColor = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('border')) {
+						$pBorder = $tmpPageHeaderNode->getAttribute('border');
+					} else {
+						$pBorder = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('ln')) {
+						$pLn = $tmpPageHeaderNode->getAttribute('ln');
+					} else {
+						$pLn = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('type')) {
+						$pType = $tmpPageHeaderNode->getAttribute('type');
+					} else {
+						$pType = null;
+					}
+					if($tmpPageHeaderNode->hasAttribute('link')) {
+						$pLink = $tmpPageHeaderNode->getAttribute('link');
+					} else {
+						$pLink = null;
+					}
+					$tmpPDFTable->addPageHeader($pKind
+							,$pX
+							,$pY
+							,$pWSize
+							,$pHSize
+							,$pDisplay
+							,$pFontFamily
+							,$pFontStyle
+							,$pFontSize
+							,$pAlign
+							,$pTextColor
+							,$pFill
+							,$pFillColor
+							,$pBorder
+							,$pLn
+							,$pType
+							,$pLink
+							);
+				}
+				$tmpPageFooterNodes = $tmpPrintNode->getElementsByTagName('pageFooter');
+				$pFound = $tmpPageFooterNodes->length;
+				for($j=0; $j < $pFound; ++$j) {
+					$tmpPageFooterNode = $tmpPageFooterNodes->item($j);
+					$pKind = $tmpPageFooterNode->getAttribute('kind');
+					if($tmpPageFooterNode->hasAttribute('x')) {
+						$pX = $tmpPageFooterNode->getAttribute('x');
+					} else {
+						$pX = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('y')) {
+						$pY = $tmpPageFooterNode->getAttribute('y');
+					} else {
+						$pY = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('wSize')) {
+						$pWSize = $tmpPageFooterNode->getAttribute('wSize');
+					} else {
+						$pWSize = 0;
+					}
+					if($tmpPageFooterNode->hasAttribute('hSize')) {
+						$pHSize = $tmpPageFooterNode->getAttribute('hSize');
+					} else {
+						$pHSize = 0;
+					}
+					if($tmpPageFooterNode->hasAttribute('display')) {
+						$pDisplay = $tmpPageFooterNode->getAttribute('display');
+					} else {
+						$pDisplay = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('fontFamily')) {
+						$pFontFamily = $tmpPageFooterNode->getAttribute('fontFamily');
+					} else {
+						$pFontFamily = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('fontStyle')) {
+						$pFontStyle = $tmpPageFooterNode->getAttribute('fontStyle');
+					} else {
+						$pFontStyle = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('fontSize')) {
+						$pFontSize = $tmpPageFooterNode->getAttribute('fontSize');
+					} else {
+						$pFontSize = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('align')) {
+						$pAlign = $tmpPageFooterNode->getAttribute('align');
+					} else {
+						$pAlign = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('textColor')) {
+						$pTextColor = $tmpPageFooterNode->getAttribute('textColor');
+					} else {
+						$pTextColor = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('fill')) {
+						if(strncmp($tmpPageFooterNode->getAttribute('fill'),'enabled',strlen('enabled')) == 0) {
+							$pFill = true;
+						} else {
+							$pFill = false;
+						}
+					} else {
+						$pFill = false;
+					}
+					if($tmpPageFooterNode->hasAttribute('fillColor')) {
+						$pFillColor = $tmpPageFooterNode->getAttribute('fillColor');
+					} else {
+						$pFillColor = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('border')) {
+						$pBorder = $tmpPageFooterNode->getAttribute('border');
+					} else {
+						$pBorder = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('ln')) {
+						$pLn = $tmpPageFooterNode->getAttribute('ln');
+					} else {
+						$pLn = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('type')) {
+						$pType = $tmpPageFooterNode->getAttribute('type');
+					} else {
+						$pType = null;
+					}
+					if($tmpPageFooterNode->hasAttribute('link')) {
+						$pLink = $tmpPageFooterNode->getAttribute('link');
+					} else {
+						$pLink = null;
+					}
+					$tmpPDFTable->addPageFooter($pKind
+							,$pX
+							,$pY
+							,$pWSize
+							,$pHSize
+							,$pDisplay
+							,$pFontFamily
+							,$pFontStyle
+							,$pFontSize
+							,$pAlign
+							,$pTextColor
+							,$pFill
+							,$pFillColor
+							,$pBorder
+							,$pLn
+							,$pType
+							,$pLink
+					);
+				}
+				$tmpRowNodes = $tmpPrintNode->getElementsByTagName('rowInfo');
+				
+				if($tmpPrintNode->hasAttribute('creator')) {
+					$tmpPDFTable->SetCreator($tmpPrintNode->getAttribute('creator'));
+				}
+				if($tmpPrintNode->hasAttribute('author')) {
+					$tmpPDFTable->SetAuthor($tmpPrintNode->getAttribute('author'));
+				}
+				if($tmpPrintNode->hasAttribute('subject')) {
+					$tmpPDFTable->SetSubject($tmpPrintNode->getAttribute('subject'));
+				}
+				if($tmpPrintNode->hasAttribute('title')) {
+					$tmpPDFTable->SetTitle($tmpPrintNode->getAttribute('title'));
+				}
 				$tmpPDFTable->setTableTitle($tmpNode->getAttribute('displayName'));
 				$tmpPDFTable->setRepeatTableHeader(true);
 				if($tmpRowNodes->length == 1) {
 					$tmpRowNode = $tmpRowNodes->item(0);
 					$tmpPDFTable->setRowInfo($tmpRowNode->getAttribute('headerHSize')
 							,$tmpRowNode->getAttribute('bodyHSize'));
+					if($tmpRowNode->hasAttribute('rowsPerPage')) {
+						$tmpPDFTable->setRowsPerPage($tmpRowNode->getAttribute('rowsPerPage'));
+					}
+					if($tmpRowNode->hasAttribute('pageFooterStart')) {
+						$tmpPDFTable->setPageFooterStart($tmpRowNode->getAttribute('pageFooterStart'));
+					}
 				}
 				$tmpColoumnNodes = $tmpPrintNode->getElementsByTagName('columnInfo');
 				$cFound = $tmpColoumnNodes->length;

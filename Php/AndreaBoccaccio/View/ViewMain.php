@@ -1,17 +1,17 @@
 <?php
 /*
- * phpmywhs - An open source warehouse management software.
+ * phpmybatch - An open source batches of goods management system software.
  * Copyright (C)2012 Andrea Boccaccio
  * contact email: andrea@andreaboccaccio.com
  * 
- * This file is part of phpmywhs.
+ * This file is part of phpmybatch.
  * 
- * phpmywhs is free software: you can redistribute it and/or modify
+ * phpmybatch is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * phpmywhs is distributed in the hope that it will be useful,
+ * phpmybatch is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
@@ -61,7 +61,7 @@ class Php_AndreaBoccaccio_View_ViewMain extends Php_AndreaBoccaccio_View_ViewCon
 		$mytime = time();
 		
 		$ret .= "<div id=\"body\">";
-		$ret .= "Benvenuti in phpmywhs";
+		$ret .= "Benvenuti in phpmybatch";
 		$ret .= "<p>Chiamata a time()" . $mytime ."</p>";
 		$ret .= "<p>Local server datetime " . strftime('%Y%m%d %H%M%S',$mytime) ."</p>";
 		$ret .= "<p>UTC datetime " . gmstrftime('%Y%m%d %H%M%S',$mytime) ."</p>";
