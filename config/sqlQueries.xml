@@ -68,6 +68,11 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 				fontFamily="Helvetica" fontStyle="B" fontSize="16" align="C"
 				textColor="0,0,0" fill="enabled" fillColor="255,255,255"
 				border="LTRB" ln="1"/>
+			<pageFooter kind="Cell" hSize="5"
+				display=""
+				fontFamily="Helvetica" fontStyle="B" fontSize="6" align="C"
+				textColor="0,0,0" fill="enabled" fillColor="255,255,255"
+				border="" ln="1"/>
 			<rowInfo headerHSize="7" bodyHSize="6" rowsPerPage="31" />
 			<columnInfo sqlId="Data" wSize="30">
 				<header display="Data" fontFamily="Helvetica" fontStyle="B"
@@ -93,7 +98,7 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 					textColor="0,0,0" fill="enabled" fillAColor="200,200,200"
 					fillBColor="255,255,255" border="LR" format="text" />
 			</columnInfo>
-			<columnInfo sqlId="LottoMacellazione" wSize="50">
+			<columnInfo sqlId="LottoMacellazione" wSize="75">
 				<header display="Lotto Macellazione" fontFamily="Helvetica" fontStyle="B"
 					fontSize="14" align="C"	textColor="0,0,0" fill="enabled"
 					fillColor="255,255,255"	border="LTRB" />
@@ -141,13 +146,15 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			)AS O
 			ON
 			(I.LottoEntrato=O.LottoUscita)
+			ORDER BY
+				CAST(MinDate AS UNSIGNED INTEGER)
 		</strSQL>
 		<printInfo pageOrientation="P" unit="mm" pageSize="A4"
 			creator="phpmybatch by Andrea Boccaccio" author="Andrea Boccaccio"
 			subject="Registro Carico e Scarico delle Carni Bovine"
 			title="Registro Carico e Scarico delle Carni Bovine" >
 			<pageHeader kind="Cell" hSize="7"
-				display="Carni Bovine S.r.l."
+				display="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
 				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
 				border="" ln="1"/>
@@ -157,12 +164,12 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
 				border="" ln="0" />
 			<pageHeader kind="Cell" wSize="75" hSize="7"
-				display="Via Buoi, 37"
+				display="Via XXXXXXXX, XX"
 				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
 				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
 				border="" ln="0"/>
 			<pageHeader kind="Cell" wSize="75" hSize="7"
-				display="XXXXX Tori Impazziti XX"
+				display="XXXXX XXXXXXXXXX XXXXXXXXX XX"
 				fontFamily="Helvetica" fontStyle="" fontSize="12" align="C"
 				textColor="0,0,0" fill="disabled" fillColor="200,200,200"
 				border="" ln="0"/>
