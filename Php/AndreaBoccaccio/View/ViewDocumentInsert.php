@@ -106,7 +106,7 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 						$koBitArray = $koBitArray | 0x10;
 					}
 					if(isset($_POST["contractor"])) {
-						if(preg_match("/^[a-zA-Z0-9 \-_]{0,50}$/", $_POST["contractor"])) {
+						if(preg_match("/^[a-zA-Z0-9 \-_.]{0,50}$/", $_POST["contractor"])) {
 							$koBitArray = $koBitArray & 0x7fffffdf;
 							$initArray["contractor"] = $db->sanitize($_POST["contractor"]);
 						}
@@ -130,7 +130,7 @@ class Php_AndreaBoccaccio_View_ViewDocumentInsert extends Php_AndreaBoccaccio_Vi
 						$koBitArray = $koBitArray | 0x80;
 					}
 					if(isset($_POST["description"])) {
-						if(preg_match("/^[a-zA-Z0-9 \-_:]{0,255}$/", $_POST["description"])) {
+						if(preg_match("/^[a-zA-Z0-9 \-_:.]{0,255}$/", $_POST["description"])) {
 							$koBitArray = $koBitArray & 0x7ffffbff;
 							$initArray["description"] = $db->sanitize($_POST["description"]);
 						}

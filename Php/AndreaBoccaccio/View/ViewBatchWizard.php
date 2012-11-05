@@ -17,7 +17,7 @@
  * GNU Affero General Public License for more details.
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
+ * along with phpmybatch. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
 class Php_AndreaBoccaccio_View_ViewBatchWizard extends Php_AndreaBoccaccio_View_ViewWizardAbstract {
