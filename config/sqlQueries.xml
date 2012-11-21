@@ -37,6 +37,10 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 					,country
 					,document
 				FROM ITEM_DENORM
+				WHERE
+				(
+					(getBatchKind(batch)='BOVINI')
+				)
 			)AS I
 			INNER JOIN
 			(
@@ -131,6 +135,10 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 					,CAST(MIN(CAST(CONCAT(SUBSTRING(arrival,7,4),SUBSTRING(arrival,4,2),SUBSTRING(arrival,1,2)) AS UNSIGNED INTEGER)) AS CHAR) AS MinDate
 					,SUM(kg) AS qta
 				FROM ITEM_DENORM
+				WHERE
+				(
+					(getBatchKind(batch)='BOVINI')
+				)
 				GROUP BY
 					batch
 			)AS I
@@ -274,6 +282,10 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 					,SUM(kg) AS Kg
 					,CAST(MIN(CAST(CONCAT(SUBSTRING(arrival,7,4),SUBSTRING(arrival,4,2),SUBSTRING(arrival,1,2)) AS UNSIGNED INTEGER)) AS CHAR) AS SelDate
 				FROM ITEM_DENORM
+				WHERE
+				(
+					(getBatchKind(batch)='BOVINI')
+				)
 				GROUP BY
 					document
 					,country
@@ -517,6 +529,10 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 					,SUM(qty) AS Colli
 					,SUM(kg) AS Kg
 				FROM ITEM_DENORM
+				WHERE
+				(
+					(getBatchKind(batch)='BOVINI')
+				)
 				GROUP BY
 					document
 					,country
