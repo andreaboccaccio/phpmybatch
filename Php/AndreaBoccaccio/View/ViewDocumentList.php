@@ -211,7 +211,7 @@ class Php_AndreaBoccaccio_View_ViewDocumentList extends Php_AndreaBoccaccio_View
 		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
 		$ret .= "?op=docList&page=0" . $getWherePrefix . $myGetWhere;
 		$ret .= "&orderby=" . $this->getNewOrder("kind") . "\"\">tipo</a>";
-		$ret .= "<th class=\"tab\">cancellazione</th>";
+		$ret .= "</th>";
 		$ret .= "</tr>";
 		for($i = 0; $i < $max; ++$i) {
 			$ret .= "<tr class=\"tab\">";
@@ -234,11 +234,6 @@ class Php_AndreaBoccaccio_View_ViewDocumentList extends Php_AndreaBoccaccio_View
 			$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
 			$ret .= "?op=doc&id=" . $docDenorms[$i]->getVar("id");
 			$ret .= "\">" . $docDenorms[$i]->getVar("kind") ."</a>";
-			$ret .= "</td>";
-			$ret .= "<td class=\"tab\">";
-			$ret .= "<a href=\"" . $_SERVER["PHP_SELF"];
-			$ret .= "?op=doc&id=" . $docDenorms[$i]->getVar("id");
-			$ret .= "&delete=maybe\">cancella</a>";
 			$ret .= "</td>";
 			$ret .= "</tr>";
 		}

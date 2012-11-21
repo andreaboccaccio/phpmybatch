@@ -41,7 +41,9 @@ class Php_AndreaBoccaccio_View_ViewDocument extends Php_AndreaBoccaccio_View_Vie
 
 	public function getMenu() {
 		$ret = parent::getMenu();
+		$doc = new Php_AndreaBoccaccio_Model_Document();
 
+		$doc->loadFromDbById(intval($_GET["id"]));
 		$ret .= "<div id=\"docMain\" class=\"menuentry\">\n";
 		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"] . "?op=main\">Principale</a>";
 		$ret .= "</div>\n";
@@ -68,6 +70,14 @@ class Php_AndreaBoccaccio_View_ViewDocument extends Php_AndreaBoccaccio_View_Vie
 		$ret .= $_GET["id"];
 		$ret .= "\">Trasferisci Lotti Guidato</a>";
 		$ret .= "</div>\n";
+		if(($doc->isEffaceable())&&(!isset($_GET["delete"]))) {
+			$ret .= "<div id=\"docEfface\" class=\"menuentry\">\n";
+			$ret .= "<a href=\"" . $_SERVER["PHP_SELF"] . "?op=doc&id=";
+			$ret .= $_GET["id"];
+			$ret .= "&delete=maybe";
+			$ret .= "\">Cancella Documento</a>";
+			$ret .= "</div>\n";
+		}
 		$ret .= "</div>\n";
 
 		return $ret;
