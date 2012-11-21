@@ -902,6 +902,9 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			<fieldMapping sql="Colli" viewInsert="qty"/>
 			<fieldMapping sql="kg" viewInsert="kg"/>
 		</fieldsMapping>
+		<paramsMapping>
+			<paramMapping par="docId" viewInsert="docId"/>
+		</paramsMapping>
 		<fieldsView>
 			<fieldView sql="Fornitore" viewField="Fornitore"/>
 			<fieldView sql="Nazione" viewField="Nazione"/>

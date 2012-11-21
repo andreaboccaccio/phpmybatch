@@ -20,7 +20,7 @@
  * along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-class Php_AndreaBoccaccio_Model_ItemInWizard extends Php_AndreaBoccaccio_Model_WizardInsViewAbstract
+class Php_AndreaBoccaccio_Model_ItemInWizard extends Php_AndreaBoccaccio_Model_WizardParamsMappingAbstract
 {
 	private static $instance = null;
 	

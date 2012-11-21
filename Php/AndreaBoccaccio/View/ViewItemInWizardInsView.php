@@ -20,7 +20,7 @@
  * along with phpmywhs. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-class Php_AndreaBoccaccio_View_ViewItemInWizardInsView extends Php_AndreaBoccaccio_View_ViewWizardAbstract {
+class Php_AndreaBoccaccio_View_ViewItemInWizardInsView extends Php_AndreaBoccaccio_View_ViewParamsWizardAbstract {
 	
 	private static $instance = null;
 	
@@ -34,11 +34,6 @@ class Php_AndreaBoccaccio_View_ViewItemInWizardInsView extends Php_AndreaBoccacc
 		$this->setKind('itemInWizard');
 		$this->setWizard(Php_AndreaBoccaccio_Model_ItemInWizard::getInstance());
 		$this->setQueryId('newItemIn');
-		
-		if(isset($_GET["docId"])) {
-			$tmpCustomGet = "&docId=" . $_GET["docId"];
-			$this->setCustomGet($tmpCustomGet);	
-		}
 	}
 	
 	public static function getInstance() {
