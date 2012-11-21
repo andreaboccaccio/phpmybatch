@@ -804,6 +804,8 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		</fieldsMapping>
 		<paramsMapping>
 			<paramMapping par="docId" viewInsert="newDocId"/>
+			<paramMapping par="oldDocId" viewInsert="newDocId"/>
+			<paramMapping par="newDocId" viewInsert="newDocId"/>
 		</paramsMapping>
 		<fieldsView>
 			<fieldView sql="kind" viewField="Tipo"/>
