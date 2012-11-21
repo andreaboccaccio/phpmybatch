@@ -62,6 +62,9 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			)AS C
 			ON
 			(I.country = C.countryID)
+			ORDER BY
+				CAST(CONCAT(SUBSTRING(Data,7,4),SUBSTRING(Data,4,2),SUBSTRING(Data,1,2)) AS UNSIGNED INTEGER)
+				,LottoEntrato
 		</strSQL>
 		<printInfo pageOrientation="P" unit="mm" pageSize="A4"
 			creator="phpmybatch by Andrea Boccaccio" author="Andrea Boccaccio"

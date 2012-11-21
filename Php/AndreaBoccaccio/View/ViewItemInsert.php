@@ -151,10 +151,7 @@ class Php_AndreaBoccaccio_View_ViewItemInsert extends Php_AndreaBoccaccio_View_V
 						$initArray["batch_orig"] = $db->sanitize($_POST["batch_orig"]);
 					}
 					if(isset($_POST["kg"])) {
-						$initArray["kg"] = $db->sanitize($_POST["kg"]);
-					}
-					if(isset($_POST["kg"])) {
-						$initArray["kg"] = $db->sanitize($_POST["kg"]);
+						$initArray["kg"] = $db->sanitize(str_replace(",", ".", $_POST["kg"]));
 					}
 					if(isset($_POST["arrival"])) {
 						$initArray["arrival"] = $db->sanitize($_POST["arrival"]);
