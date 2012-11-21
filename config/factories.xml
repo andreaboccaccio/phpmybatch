@@ -48,6 +48,8 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewBatchInsert" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewBatch" />
 		<class default="no" id="Php_AndreaBoccaccio_View_ViewBatchWizard" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewStealBatchWizard" />
+		<class default="no" id="Php_AndreaBoccaccio_View_ViewStealBatch" />
 	</factory>
 	<factory id="mappingModel">
 		<class default="yes" id="Php_AndreaBoccaccio_Model_MappingModelNull" />

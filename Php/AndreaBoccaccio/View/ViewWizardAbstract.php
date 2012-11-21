@@ -104,7 +104,7 @@ abstract class Php_AndreaBoccaccio_View_ViewWizardAbstract extends Php_AndreaBoc
 		$ret = '';
 		$tmpArrKey = '';
 	
-		$tmpQueryId = $this->queryId;
+		$tmpQueryId = $this->getQueryId();
 		$selectQuery = 0;
 	
 		if(strlen(trim($myGetWhere))>0) {

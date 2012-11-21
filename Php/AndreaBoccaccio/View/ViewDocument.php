@@ -58,10 +58,15 @@ class Php_AndreaBoccaccio_View_ViewDocument extends Php_AndreaBoccaccio_View_Vie
 		$ret .= $_GET["id"];
 		$ret .= "\">Nuovo Lotto</a>";
 		$ret .= "</div>\n";
-		$ret .= "<div id=\"docItemNew\" class=\"menuentry\">\n";
+		$ret .= "<div id=\"docBatchNewWizard\" class=\"menuentry\">\n";
 		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"] . "?op=itemInWizard&docId=";
 		$ret .= $_GET["id"];
 		$ret .= "\">Nuovo Lotto Guidato</a>";
+		$ret .= "</div>\n";
+		$ret .= "<div id=\"docStealBatchWizard\" class=\"menuentry\">\n";
+		$ret .= "<a href=\"" . $_SERVER["PHP_SELF"] . "?op=batchStealWizard&docId=";
+		$ret .= $_GET["id"];
+		$ret .= "\">Trasferisci Lotti Guidato</a>";
 		$ret .= "</div>\n";
 		$ret .= "</div>\n";
 

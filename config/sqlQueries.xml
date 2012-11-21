@@ -764,6 +764,40 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 			</columnInfo>
 		</printInfo>
 	</sqlQuery>
+	<wizard id="stealBatch" displayName="Documenti DA cui spostare i lotti">
+		<strSQL>
+			SELECT
+				id
+				,kind
+				,contractor
+				,doc_date
+				,code
+			FROM
+				DOCUMENT_DENORM
+			ORDER BY
+				kind
+				,contractor
+				,code
+		</strSQL>
+		<fieldsMapping>
+			<insView id="batchSteal"/>
+			<fieldMapping sql="id" viewInsert="oldDocId"/>
+		</fieldsMapping>
+		<paramsMapping>
+			<paramMapping par="docId" viewInsert="newDocId"/>
+		</paramsMapping>
+		<fieldsView>
+			<fieldView sql="kind" viewField="Tipo"/>
+			<fieldView sql="contractor" viewField="Fornitore"/>
+			<fieldView sql="doc_date" viewField="Data"/>
+			<fieldView sql="code" viewField="Numero"/>
+		</fieldsView>
+		<fieldsFilter>
+			<fieldFilter sql="kind" filterField="Tipo"/>
+			<fieldFilter sql="contractor" filterField="Fornitore"/>
+			<fieldFilter sql="code" filterField="Numero"/>
+		</fieldsFilter>
+	</wizard>
 	<wizard id="newBatch" displayName="Lotti non ancora commercializzati">
 		<strSQL>
 			SELECT
