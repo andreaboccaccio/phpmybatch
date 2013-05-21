@@ -277,8 +277,10 @@ class Php_AndreaBoccaccio_PDF_SimplePDFTable extends FPDF {
 			$this->Ln();
 			++$nRow;
 			if($this->getRowsPerPage()>0) {
-				if($this->getRowsPerPage() == $nRow) {
-					$this->AddPage();
+				if($nRow > 0) {
+					if($nRow%($this->getRowsPerPage()) == 0) {
+						$this->AddPage();
+					}
 				}
 			}
 		}
