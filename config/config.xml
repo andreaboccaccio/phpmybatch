@@ -49,6 +49,7 @@ config/factories.xml
 <sqlFormat>%d/%m/%Y</sqlFormat>
 <lowerLimitCode>_lld_</lowerLimitCode>
 <upperLimitCode>_uld_</upperLimitCode>
+<orderCode>_od_</orderCode>
 <datesFields>DATA,DATAARRIVO,DATAINIZIOCOMM,DATAFINECOMM</datesFields>
 </date>
 <model>

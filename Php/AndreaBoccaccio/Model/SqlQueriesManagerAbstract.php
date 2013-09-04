@@ -85,6 +85,8 @@ abstract class Php_AndreaBoccaccio_Model_SqlQueriesManagerAbstract implements Ph
 		$offset = -1;
 		$dateLowLimCode = $setting->getSettingFromFullName('date.lowerLimitCode');
 		$dateUpLimCode = $setting->getSettingFromFullName('date.upperLimitCode');
+		$dateOrderCode = $setting->getSettingFromFullName('date.orderCode');
+		$orderbyDate = '';
 		
 		$strSQL .= $this->getQuery($queryId);
 		$rowsPerPage = strval(intval($rowsPerPage));
@@ -110,10 +112,10 @@ abstract class Php_AndreaBoccaccio_Model_SqlQueriesManagerAbstract implements Ph
 						} else if (substr_compare($name, $dateUpLimCode, 0, strlen($dateUpLimCode))==0) {
 							$strSQLOptional .= "STR_TO_DATE(T01.";
 							$strSQLOptional .= substr($name,strlen($dateUpLimCode));
-							$strSQLOptional .= ",'%d/%m/%Y')";
+							$strSQLOptional .= "','". $dateFormat . "')";
 							$strSQLOptional .= " <= STR_TO_DATE('";
 							$strSQLOptional .= $db->sanitize($value);
-							$strSQLOptional .= "','%d/%m/%Y')";
+							$strSQLOptional .= "','" . $dateFormat . "')";
 						}else {
 							$strSQLOptional .= "CONVERT(T01.";
 							$strSQLOptional .= $name;
@@ -132,7 +134,22 @@ abstract class Php_AndreaBoccaccio_Model_SqlQueriesManagerAbstract implements Ph
 		}	
 		if($orderby != null) {
 			$strSQLOrderBy .= " ORDER BY ";
-			$strSQLOrderBy .= $orderby;
+ 			if(substr_compare($orderby, $dateOrderCode, 0, strlen($dateOrderCode))==0) {
+ 				$orderbyDate = substr($orderby,strlen($dateOrderCode));
+ 				$posDESC = stripos($orderbyDate, ' DESC');
+ 				if($posDESC !== false) {
+ 					$orderbyDate = preg_replace('/DESC/', '', $orderbyDate);
+ 				}
+ 				$strSQLOrderBy .= "STR_TO_DATE(T01.";
+ 				$strSQLOrderBy .= $orderbyDate;
+ 				$strSQLOrderBy .= ",'". $dateFormat . "')";
+ 				if($posDESC !== false) {
+ 					$strSQLOrderBy .= " DESC";
+ 				}
+ 			} else {
+ 				$strSQLOrderBy .= $orderby;
+ 			}
+ 			//var_dump($strSQLOrderBy);
 		}
 		$strSQLCount .= ") AS T01 " . $strSQLOptional . ";";
 		$res = $db->execQuery($strSQLCount);

@@ -51,6 +51,9 @@ abstract class Php_AndreaBoccaccio_View_ViewConsistentListAbstract extends Php_A
 	protected function getNewOrder($newOrder) {
 		$ret = $newOrder;
 		$cmp = '';
+		$setting = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance()->getSettings('xml');
+		$dateOrderCode = $setting->getSettingFromFullName('date.orderCode');
+		$dates = preg_split('/,/', $setting->getSettingFromFullName('date.datesFields'));
 	
 		if(isset($_POST["orderby"])) {
 			if($_POST["orderby"] != null) {
@@ -66,12 +69,21 @@ abstract class Php_AndreaBoccaccio_View_ViewConsistentListAbstract extends Php_A
 			if($_GET["orderby"] != null) {
 				$cmp = trim($_GET["orderby"]);
 			}
-		}
-		if(strcmp($newOrder, $cmp)==0) {
-			$ret = $newOrder . " DESC";
-		}
-		else {
-			$ret = $newOrder;
+		}		
+		if(in_array(strtoupper($newOrder),$dates)) {
+			if(strcmp($newOrder, preg_replace('/' . $dateOrderCode. '/', '', $cmp))==0) {
+				$ret = $dateOrderCode . $newOrder . " DESC";
+			}
+			else {
+				$ret = $dateOrderCode . $newOrder;
+			}
+		} else {
+			if(strcmp($newOrder, $cmp)==0) {
+				$ret = $newOrder . " DESC";
+			}
+			else {
+				$ret = $newOrder;
+			}
 		}
 	
 		return $ret;
