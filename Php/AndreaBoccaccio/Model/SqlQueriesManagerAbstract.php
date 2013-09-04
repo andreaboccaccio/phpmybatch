@@ -112,7 +112,7 @@ abstract class Php_AndreaBoccaccio_Model_SqlQueriesManagerAbstract implements Ph
 						} else if (substr_compare($name, $dateUpLimCode, 0, strlen($dateUpLimCode))==0) {
 							$strSQLOptional .= "STR_TO_DATE(T01.";
 							$strSQLOptional .= substr($name,strlen($dateUpLimCode));
-							$strSQLOptional .= "','". $dateFormat . "')";
+							$strSQLOptional .= ",'". $dateFormat . "')";
 							$strSQLOptional .= " <= STR_TO_DATE('";
 							$strSQLOptional .= $db->sanitize($value);
 							$strSQLOptional .= "','" . $dateFormat . "')";
