@@ -80,6 +80,8 @@ class Php_AndreaBoccaccio_View_ViewSqlQueries extends Php_AndreaBoccaccio_View_V
 		$rowsPerPage = -1;
 		$totalRows = -1;
 		$totalPages = -1;
+		$dates = array();
+		$dates[] = "Data";
 		$ret = '';
 		
 		if(strlen(trim($myGetWhere))>0) {
@@ -240,11 +242,24 @@ class Php_AndreaBoccaccio_View_ViewSqlQueries extends Php_AndreaBoccaccio_View_V
 				$ret .= $_SERVER["PHP_SELF"];
 				$ret .= "?op=sqlQueries&queryId=" . trim($myGP["queryId"]) . "&page=0\"> ";
 				for($i = 0; $i < $nFields; ++$i) {
-					$ret .= "<div class=\"label\">" . $fields[$i] . ":</div>";
-					$ret .= "<div class=\"input\">";
-					$ret .= "<input type=\"text\" name=\"w" . $fields[$i] . "\" />";
-					$ret .= "</div>";
-					$ret .= "<br />";
+					if(in_array(strtoupper($fields[$i]),$dates)) {
+						$ret .= "<div class=\"label\">" . $fields[$i] . " Dal :</div>";
+						$ret .= "<div class=\"input\">";
+						$ret .= "<input type=\"text\" name=\"w_>d_" . $fields[$i] . "\" />";
+						$ret .= "</div>";
+						$ret .= "<br />";
+						$ret .= "<div class=\"label\">" . $fields[$i] . " Al :</div>";
+						$ret .= "<div class=\"input\">";
+						$ret .= "<input type=\"text\" name=\"w_<d_" . $fields[$i] . "\" />";
+						$ret .= "</div>";
+						$ret .= "<br />";
+					} else {
+						$ret .= "<div class=\"label\">" . $fields[$i] . ":</div>";
+						$ret .= "<div class=\"input\">";
+						$ret .= "<input type=\"text\" name=\"w" . $fields[$i] . "\" />";
+						$ret .= "</div>";
+						$ret .= "<br />";
+					}
 				}
 				$ret .= "<div class=\"submit\">";
 				$ret .= "<input type=\"submit\" value=\"Filtra\" />";

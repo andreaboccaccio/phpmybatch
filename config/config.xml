@@ -45,6 +45,12 @@ config/factories.xml
 <memory>
 <rowsPerPage>10</rowsPerPage>
 </memory>
+<date>
+<sqlFormat>%d/%m/%Y</sqlFormat>
+<lowerLimitCode>_lld_</lowerLimitCode>
+<upperLimitCode>_uld_</upperLimitCode>
+<datesFields>DATA,DATAARRIVO,DATAINIZIOCOMM,DATAFINECOMM</datesFields>
+</date>
 <model>
 <fileName>
 config/model.xml

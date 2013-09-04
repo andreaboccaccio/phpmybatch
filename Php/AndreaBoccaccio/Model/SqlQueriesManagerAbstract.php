@@ -74,6 +74,7 @@ abstract class Php_AndreaBoccaccio_Model_SqlQueriesManagerAbstract implements Ph
 		$setting = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance()->getSettings('xml');
 		$db = Php_AndreaBoccaccio_Db_DbFactory::getInstance()->getDb($setting->getSettingFromFullName('classes.db'));
 		$rowsPerPage = $setting->getSettingFromFullName('memory.rowsPerPage');
+		$dateFormat = $setting->getSettingFromFullName('date.sqlFormat');
 		$strSQLCount = "SELECT COUNT(*) AS totalRows, CEIL(COUNT(*)/";
 		$strSQL = "SELECT T01.* FROM (";
 		$strSQLOptional = '';
@@ -82,6 +83,8 @@ abstract class Php_AndreaBoccaccio_Model_SqlQueriesManagerAbstract implements Ph
 		$totalRows = -1;
 		$totalPages = -1;
 		$offset = -1;
+		$dateLowLimCode = $setting->getSettingFromFullName('date.lowerLimitCode');
+		$dateUpLimCode = $setting->getSettingFromFullName('date.upperLimitCode');
 		
 		$strSQL .= $this->getQuery($queryId);
 		$rowsPerPage = strval(intval($rowsPerPage));
@@ -96,11 +99,28 @@ abstract class Php_AndreaBoccaccio_Model_SqlQueriesManagerAbstract implements Ph
 						} else if ($where >0) {
 							$strSQLOptional .= " AND ";
 						}
-						$strSQLOptional .= "(CONVERT(T01.";
-						$strSQLOptional .= $name;
-						$strSQLOptional .= " USING latin1) COLLATE latin1_general_ci LIKE '%";
-						$strSQLOptional .= $db->sanitize($value);
-						$strSQLOptional .= "%'";
+						$strSQLOptional .= "(";
+						if(substr_compare($name, $dateLowLimCode, 0, strlen($dateLowLimCode))==0) {
+							$strSQLOptional .= "STR_TO_DATE(T01.";
+							$strSQLOptional .= substr($name,strlen($dateLowLimCode));
+							$strSQLOptional .= ",'". $dateFormat . "')";
+							$strSQLOptional .= " >= STR_TO_DATE('";
+							$strSQLOptional .= $db->sanitize($value);
+							$strSQLOptional .= "','". $dateFormat . "')";
+						} else if (substr_compare($name, $dateUpLimCode, 0, strlen($dateUpLimCode))==0) {
+							$strSQLOptional .= "STR_TO_DATE(T01.";
+							$strSQLOptional .= substr($name,strlen($dateUpLimCode));
+							$strSQLOptional .= ",'%d/%m/%Y')";
+							$strSQLOptional .= " <= STR_TO_DATE('";
+							$strSQLOptional .= $db->sanitize($value);
+							$strSQLOptional .= "','%d/%m/%Y')";
+						}else {
+							$strSQLOptional .= "CONVERT(T01.";
+							$strSQLOptional .= $name;
+							$strSQLOptional .= " USING latin1) COLLATE latin1_general_ci LIKE '%";
+							$strSQLOptional .= $db->sanitize($value);
+							$strSQLOptional .= "%'";
+						}
 						$strSQLOptional .= ")";
 						++$where;
 					}

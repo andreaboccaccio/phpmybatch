@@ -71,6 +71,7 @@ class Php_AndreaBoccaccio_View_ViewPDFSqlQueries extends Php_AndreaBoccaccio_Vie
 		$printQuery = 0;
 		$querySuccess = FALSE;
 		$sqlQueriesManager = new Php_AndreaBoccaccio_Model_PDFXmlSqlQueriesManager();
+		$setting = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance()->getSettings('xml');
 		$myGetWhere = $this->getWhere();
 		$getWherePrefix = '';
 		$myGetOrder = $this->getOrder();
@@ -81,6 +82,9 @@ class Php_AndreaBoccaccio_View_ViewPDFSqlQueries extends Php_AndreaBoccaccio_Vie
 		$rowsPerPage = -1;
 		$totalRows = -1;
 		$totalPages = -1;
+		$dateLowLimCode = $setting->getSettingFromFullName('date.lowerLimitCode');
+		$dateUpLimCode = $setting->getSettingFromFullName('date.upperLimitCode');
+		$dates = preg_split('/,/', $setting->getSettingFromFullName('date.datesFields'));		
 		$ret = '';
 		
 		if(strlen(trim($myGetWhere))>0) {
@@ -259,12 +263,29 @@ class Php_AndreaBoccaccio_View_ViewPDFSqlQueries extends Php_AndreaBoccaccio_Vie
 				$ret .= "<form method=\"post\" action=\"";
 				$ret .= $_SERVER["PHP_SELF"];
 				$ret .= "?op=sqlQueries&queryId=" . trim($myGP["queryId"]) . "&page=0\"> ";
-				for($i = 0; $i < $nFields; ++$i) {
-					$ret .= "<div class=\"label\">" . $fields[$i] . ":</div>";
-					$ret .= "<div class=\"input\">";
-					$ret .= "<input type=\"text\" name=\"w" . $fields[$i] . "\" />";
-					$ret .= "</div>";
-					$ret .= "<br />";
+				for($i = 0; $i < $nFields; ++$i) {					
+					if(in_array(strtoupper($fields[$i]),$dates)) {
+						$ret .= "<div class=\"label\">" . $fields[$i] . " Dal :</div>";
+						$ret .= "<div class=\"input\">";
+						$ret .= "<input type=\"text\" name=\"w";
+						$ret .= $dateLowLimCode;
+						$ret .= $fields[$i] . "\" />";
+						$ret .= "</div>";
+						$ret .= "<br />";
+						$ret .= "<div class=\"label\">" . $fields[$i] . " Al :</div>";
+						$ret .= "<div class=\"input\">";
+						$ret .= "<input type=\"text\" name=\"w";
+						$ret .= $dateUpLimCode;
+						$ret .= $fields[$i] . "\" />";
+						$ret .= "</div>";
+						$ret .= "<br />";
+					} else {
+						$ret .= "<div class=\"label\">" . $fields[$i] . ":</div>";
+						$ret .= "<div class=\"input\">";
+						$ret .= "<input type=\"text\" name=\"w" . $fields[$i] . "\" />";
+						$ret .= "</div>";
+						$ret .= "<br />";
+					}
 				}
 				$ret .= "<div class=\"submit\">";
 				$ret .= "<input type=\"submit\" value=\"Filtra\" />";
