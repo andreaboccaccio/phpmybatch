@@ -116,10 +116,10 @@ class Php_AndreaBoccaccio_View_ViewBatchList extends Php_AndreaBoccaccio_View_Vi
 		else {
 			$win_out = null;
 		}
-		if(isset($myGP["wVt_start"])) {
-			if(strlen(trim($myGP["wVt_start"]))>0) {
-				$wname = trim($myGP["wVt_start"]);
-				$filter["vt_start"] = trim($myGP["wVt_start"]);
+		if(isset($myGP["wVt_startFrom"])) {
+			if(strlen(trim($myGP["wVt_startFrom"]))>0) {
+				$wname = trim($myGP["wVt_startFrom"]);
+				$filter["_f_vt_start"] = trim($myGP["wVt_startFrom"]);
 			}
 			else {
 				$wname = null;
@@ -128,10 +128,34 @@ class Php_AndreaBoccaccio_View_ViewBatchList extends Php_AndreaBoccaccio_View_Vi
 		else {
 			$wname = null;
 		}
-		if(isset($myGP["wVt_end"])) {
-			if(strlen(trim($myGP["wVt_end"]))>0) {
-				$wname = trim($myGP["wVt_end"]);
-				$filter["vt_end"] = trim($myGP["wVt_end"]);
+		if(isset($myGP["wVt_startTo"])) {
+			if(strlen(trim($myGP["wVt_startTo"]))>0) {
+				$wname = trim($myGP["wVt_startTo"]);
+				$filter["_t_vt_start"] = trim($myGP["wVt_startTo"]);
+			}
+			else {
+				$wname = null;
+			}
+		}
+		else {
+			$wname = null;
+		}
+		if(isset($myGP["wVt_endFrom"])) {
+			if(strlen(trim($myGP["wVt_endFrom"]))>0) {
+				$wname = trim($myGP["wVt_endFrom"]);
+				$filter["_f_vt_end"] = trim($myGP["wVt_endFrom"]);
+			}
+			else {
+				$wname = null;
+			}
+		}
+		else {
+			$wname = null;
+		}
+		if(isset($myGP["wVt_endTo"])) {
+			if(strlen(trim($myGP["wVt_endTo"]))>0) {
+				$wname = trim($myGP["wVt_endTo"]);
+				$filter["_t_vt_end"] = trim($myGP["wVt_endTo"]);
 			}
 			else {
 				$wname = null;
@@ -269,6 +293,54 @@ class Php_AndreaBoccaccio_View_ViewBatchList extends Php_AndreaBoccaccio_View_Vi
 		if(array_key_exists("batch", $filter)) {
 			$ret .= " value =\"";
 			$ret .= $filter["batch"];
+			$ret .= "\"/>";
+		} else {
+			$ret .= " />";
+		}
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Data Inizio Comm. Dal :</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wVt_startFrom\"";
+		if(array_key_exists("_f_vt_start", $filter)) {
+			$ret .= " value =\"";
+			$ret .= $filter["_f_vt_start"];
+			$ret .= "\"/>";
+		} else {
+			$ret .= " />";
+		}
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Data Inizio Comm. Al :</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wVt_startTo\"";
+		if(array_key_exists("_t_vt_start", $filter)) {
+			$ret .= " value =\"";
+			$ret .= $filter["_t_vt_start"];
+			$ret .= "\"/>";
+		} else {
+			$ret .= " />";
+		}
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Data Fine Comm. Dal :</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wVt_endFrom\"";
+		if(array_key_exists("_f_vt_end", $filter)) {
+			$ret .= " value =\"";
+			$ret .= $filter["_f_vt_end"];
+			$ret .= "\"/>";
+		} else {
+			$ret .= " />";
+		}
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Data Fine Comm. Al :</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wVt_endTo\"";
+		if(array_key_exists("_t_vt_end", $filter)) {
+			$ret .= " value =\"";
+			$ret .= $filter["_t_vt_end"];
 			$ret .= "\"/>";
 		} else {
 			$ret .= " />";

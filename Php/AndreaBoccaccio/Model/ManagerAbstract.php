@@ -49,6 +49,7 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 		$where = 0;
 		$setting = Php_AndreaBoccaccio_Settings_SettingsFactory::getInstance()->getSettings('xml');
 		$db = Php_AndreaBoccaccio_Db_DbFactory::getInstance()->getDb($setting->getSettingFromFullName('classes.db'));
+		$dateFormat = $setting->getSettingFromFullName('date.sqlFormat');
 		$rowsPerPage = $setting->getSettingFromFullName('memory.rowsPerPage');
 		$strSQLCount = "SELECT COUNT(*) AS totalRows, CEIL(COUNT(*)/";
 		$strSQL = "SELECT * FROM ";
@@ -58,6 +59,9 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 		$totalRows = -1;
 		$totalPages = -1;
 		$offset = -1;
+		$orderbyTmp = '';
+		$nameTmp = '';
+		$opTmp = '';
 		
 		$strSQL .= $this->mappingModel->getDbTabName();
 		$rowsPerPage = strval(intval($rowsPerPage));
@@ -67,24 +71,48 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 			if(is_array($filter)) {
 				if(count($filter)> 0) {
 					foreach ($filter as $name => $value) {
-						if(array_key_exists($name, $this->mappingModel->getDefaults())) {
+						if(substr_compare($name, '_f_', 0, strlen('_f_'))==0) {
+							$opTmp = ' >= ';
+						} elseif(substr_compare($name, '_t_', 0, strlen('_t_'))==0) {
+							$opTmp = ' <= ';
+						} else {
+							$opTmp = ' = ';
+						}
+						$nameTmp = preg_replace('(_f_|_t_)', '', $name);
+						if(array_key_exists($nameTmp, $this->mappingModel->getDefaults())) {
 							if($where == 0) {
 								$strSQLOptional .= " WHERE (";
 							} else if ($where >0) {
 								$strSQLOptional .= " AND ";
 							}
 							$strSQLOptional .= "(";
-							$strSQLOptional .= $this->mappingModel->getVarName($name,null);
-							switch ($this->mappingModel->getVarKind($name)) {
+							
+							switch ($this->mappingModel->getVarKind($nameTmp)) {
 								case "int":
-									$strSQLOptional .= " = ";
+									$strSQLOptional .= $this->mappingModel->getVarName($nameTmp,null);
+									$strSQLOptional .= $opTmp;
 									$strSQLOptional .= intval($value);
 									break;
 								case "float":
-									$strSQLOptional .= " = ";
+									$strSQLOptional .= $this->mappingModel->getVarName($nameTmp,null);
+									$strSQLOptional .= $opTmp;
 									$strSQLOptional .= floatval($value);
 									break;
+								case "stringDate":
+									$strSQLOptional .= 'STR_TO_DATE(';
+									$strSQLOptional .= $this->mappingModel->getVarName($nameTmp,null);
+									$strSQLOptional .= ",'";
+									$strSQLOptional .= $dateFormat;
+									$strSQLOptional .= "')";
+									$strSQLOptional .= $opTmp;
+									$strSQLOptional .= "STR_TO_DATE('";
+									$strSQLOptional .= $db->sanitize($value);
+									$strSQLOptional .= "','";
+									$strSQLOptional .= $dateFormat;
+									$strSQLOptional .= "')";
+									break;
 								default:
+									$strSQLOptional .= $this->mappingModel->getVarName($nameTmp,null);
 									$strSQLOptional .= " COLLATE latin1_general_ci LIKE '%";
 									$strSQLOptional .= $db->sanitize($value);
 									$strSQLOptional .= "%'";
@@ -101,7 +129,25 @@ abstract class Php_AndreaBoccaccio_Model_ManagerAbstract implements Php_AndreaBo
 		}	
 		if($orderby != null) {
 			$strSQLOrderBy .= " ORDER BY ";
-			$strSQLOrderBy .= $orderby;
+			$posDESC = stripos($orderby, ' DESC');
+			if($posDESC !== false) {
+				$orderbyTmp = rtrim(preg_replace('/DESC/', '', $orderby));
+ 			} else {
+ 				$orderbyTmp = $orderby;
+ 			}
+ 			if(strcasecmp($this->mappingModel->getVarKind($orderbyTmp),'stringDate')==0) {
+ 				$orderbyTmp = 'STR_TO_DATE('
+ 						. $this->mappingModel->getVarName($orderbyTmp,null)
+ 						. ",'"
+ 						. $dateFormat
+ 						."')";
+ 			} else {
+ 				$orderbyTmp = $this->mappingModel->getVarName($orderbyTmp,null);
+ 			}
+			$strSQLOrderBy .= $orderbyTmp;
+			if($posDESC !== false) {
+				$strSQLOrderBy .= ' DESC';
+			}
 		}
 		$strSQLCount .= $strSQLOptional . ";";
 		$res = $db->execQuery($strSQLCount);

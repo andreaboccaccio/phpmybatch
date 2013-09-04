@@ -35,7 +35,7 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<var name="code" kind="string" value="" dbName="code" />
 		<var name="contractor_code" kind="string" value="" dbName="contractor_code" />
 		<var name="contractor" kind="string" value="" dbName="contractor" />
-		<var name="date" kind="string" value="" dbName="doc_date" />
+		<var name="date" kind="stringDate" value="" dbName="doc_date" />
 		<var name="description" kind="string" value="" dbName="description" />
 	</class>
 	<class id="item">
@@ -57,8 +57,8 @@ along with phpmywhs.  If not, see <http://www.gnu.org/licenses/>.
 		<dbtab name="ITEM_OUT" />
 		<var name="id" kind="int" value="-1" dbName="id" />
 		<var name="batch" kind="string" value="" dbName="batch" />
-		<var name="vt_start" kind="string" value="" dbName="vt_start" />
-		<var name="vt_end" kind="string" value="" dbName="vt_end" />
+		<var name="vt_start" kind="stringDate" value="" dbName="vt_start" />
+		<var name="vt_end" kind="stringDate" value="" dbName="vt_end" />
 		<var name="description" kind="string" value="" dbName="description" />
 	</class>
 	<class id="country">

@@ -108,10 +108,17 @@ class Php_AndreaBoccaccio_View_ViewDocumentList extends Php_AndreaBoccaccio_View
 				}
 			}
 		}
-		if(isset($myGP["wDate"])) {
-			if(strlen(trim($myGP["wDate"]))>0) {
-				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wDate"])) {
-					$filter["date"] = trim($myGP["wDate"]);
+		if(isset($myGP["wDateFrom"])) {
+			if(strlen(trim($myGP["wDateFrom"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wDateFrom"])) {
+					$filter["_f_date"] = trim($myGP["wDateFrom"]);
+				}
+			}
+		}
+		if(isset($myGP["wDateTo"])) {
+			if(strlen(trim($myGP["wDateTo"]))>0) {
+				if(preg_match("/^(?!.*(alter|create|drop|rename|truncate|call|delete|do|handler|insert|load|replace|select|update)).*$/i", $myGP["wDateTo"])) {
+					$filter["_t_date"] = trim($myGP["wDateTo"]);
 				}
 			}
 		}
@@ -287,9 +294,14 @@ class Php_AndreaBoccaccio_View_ViewDocumentList extends Php_AndreaBoccaccio_View
 		$ret .= "<input type=\"text\" name=\"wItemKind\" />";
 		$ret .= "</div>";
 		$ret .= "<br />";
-		$ret .= "<div class=\"label\">Data:</div>";
+		$ret .= "<div class=\"label\">Data Dal:</div>";
 		$ret .= "<div class=\"input\">";
-		$ret .= "<input type=\"text\" name=\"wDate\" />";
+		$ret .= "<input type=\"text\" name=\"wDateFrom\" />";
+		$ret .= "</div>";
+		$ret .= "<br />";
+		$ret .= "<div class=\"label\">Data Al:</div>";
+		$ret .= "<div class=\"input\">";
+		$ret .= "<input type=\"text\" name=\"wDateTo\" />";
 		$ret .= "</div>";
 		$ret .= "<br />";
 		$ret .= "<div class=\"label\">Numero/Codice:</div>";
