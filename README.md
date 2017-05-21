@@ -2,7 +2,7 @@ phpmybatch
 ==========
 
 Copyright (C)2012 Andrea Boccaccio
-contact email: andrea@andreaboccaccio.com
+contact email: andrea@andreaboccaccio.it
 
 phpmybatch is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -19,6 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 Project short description:
+
+Abandoned project.
 
 phpmybatch is an open source batches of goods management system software.
 This software is far away to be mature, the development process has been just
