@@ -1,7 +1,7 @@
 --
 -- phpmybatch - phpmybatch - An open source batches of goods management system software.
 -- Copyright (C)2012 Andrea Boccaccio
--- contact email: andrea@andreaboccaccio.com
+-- contact email: andrea@andreaboccaccio.it
 -- 
 -- This file is part of phpmybatch.
 -- 
