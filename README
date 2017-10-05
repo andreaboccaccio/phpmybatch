@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Project short description:
 
 Abandoned project.
+THIS PROJECT IS GOING TO BE DELETED on 2017-11-05. CLONE OR FORK BEFORE THAT DATE!!!
+====================================================================================
 
 phpmybatch is an open source batches of goods management system software.
 This software is far away to be mature, the development process has been just
